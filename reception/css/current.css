@@ -1,0 +1,12 @@
+#google_canvas {
+	position: absolute;
+	height:360px;
+	width:360px;
+}
+#google_canvas h1 {
+	font-size:12px;
+}
+#google_canvas h2 {
+	font-size:12px;
+	font-weight:300;
+}

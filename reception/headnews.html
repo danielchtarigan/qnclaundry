@@ -1,0 +1,37 @@
+
+
+    <link rel="stylesheet" type="text/css" href="head.css">
+	  <script src="jquery-1.8.0.min.js"></script>
+	  <script src="headline.js"></script>
+    <script type="text/javascript"> 
+      $(document).ready(function(){
+	  		// untuk permulaan, tampilkan content nomor 1 '#slideAwal'
+	  		bukaContent($('#slideAwal'),'div1');			
+	    });
+	  </script>	
+<table width="600px" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td>
+    
+    <div id="divContent">
+    <?php         
+          $info = mysqli_query($con, "select *from informasi");
+          $cinfo = mysqli_num_rows($info);
+          if ($cinfo>0) {
+            while($data = mysqli_fetch_array($info)){
+        ?>
+       <div id="div<?php echo $data['tampil'] ?>">          
+ 	     <img src="images/<?php echo $data['info_gambar'] ?>" class="img-responsive" align="left" width="600px">            
+      </div>      
+      <?php } }?>
+    </div>
+	<div id="divTrigger">
+      <a href="javascript:;" onClick="bukaContent(this,'div1')" id="slideAwal"> </a>
+      <a href="javascript:;" onClick="bukaContent(this,'div2')"> </a>
+      <a href="javascript:;" onClick="bukaContent(this,'div3')"> </a>
+      <a href="javascript:;" onClick="bukaContent(this,'div4')"> </a>
+      <a href="javascript:;" onClick="bukaContent(this,'div5')"> </a>      
+
+	</td>
+      </tr>
+    </table>

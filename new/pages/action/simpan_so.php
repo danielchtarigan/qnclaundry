@@ -1,0 +1,20 @@
+<?php 
+include '../../config.php';
+include '../zonawaktu.php';
+
+
+$jam = date('Y-m-d');
+$reception = $_SESSION['user_id'];
+$outlet = $_SESSION['outlet'];
+
+$nomer=$jam . ','.$reception;
+$no_nota = explode(" ",$_POST["nota"]);
+  foreach($no_nota as $key => $value){
+  	if($value!='') {
+  		$q=mysqli_query($con,"INSERT into detail_so (tgl_so,outlet,no_nota,rcp_so,nomer) VALUES('$nowDate','$outlet','$value','$reception','$nomer')");
+  		$q2 =mysqli_query($con,"UPDATE reception set tgl_so='$nowDate',rcp_so='$reception' WHERE no_nota = '$value'");
+  	}   	
+  }
+
+
+?>

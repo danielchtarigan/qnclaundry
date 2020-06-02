@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic DataGrid - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="easyui.css">
+	<link rel="stylesheet" type="text/css" href="icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<script type="text/javascript" src="../lib/js/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.min.js"></script>
+	<script type="text/javascript">
+		function doSearch(){
+			$('#tt').datagrid('load',{
+				nama_customer: $('#nama_customer').val(),
+				no_nota: $('#no_nota').val()
+			});
+		}
+	</script>
+</head>
+<body>
+	<body>
+	<h2>Add search functionality in DataGrid</h2>
+	<div class="demo-info" style="margin-bottom:10px">
+		<div class="demo-tip icon-tip">&nbsp;</div>
+		<div>Enter search values and press search button.</div>
+	</div>
+	
+	<table id="tt" class="easyui-datagrid" style="width:1200px;height:500px"
+			url="3.php"
+			title="Searching" iconCls="icon-search" toolbar="#tb"
+			rownumbers="true" pagination="true" singleSelect="true" sortable="true">
+		<thead>
+			<tr>
+				<th field="id" width="80">Item ID</th>
+				<th field="no_nota" width="120">Product ID</th>
+				<th field="nama_customer" width="80" align="right">List Price</th>
+				<th field="tgl_input" width="80">Item ID</th>
+				<th field="nama_outlet" width="120">Product ID</th>
+				<th field="tgl_cuci" width="80" align="right">List Price</th>
+				<th field="op_cuci" width="80">op cuci</th>
+				<th field="tgl_setrika" width="120">setrika tgl</th>
+				<th field="user_setrika" width="80" align="right">List Price</th>
+				
+				
+				
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="padding:3px">
+		<span>Item ID:</span>
+		<input id="nama_customer" style="line-height:26px;border:1px solid #ccc">
+		<span>Product ID:</span>
+		<input id="no_nota" style="line-height:26px;border:1px solid #ccc">
+		<a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>
+	</div>
+</body>
+
+</body>
+</html>

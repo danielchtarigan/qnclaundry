@@ -1,0 +1,20 @@
+file ini adalah source dari tutorial slideshow jquery website : 
+http://www.ilmugrafis.com/web-jquery.php?page=membuat-slideshow-foto-auto-dengan-jquery
+
+
+======================
+
+Bebas digunakan, dimodifikasi dan dipakai untuk keperluan apapun asalkan tidak untuk kejahatan ataupun hal - hal yang merugikan diri sendiri maupun orang lain.
+
+Jadi jika anda menyukai konten ini dan ingin menaruhnya di website / Blog anda, maka silahkan hubungkan link tersebut langsung ke halaman website ini http://www.ilmugrafis.com/web-jquery.php?page=membuat-slideshow-foto-auto-dengan-jquery
+
+Terima Kasih, semoga bermanfaat
+
+
+======================
+
+Official ilmugrafis Store : www.ilmugrafis.net
+Menyediakan berbagaimacam kebutuhan desain grafis mulai dari cd pembelajaran, desain vector, bahan pembuatan undangan, katalog undangan, dll. visit our site at www.ilmugrafis.net
+
+-----
+thanks (admin ilmugrafis)

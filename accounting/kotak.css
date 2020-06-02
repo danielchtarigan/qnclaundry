@@ -1,0 +1,51 @@
+
+
+	.order{
+		border: 1px solid;
+		width: 380px;
+		padding: 15px;
+		margin-left: 15px;
+		float: left
+	}
+	.rincian{
+		border: 1px solid;
+		width: 610px;
+		padding: 15px;
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	th{
+		text-align: center;
+	}
+
+	@media screen and (max-width: 768px){
+		.order{
+			width: 100%;
+			float: none;
+			margin-left: 15px;
+			margin-right: 15px;
+		}
+		.rincian{
+			width: 100%;
+			float: none;
+			margin-right: 15px;
+		}
+
+	}
+
+	@media screen and (max-width: 700px){
+		.order{
+			width: auto;
+			float: none;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		.rincian{
+			width: auto;
+			float: none;
+			margin-left: 5px;
+			margin-right: 5px;
+			margin-top: 5px;
+		}
+
+	}

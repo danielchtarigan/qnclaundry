@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="head.css">
+	  <script src="jquery-1.8.0.min.js"></script>
+	  <script src="headline.js"></script>
+    <script type="text/javascript"> 
+      $(document).ready(function(){
+	  		// untuk permulaan, tampilkan content nomor 1 '#slideAwal'
+	  		bukaContent($('#slideAwal'),'div1');			
+	    });
+	  </script>	
+
+  <title>Live Demo Slideshow Photo Automatic | Animasi Headline News</title></head>
+    <body>
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td>
+    <h3>LIVE DEMO! SLIDESHOW PHOTO AUTOMATIC JQUERY DI <a href="web-jquery.php?page=membuat-slideshow-foto-auto-dengan-jquery" title="automatic slideshow photo">ILMUGRAFIS</a></h3>
+    <div id="divTrigger">
+      <a href="javascript:;" onClick="bukaContent(this,'div1')" id="slideAwal">1</a>
+      <a href="javascript:;" onClick="bukaContent(this,'div2')">2</a>
+      <a href="javascript:;" onClick="bukaContent(this,'div3')">3</a>
+      <a href="javascript:;" onClick="bukaContent(this,'div4')">4</a>
+    </div>
+
+    <div id="divContent">
+      <div id="div1">
+ 	     <span class="title">Slide 1</span>
+ 	     <img src="images/1-slide.jpg" align="left" /> 
+Slide show pertama! wow!
+      </div>
+      <div id="div2">
+ 	     <span class="title">Slide 2</span>
+ 	     <img src="images/2-slide.jpg" align="left" /> 
+Slide show kedua! awesome!
+      </div>
+      <div id="div3">
+ 	     <span class="title">Slide 3</span>
+ 	     <img src="images/3-slide.jpg" align="left" /> 
+Slide show ketiga! cute!
+      </div>
+      <div id="div4">
+ 	     <span class="title">Slide 4</span>
+ 	     <img src="images/4-slide.jpg" align="left" />
+Slide show keempat, Finish! hehehe ayo - ayo jangan bengong aja gan! Kembali fokus...!
+      </div>
+    </div>
+	</td>
+      </tr>
+    </table>
+    </body>
+</html>
