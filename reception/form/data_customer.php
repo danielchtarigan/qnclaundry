@@ -1,7 +1,7 @@
 <?php 
-$nama = $rcustomer1['nama_customer'];
-$alamat = $rcustomer1['alamat'];
-$telp = $rcustomer1['no_telp'];
+$nama = $r['nama_customer'];
+$alamat = $r['alamat'];
+$telp = $r['no_telp'];
 ?>
 
 <label class="control-label" style="font-size: 18px">Ubah Data Customer</label>

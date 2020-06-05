@@ -290,10 +290,10 @@ include 'manifest_driver.php';
 							 include '../setpasswd.php';
 							 }
 						}
+						// else if (isset($_GET['id'])){
+                        //  include "form/customer.php";
+						// }
 						else if (isset($_GET['id'])){
-                         include "form/customer.php";
-						}
-						else if (isset($_GET['ids'])){
 							include "form/bs_sales.php";
 						   }
 						else if (isset($_GET['sms'])){

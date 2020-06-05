@@ -1,10 +1,10 @@
 <?php
-ini_set('session.cookie_domain', '.qnclaundry.com');
+// ini_set('session.cookie_domain', '.qnclaundry.com');
 $SETT = array (
 	'db_host'	=> 'localhost',
 	'db_username' 	=> 'qnclaund_qncop',
 	'db_password' 	=> 'kiloan123',
-	'db_name'	=> 'qnclaund_qncop'
+	'db_name'	=> 'qnclaundry'
 );
 
 $con = new mysqli($SETT['db_host'], $SETT['db_username'], $SETT['db_password'], $SETT['db_name']);

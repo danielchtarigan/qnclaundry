@@ -12,6 +12,7 @@ $nota = '<input type="checkbox" class="" name="notamanual" id="notamanual" value
 <div class="popup-wrapper" id="layanan">
   <div class="popup-container">
     <div class="row">
+      <a href="index.php?id=<?= $_GET['id'] ?>" class="timesx"><i class="fa fa-times"></i></a>
       <label class="control-label" style="font-size: 18px"><?= $_GET['jenis'] ?></label>
     </div> 
     <div class="row">
@@ -805,7 +806,7 @@ $no_nota = $rtmp['no_nota'];
                                 <td><a href="#popup5">Hanger Plastik</a></td>
                                 <td>Rp.</td>
                                 <td style="text-align:right;"><?php echo number_format($data2['hanger_plastik']*2000,0,',','.');
-                $totalall = $totalall+($data2['hanger_plastic']*2000);
+                $totalall = $totalall+($data2['hanger_plastik']*2000);
                 ?>
                                 </td>
                                 <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=hp"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>

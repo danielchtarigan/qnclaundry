@@ -27,6 +27,22 @@
 	top: 50px;
 	left: 50px;
 }
+.popup-container a.timesx {
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #fff;
+	border-radius: 6px;
+	z-index: 2;
+}
+.popup-container a.timesx>i {
+	text-align: center;
+	margin: 2px;
+}
+.popup-container a.timesx:hover {
+	color: red;
+	opacity: 0.6;
+}
 
 @media (min-width: 768px){
 	.popup-container {

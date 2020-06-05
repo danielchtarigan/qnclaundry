@@ -75,7 +75,7 @@ if($aclg){
 	$r    = mysqli_fetch_array($edit);
 
 	echo '
-	<a href="cetak_faktur.php?faktur='.$nofaktur.'" target="_blank" class="btn btn-default">Cetak Faktur</a>
+	<a href="cetak_faktur.php?faktur='.$nofaktur.'" target="_blank" class="btn btn-default cetak-f">Cetak Faktur</a>
 	';
 
 }else{
