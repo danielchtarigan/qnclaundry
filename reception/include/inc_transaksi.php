@@ -668,7 +668,7 @@ if($ntmp<1){
 $rtmp = mysqli_fetch_array($qtmp);
 $no_nota = $rtmp['no_nota'];
 ?>
-        <table style="width:100%;">
+        <table style="width:100%; color: #fff">
            <tr>
               <?php
                   echo '<td>Nama</td> <td>:</td> <td>'.$nama_customer.'</td>
@@ -688,7 +688,7 @@ $no_nota = $rtmp['no_nota'];
      echo "<table width='100%'>";
       while ($rview = mysqli_fetch_array($qview)){
         ?>
-    <table style="font-size:9pt;border-top: 1px dotted #000;width:100%;">
+    <table style="font-size:9pt;border-top: 1px dotted #000;width:100%; color: #fff">
       <?php
 
       $diskon = 0;
@@ -723,11 +723,11 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="#popup8"><?php echo ucwords($data2['item']);?></a></td>
+                                <td><a href="#popup8" style="color: #fff"><?php echo ucwords($data2['item']);?></a></td>
                                 <td>Rp.</td>
                                 <td style="text-align:right;"><?php echo number_format($data2['total'],0,',','.');?>
                                 </td>
-                                <td><a href="batal_transaksi.php?no_nota=<?php echo $no_nota; ?>&id=<?php echo $data2['item']; ?>"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                                <td><a href="batal_transaksi.php?no_nota=<?php echo $no_nota; ?>&id=<?php echo $data2['item']; ?>" style="color: #fff"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
                             </button></a></td>
                             </tr>
 <?php
@@ -740,10 +740,10 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="#popup5">Ekstra Parfum</a></td>
+                                <td><a href="#popup5" style="color: #fff">Ekstra Parfum</a></td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=p"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=p"><button type="button" class="btn btn-warning btn-circle" style="color: #fff"><i class="fa fa-times"></i>
                             </button></a></td>
                             </tr>
       <?php   }
@@ -752,10 +752,10 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="#popup5">Tanpa Parfum</a></td>
+                                <td><a href="#popup5" style="color: #fff">Tanpa Parfum</a></td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=p"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=p"><button type="button" class="btn btn-warning btn-circle" style="color: #fff"><i class="fa fa-times"></i>
                             </button></a></td>
                             </tr>
       <?php   }
@@ -764,10 +764,10 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="#popup4">Parfum Normal</a></td>
+                                <td><a href="#popup4" style="color: #fff">Parfum Normal</a></td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=p"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=p"><button type="button" class="btn btn-warning btn-circle" style="color: #fff"><i class="fa fa-times"></i>
                             </button></a></td>
                             </tr>
       <?php   }
@@ -776,10 +776,10 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="#popup5">Hanger Own</a></td>
+                                <td><a href="#popup5" style="color: #fff">Hanger Own</a></td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=ho"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=ho"><button type="button" class="btn btn-warning btn-circle" style="color: #fff"><i class="fa fa-times"></i>
                             </button></a></td>
                             </tr>
       <?php   }
@@ -788,13 +788,13 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td><?php echo $data2['hanger']; ?></td>
-                                <td><a href="#popup5">Hanger</a></td>
+                                <td><a href="#popup5" style="color: #fff">Hanger</a></td>
                                 <td>Rp.</td>
                                 <td style="text-align:right;"><?php echo number_format($data2['hanger']*2500,0,',','.');
                 $totalall = $totalall+($data2['hanger']*2500);
                 ?>
                                 </td>
-                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=h"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                                <td><a href="batal_transaksi1.php?no_nota=<?php echo $no_nota; ?>&kode=h"><button type="button" class="btn btn-warning btn-circle" style="color: #fff"><i class="fa fa-times"></i>
                             </button></a></td>
                             </tr>
       <?php   }
@@ -803,7 +803,7 @@ $no_nota = $rtmp['no_nota'];
               <tr>
                                 <td>&nbsp;</td>
                                 <td><?php echo $data2['hanger_plastik']; ?></td>
-                                <td><a href="#popup5">Hanger Plastik</a></td>
+                                <td><a href="#popup5" style="color: #fff">Hanger Plastik</a></td>
                                 <td>Rp.</td>
                                 <td style="text-align:right;"><?php echo number_format($data2['hanger_plastik']*2000,0,',','.');
                 $totalall = $totalall+($data2['hanger_plastik']*2000);

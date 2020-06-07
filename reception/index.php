@@ -122,7 +122,7 @@ if ($_SESSION['nama_outlet']=='' OR $_SESSION['level']!='reception' AND $_SESSIO
 }
 else
 {
-include 'manifest_driver.php';
+// include 'manifest_driver.php';
 	?>
 
 <head>

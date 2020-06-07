@@ -224,7 +224,7 @@ while ($rvr = mysqli_fetch_array($vr)){
 }
 
 // Load Composer's autoloader mailer
-require '../../../phpmailer/vendor/autoload.php';
+// require '../../../phpmailer/vendor/autoload.php';
 require_once '../../messages_to_customer.php';
 
   

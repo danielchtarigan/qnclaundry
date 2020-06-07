@@ -31,7 +31,8 @@
 	position: absolute;
 	right: 0;
 	top: 0;
-	color: #fff;
+	color: red;
+	opacity: 0.7;
 	border-radius: 6px;
 	z-index: 2;
 }
@@ -40,8 +41,7 @@
 	margin: 2px;
 }
 .popup-container a.timesx:hover {
-	color: red;
-	opacity: 0.6;
+	color: #fff;
 }
 
 @media (min-width: 768px){
@@ -59,6 +59,7 @@
 	margin:7% auto;
 	padding:30px 50px;
 	background-color: #6C0;
+	background-image: linear-gradient(to right, #06439e , #c7d900);
 	color:#fff;
 	border-radius: 3px;
 }
@@ -112,4 +113,6 @@ a.popup-close {
 			box-shadow: inset 0 3px 7px 3px #ea7722;
 		}
 /* end isi form */
+
+
 </style>

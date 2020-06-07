@@ -13,7 +13,7 @@ if (mysqli_num_rows($qsearch)>0) {
 }
 if ($qdelivery) {?>
 <script type="text/javascript">
- location.href="../index.php?id=<?php echo $_GET['id_customer']; ?>&selesai=ya";
+ location.href="../index.php?id=<?php echo $_GET['id_customer']; ?>&payment#pop-tagihan";
 </script>
 <?php } else { ?>
   <script type="text/javascript">

@@ -75,6 +75,16 @@ else
     .invisible {
         visibility: hidden;
     }
+    [contenteditable]:focus {
+        outline: 2px solid #4685e3 !important;
+    }
+    .bs-form {
+        margin-top: 15px;
+        margin-left: 15px;
+    }
+    .bs-form .control-label {
+        text-align: left !important;
+    }
 </style>
 
 <!-- <div class="panel-heading">
@@ -213,7 +223,7 @@ else
 
                     $nkeranjang = mysqli_num_rows($qkeranjang);
                     $express = false;
-                    $struk = "newstruk.php";
+                    $struk = "newstruk.php";                    
                     
                     if($nkeranjang > 0) {
                         echo '<table width="50%" style="margin-bottom: 15px">';
@@ -223,7 +233,7 @@ else
                             echo '
                                 <tr>
                                     <td>'.$rkeranjang['no_nota'].'</td>
-                                    <td>
+                                    <td align="right">
                                         <a href="'.$struk.'?id='.$_GET['id'].'&no_nota='.$rkeranjang['no_nota'].'" target="_blank">
                                             <button type="submit" class="btn btn-default btn-sm">Cetak</button>
                                         </a>
@@ -244,15 +254,45 @@ else
                     ?>
                 
                 <a href="#laundry_service">
-                    <button class="btn btn-sm btn-success">Tambah</button>
+                    <button class="btn btn-sm btn-success">Buat Baru</button>
                 </a>
                 <hr>
-                <h4>Daftar Pesanan Produk :</h4>
-                <p>Tidak ada pesanan</p>
-                <button class="btn btn-sm btn-success">Tambah</button>
+                <h4>Daftar Pesanan Barang :</h4>
+                <?php
+                $query = $con->query("Select DISTINCT no_order FROM detail_order_item WHERE id_customer='$id' AND no_faktur=''");
+                $nData = mysqli_num_rows($query);
+                if($nData > 0) {
+                    echo '<table width="50%" style="margin-bottom: 15px">';
+                    while($data = $query->fetch_array()) {
+                        echo '
+                                <tr>
+                                    <td>'.$data['no_order'].'</td>
+                                    <td align="right">
+                                        <a href="javascript:" target="_blank">
+                                            <button type="submit" class="btn btn-default btn-sm">Cetak</button>
+                                        </a>
+                                        <a href="batal_order.php?id='.$_GET['id'].'&no_order='.$data['no_order'].'&order_item">
+                                            <button type="submit" class="btn btn-danger btn-sm">Batal</button>
+                                        </a>
+                                    </td>
+                                </tr>';
+                        }
+                        echo '</table>';
+                }
+                else {
+                    '<p>Tidak ada pesanan</p>';
+                }
+
+                ?>
+
+                <button class="btn btn-sm btn-success" id="order_item">Buat Baru</button>
                 <hr>
 
-                <a href="#pop-tagihan" class="btn btn-lg btn-success pull-right"> <i class="icon-plus"></i>Pembayaran</a>
+                <?php  
+                    $inv = $nkeranjang > 0 || $nData > 0 ? 'normal' : 'invisible';
+                ?>
+                
+                <a href="index.php?id=<?= $id ?>&payment#deliveryorder" class="btn btn-lg btn-success pull-right <?= $inv ?>" id="payment"> <i class="icon-plus"></i>Pembayaran</a>
             </div>
         </div>
     </div>
@@ -578,6 +618,85 @@ else
     </div>
 </div>
 
+<div class="popup-wrapper" id="new_item_order" style="top: 40px;">
+    <div class="popup-container" style="padding: 15px">
+        <a href="#" class="timesx"><i class="fa fa-times"></i></a>
+        <h4>Pesanan Barang</h4>
+        <div class="form-horizontal bs-form" id="input_item">
+            <div class="form-group bs-input-group">
+                <label for="total" class="control-label col-lg-2">Total</label>
+                <div class="col-lg-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">Rp.</span>
+                        <input type="text" class="form-control" id="total" readonly value="0">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-default" id="calc_item">Kalkulasi</button>
+            </div>
+            <div class="form-group bs-input-group">
+                <label for="item" class="control-label col-lg-2">Barang</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" id="item" placeholder="Ketik nama barang di sini..." autocomplete="off">
+                </div>
+                <button type="button" class="btn btn-success" onclick="window.location.href='#add_new_item'">Barang Baru</button>
+            </div>
+        </div>
+
+        <table width="100%" class="table table-bordered" style="color: #fff; font-size: 12px" id="table_item">
+            <thead>
+                <tr>
+                    <th>Kode Barang</th>
+                    <th>Deskripsi Barang</th>
+                    <th>Harga Satuan</th>
+                    <th>Kts</th>
+                    <th>Jumlah</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button class="btn btn-success" id="save_order">Simpan</button>
+        <button class="btn btn-default">Print</button>
+    </div>
+</div>
+
+<div class="popup-wrapper" id="add_new_item" style="top: 40px;">
+    <div class="popup-container" style="padding: 15px">
+        <a href="#" class="timesx"><i class="fa fa-times"></i></a>
+        <h4>Tambah Barang</h4>
+        <div class="form-horizontal bs-form" id="input_new_item">
+            <div class="form-group bs-input-group">
+                <label for="code" class="control-label col-lg-4">Kode</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" id="code" readonly>
+                </div>
+                <button type="button" class="btn btn-default" id="gen_code">Auto</button>
+            </div>
+            <div class="form-group bs-input-group">
+                <label for="item_desc" class="control-label col-lg-4">Deskripsi Barang</label>
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" id="item_desc" placeholder="Ketik nama barang di sini..." autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group bs-input-group">
+                <label for="price" class="control-label col-lg-4">Harga Satuan</label>
+                <div class="col-lg-4">
+                <div class="input-group">
+                        <span class="input-group-addon">Rp.</span>
+                        <input type="text" class="form-control" id="price" onkeypress="return validnumber(event)" placeholder="" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group bs-input-group">
+                <label for="qty" class="control-label col-lg-4">Kuantitas</label>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="qty" disabled onkeypress="return validnumber(event)" placeholder="" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success" id="save">Simpan & Kembali</button>
+    </div>
+</div>
 
 <!-- Script halaman ini -->
 <script>
@@ -607,6 +726,147 @@ else
         })
     });
 
+    // Tambah Barang Baru
+    function validnumber(e){
+        var charCode = (e.which) ? e.which : event.keyCode;
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+         return true;
+    }
+
+    $('#input_new_item').on('click', '#gen_code', function () {
+        var form = $('#input_new_item');
+        $.ajax({
+            url: 'include/bs_gen_code.php',
+            success: function(resData) {
+                form.find('#code').val(resData);
+            }
+        });
+    })
+
+    $('#add_new_item').on('click', '#save', function() {
+        form = $('#input_new_item');
+        var item = form.find('#code').val();
+        var desc = form.find('#item_desc').val();
+        var price = form.find('#price').val();
+        var data = {
+            item:item, desc:desc, price:price
+        };
+        if (item == "") {
+            alert("Item tidak boleh kosong ya..");
+        }
+        else if (desc == "") {
+            alert("Deskripsi barang tidak boleh kosong ya..");
+        }
+        else if (price == "") {
+            alert("Harga tidak boleh kosong ya..");
+        }
+        else {
+            $.ajax({
+                url: 'act/bs_save_new_item.php',
+                method: 'POST',
+                data: data,
+                success: function (resData) {
+                    window.location.href = resData;
+                }
+            })
+        }
+    })
+    
+
+    // Akhir Tambah Barang Baru
+
+    // Penjualan Barang di Toko
+    $('#order_item').on('click', function () {
+        location.href = '#new_item_order';
+    });
+
+    $('#item').on('keyup', function (e) {
+        $('#item').closest('.bs-input-group').find('.list-group').hide();
+        var item = $(this).val();
+        if (item.length >= 3) {
+            $.ajax({
+                url: 'include/bs_list_item.php',
+                dataType: 'html',
+                data: 'item='+item,
+                success: function (resData) {
+                    $('#item').after(resData);
+                    $('#item').closest('.bs-input-group').find('.list-group a').on('click', function (e) {
+                        $('#item').val('');
+                        $('#item').closest('.bs-input-group').find('.list-group').hide();
+                        var item = $(this).data('id');
+                        var item_desc = $(this).data('desc');
+                        var price = $(this).data('price');
+                        var qty = 1;
+                        var amount = parseInt(qty*price);
+                        id = parseInt(item);
+                        var newRow = '<tr id="item'+id+'"><td>'+item+'</td><td>'+item_desc+'</td><td>'+price+'</td><td id="kts'+id+'" onfocus="edit_row_item('+id+')" onblur="edit_row_item('+id+')" onclick="edit_row_item('+id+')">'+qty+'</td><td id="amount'+id+'">'+amount+'</td></tr>';
+                        $('#table_item tbody').append(newRow);
+                        item_calculation();            
+                    })
+                }
+            });
+        }        
+    })
+
+    function edit_row_item(i) {
+        var id = i;  
+        var kts = $('#table_item tbody>tr#item'+id+'>td:eq(3)').attr('contenteditable', true);
+        var price = $('#table_item tbody>tr#item'+id+'>td:eq(2)').text();
+        var kts = $('#table_item tbody>tr#item'+id+'>td:eq(3)').text();
+        var amount = parseInt(price*kts);
+        $('#table_item tbody>tr#item'+id+'>td:eq(4)').text(amount); 
+        item_calculation();
+    }    
+    
+    $('#input_item #calc_item').click(function () { 
+        item_calculation();
+    })
+
+    function item_calculation() {        
+        calc = 0;
+        $('#table_item tbody>tr').each(function () {
+            var sum = parseInt($(this).find('td:eq(4)').text());
+            if (!isNaN(sum)) {
+                calc += sum;
+            }
+        })   
+        var calc = calc.toLocaleString("id-ID");
+        $('#input_item #total').val(calc);
+    }
+
+    $('#new_item_order').on('click', '#save_order', function () {
+        var total = $('#input_item #total').val();
+        if(total > 0) {
+            id = '<?= $id ?>';
+            var TableData = new Array();    
+            $('#table_item tr').each(function(row, tr){
+                TableData[row]={
+                    "item" : $(tr).find('td:eq(0)').text(), 
+                    "price" : $(tr).find('td:eq(2)').text(),
+                    "qty" : $(tr).find('td:eq(3)').text(),
+                    "amount" : $(tr).find('td:eq(4)').text(),
+                    "id_customer" : '<?= $_GET['id'] ?>'
+
+                }
+            }); 
+            TableData.shift();
+            var myJson = JSON.stringify(TableData);
+            $.ajax({
+                method: 'POST',
+                url: 'act/bs_order_item.php',
+                data: myJson,
+                dataType: 'json',
+                contentType: 'application/json',
+            });
+
+            location.href = 'index.php?id='+id;
+        }
+        
+    })
+    
+    // Akhir Penjualan Barang di Toko
+    
 
     function freeMember(){
 		if(confirm("Anda mengizinkan Customer menjadi Membership gratis 1 bulan, Diskon 20% setiap pemesanan"))
@@ -790,8 +1050,39 @@ else
 
 		};
 
+
+        // DeliveryOrder
+        function deliveryform() {
+            $('#deliveryorder').css('top', '0');
+            $('#tombol-delivery').css('background-color','#ddf8c2');
+            $('#form-delivery').show();
+        }
+
+        function closedeliverypopup() {
+            $('#deliveryorder').css('display','none');
+        }
+        $('#selesai-button').click(function() {
+            $('#deliveryorder').css('display','block');
+        });
+        
+        $(function(){
+            $("#tglantar").datepicker({
+                format:'dd/mm/yyyy',
+                autoclose: true,
+                <?php if ($express) echo "startDate: '+1d'"; else echo "startDate: '+3d'"; ?>
+            });
+        });
+
+
 </script>
 
 <?php
 
 include 'include/inc_transaksi.php';
+
+if (isset($_GET['payment'])){
+    include "form/bs_payment.php";
+}
+elseif (isset($_GET['deliveryorder'])) {
+    include "form/bs_delivery_order.php";
+}
