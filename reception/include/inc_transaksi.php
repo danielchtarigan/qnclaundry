@@ -4,11 +4,11 @@ $qcus = $con->query("SELECT * FROM customer WHERE id='$_GET[id]'");
 $cus = $qcus->fetch_array();
 
 
-$nota = '<input type="checkbox" class="" name="notamanual" id="notamanual" value="1" onclick="return nota_manual()"> <label class="labelnotamanual" style="vertical-align: top;" >Nota Manual</label><br><input class="form-control" type="text" name="notainput" autocomplete="off" placeholder="Nomor Nota" readonly="" id="notainput" value="">';
+$nota = '<input type="checkbox" class="" name="notamanual" id="notamanual" value="1" onclick="return nota_manual()"> <label class="labelnotamanual" style="vertical-align: top;" >Nota Manual</label><br><input class="form-control" type="text" name="notain" autocomplete="off" placeholder="Nomor Nota" readonly="" id="notain" value="">';
 
 
 ?>
-
+<input class="form-control" type="text" name="notainput" hidden autocomplete="off" readonly="" id="notainput" value="">
 <div class="popup-wrapper" id="layanan">
   <div class="popup-container">
     <div class="row">
@@ -539,7 +539,7 @@ $nota = '<input type="checkbox" class="" name="notamanual" id="notamanual" value
 <div class="popup-wrapper" id="pilihanhanger">
   <div class="popup-container">
     <div>
-      <label class="control-label" style="font-size: 18px">Pilihan Hanger</label>
+      <label class="control-label" style="font-size: 18px">Pilihan Hanger Dan Extra Service</label>
     </div> 
     <div>
       <form class="form-horizontal">       
@@ -894,11 +894,11 @@ echo str_replace('Rp.','',rupiah($totalall, true));
       notamanual = $('#notamanual:checked').val();
       if(notamanual=="1"){
         alert("Anda ingin menggunakan nomor nota manual");
-        $('input[name=notainput]').removeAttr('readonly');
+        $('input[name=notain]').removeAttr('readonly');
       }
       else {
         alert("Kembali menggunakan nomor nota autosistem");
-        $('input[name=notainput]').attr('readonly', true);
+        $('input[name=notain]').attr('readonly', true);
       }
     }
       
@@ -967,7 +967,8 @@ echo str_replace('Rp.','',rupiah($totalall, true));
     }
 
     function tambah_potongan(){
-      nota = $('#notainput').val();
+      form = $('#fpotongan');
+      nota = form.find('#notain').val();
       item = $('#itempotongan').val();
       harga = $('#hargapotongan').val();
       jumlah = $('#jumlahitem').val();
@@ -980,7 +981,7 @@ echo str_replace('Rp.','',rupiah($totalall, true));
         $('#hargapotongan').val('');
         $('#jumlahitem').val('0');
         $('#notamanual[value=1]').attr('disabled', true);
-        $('#notainput').attr('readonly', true);
+        form.find('#notain').attr('readonly', true);
         $.ajax({
           url     : 'act/simpan_transaksi.php',
           data    : {id:id,nota:nota,item:item,harga:harga,berat:"0",jumlah:jumlah,ket:ket,simpanlayanan:"cks",layanan:jenis},
@@ -1005,11 +1006,13 @@ echo str_replace('Rp.','',rupiah($totalall, true));
     }
 
     function simpan_cks(){ 
-      nota = $('#notainput').val();    
+      form = $('#fcucikeringsetrika');
+      nota = form.find('#notain').val();
       item = $('#itemcks').val();
       harga = $('#hargacks').val();
       berat = $('#beratcks').val();
       ket = $('input[name=keterangan]').val();
+
       if(harga>0){
         location.href="#pilihanparfum";
       }
@@ -1018,13 +1021,14 @@ echo str_replace('Rp.','',rupiah($totalall, true));
         data    : {id:id,nota:nota,item:item,harga:harga,berat:berat,jumlah:"1",ket:ket,simpanlayanan:"cks",layanan:jenis},
         method  : 'POST',
         success : function(data){
-        $('#notainput').val(data);        
+          $('#notainput').val(data);      
         }
       })
     }
 
     function simpan_ckl(){   
-      nota = $('#notainput').val();   
+      form = $('#fcucikeringlipat');
+      nota = form.find('#notain').val();
       item = $('#itemckl').val();
       harga = $('#hargackl').val();
       berat = $('#beratckl').val();
@@ -1043,7 +1047,8 @@ echo str_replace('Rp.','',rupiah($totalall, true));
     }
 
     function simpan_ck(){  
-      nota = $('#notainput').val();    
+      form = $('#fcucikering');
+      nota = form.find('#notain').val();  
       item = $('#itemck').val();
       harga = $('#hargack').val();
       berat = $('#beratck').val();
@@ -1062,7 +1067,8 @@ echo str_replace('Rp.','',rupiah($totalall, true));
     }
 
     function simpan_ss(){  
-      nota = $('#notainput').val();    
+      form = $('#fsetrika');
+      nota = form.find('#notain').val();     
       item = $('#itemss').val();
       harga = $('#hargass').val();
       berat = $('#beratss').val();

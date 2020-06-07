@@ -27,8 +27,10 @@ if ($_POST['nota']<>''){
  	$nota = $notanew;
 }
 else{	
-	$nota=$noso;
+	$nota = $noso;
 }
+
+$nota = $_POST['nota'];
 
 $cek_nota = mysqli_query($con, "SELECT * FROM reception WHERE no_nota='$nota' AND total_bayar>0 ");
 if(mysqli_num_rows($cek_nota)>0){		
