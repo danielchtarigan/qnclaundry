@@ -154,6 +154,9 @@ while ($rrecep = mysqli_fetch_array($qrecep)){
 			}
 		}
 	}
+
+
+
 	
 $sql_rcp = mysqli_query($con, "SELECT * FROM reception WHERE no_faktur='$noFaktur' ORDER BY tgl_input ASC LIMIT 1");
 $rcps = mysqli_fetch_assoc($sql_rcp);
@@ -165,13 +168,20 @@ $querydelivery = mysqli_query($con,"UPDATE delivery SET no_faktur='$noFaktur' WH
 
 
 /*==Belum dicek==*/
-
-$payItem = mysqli_query($con, "UPDATE detail_order_item WHERE id_customer='$id_cs' AND no_faktur='$noFaktur'");
-
-$qretail = mysqli_query($con, "select sum(amount) as total_retail from detail_order_item where no_faktur = '$noFaktur'");
+// Pembayaran Retail
+$payItem = mysqli_query($con, "UPDATE detail_order_item SET no_faktur='$noFaktur' WHERE id_customer='$id_cs' AND no_faktur=''");
+$qretail = mysqli_query($con, "select sum(amount) as total_retail, order_date from detail_order_item where no_faktur = '$noFaktur'");
 $rretail = mysqli_fetch_array($qretail);
 
+if (mysqli_num_rows($sql_rcp) == 0) {
+	$tgl_order = $rretail['order_date'];
+	$rcp_order = $us;
+	mysqli_query($con, "UPDATE cara_bayar SET tgl_order='$tgl_order',rcp_order='$rcp_order',outlet_order='$ot' WHERE no_faktur='$noFaktur'");
+}
+
 mysqli_query($con,"insert into rincian_faktur (no_nota,jumlah,no_faktur,id_customer) values ('Retail' ,'$rretail[total_retail]','$noFaktur','$id_cs')");
+
+
 
 
 	// mysqli_query($con,"UPDATE detail_retail set lunas='1' where no_faktur='$noFaktur'");
