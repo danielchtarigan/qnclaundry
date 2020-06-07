@@ -4,5 +4,5 @@ mysqli_query($con,"DELETE FROM delivery WHERE id_customer='$_GET[id]' AND no_fak
 ?>
 
 <script type="text/javascript">
- location.href="../index.php?id=<?php echo $_GET['id']; ?>&selesai=ya";
+ location.href="../index.php?id=<?php echo $_GET['id']; ?>&payment#pop-tagihan";
 </script>

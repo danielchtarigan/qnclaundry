@@ -166,13 +166,15 @@ $querydelivery = mysqli_query($con,"UPDATE delivery SET no_faktur='$noFaktur' WH
 
 /*==Belum dicek==*/
 
-$qretail = mysqli_query($con, "select sum(total) as total_retail from detail_retail where no_faktur = '$noFaktur'");
+$payItem = mysqli_query($con, "UPDATE detail_order_item WHERE id_customer='$id_cs' AND no_faktur='$noFaktur'");
+
+$qretail = mysqli_query($con, "select sum(amount) as total_retail from detail_order_item where no_faktur = '$noFaktur'");
 $rretail = mysqli_fetch_array($qretail);
 
 mysqli_query($con,"insert into rincian_faktur (no_nota,jumlah,no_faktur,id_customer) values ('Retail' ,'$rretail[total_retail]','$noFaktur','$id_cs')");
 
 
-	mysqli_query($con,"UPDATE detail_retail set lunas='1' where no_faktur='$noFaktur'");
+	// mysqli_query($con,"UPDATE detail_retail set lunas='1' where no_faktur='$noFaktur'");
 
 
 $qcus = mysqli_query($con, "select * from customer where id='$id_cs'");

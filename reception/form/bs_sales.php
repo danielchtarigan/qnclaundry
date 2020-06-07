@@ -13,6 +13,7 @@ $hargaot = $qharga->fetch_array();
 $idoutlet = $hargaot['id_outlet'];
 $levelharga = $hargaot['level_harga'];
 
+$msg = "Belum";
 
 function customer($id) {
     global $con;
@@ -268,7 +269,7 @@ else
                                 <tr>
                                     <td>'.$data['no_order'].'</td>
                                     <td align="right">
-                                        <a href="javascript:" target="_blank">
+                                        <a href="javascript:">
                                             <button type="submit" class="btn btn-default btn-sm">Cetak</button>
                                         </a>
                                         <a href="batal_order.php?id='.$_GET['id'].'&no_order='.$data['no_order'].'&order_item">

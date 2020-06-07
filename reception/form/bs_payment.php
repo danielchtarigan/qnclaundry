@@ -23,7 +23,7 @@ function penjualan($idcs,$jenis) {
 
 function penjualan2($idcs) {
   global $con;
-  $sql = $con->query("SELECT COALESCE(SUM(total),0) as total from detail_retail where id_customer='$idcs' and lunas='0'");
+  $sql = $con->query("SELECT COALESCE(SUM(amount),0) as total from detail_order_item where id_customer='$idcs' and no_faktur=''");
   $hasil = $sql->fetch_array();
   return $hasil[0];
 }
