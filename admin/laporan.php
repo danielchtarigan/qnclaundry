@@ -97,6 +97,10 @@ function rupiah($angka)
                                 include "include/omsetSubAgen.php";
                             } else if($menu=="omset"){
                                 include "include/laporan_omset.php";
+                            } else if($menu=="rincian-omset-laundry"){
+                                include "include/bs_rincian_omset_laundry.php";
+                            } else if($menu=="rincian-omset-barang"){
+                                include "include/bs_rincian_omset_barang.php";
                             }
 						} else if(isset($_GET['form'])){
                             $form = $_GET['form'];

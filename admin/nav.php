@@ -223,7 +223,6 @@
                                  <li><a href="laporan.php?menu=Saldo Kas Resepsionis">Saldo Resepsionis</a></li>
                                  <li><a href="laporan.php?menu=Tabel_order">Tabel Order</a></li>
                                  <li><a href="cari_lap_omset.php">Laporan Omset/Order</a></li>
-                                 <li><a href="laporan.php?menu=omset">Laporan Omset 2</a></li>
                                  <li><a href="index.php?menu=laporan penjualan">Laporan Penjualan</a></li>
                                  <li><a href="laporan.php?menu=Omset Subagen">Rekap Order Subagen</a></li>
                                  <li><a href="cari_lap_member.php">Member/Lgn</a></li>
@@ -238,13 +237,22 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Laporan Omset<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                 <li><a href="laporan.php?menu=omset">Ringkasan Omset</a></li>
+                                 <li><a href="laporan.php?menu=rincian-omset-laundry">Penjualan Laundry</a></li>
+                                 <li><a href="laporan.php?menu=rincian-omset-barang">Penjualan Barang</a></li>                          
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li> 
+                        <!-- <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Report Corporate<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li><a href="index.php?menu=order_corp">Order Corporate</a></li>
 								<li><a href="index.php?menu=pack_corp">Packing Corporate</a></li>                           
                             </ul>
-                            <!-- /.nav-second-level -->
-                        </li> 
+                            /.nav-second-level
+                        </li>  -->
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Report<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">

@@ -45,9 +45,26 @@
 	</div>
 
 </div>
-
-<div id="result_omset" style="margin-top: 15px">
-	
+<hr>
+<h4>Ringkasan Omset Penjualan</h4>
+<div class="table-responsive" id="result" style="overflow-x:auto">
+	<table class="table table-bordered table-striped table-condensed">
+		<thead>
+			<tr>
+				<th>Nama Outlet</th>
+				<th>Kiloan</th>
+				<th>Potongan</th>
+				<th>Membership</th>
+				<th>Laundry</th>
+				<th>Barang</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="6" align="center">Data belum tersedia</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 	
 
@@ -72,13 +89,13 @@
 			var end = $('#end').val();
 
 			$.ajax({
-				url			: 'include/hasil_omset.php',
+				url			: 'include/bs_summary_omset.php',
 				data 		: {start : start, end : end, jar : jar},
 				beforeSend : function(){
-					$('#result_omset').slideDown().html("<p align='center'>Sedang mencari ....!</p>");
+					$('#result').slideDown().html("<p align='center'>Memuat Data...</p>");
 				},
 				success 	: function(data){
-					$('#result_omset').html(data);
+					$('#result').html(data);
 				} 
 			})
 
