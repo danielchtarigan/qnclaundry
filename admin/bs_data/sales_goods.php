@@ -61,14 +61,15 @@ $data = sales_goods($startDate, $endDate, $jar);
 // print_r($data);
 if(isset($_GET['key'])) {
     echo '<tr class="goods'.$_GET['key'].'">';
-    echo '<td colspan="6" align="right">';
-    echo '<table class="" width="30%" style="line-height:6px">';
+    echo '<td colspan="6" align="left">';
+    echo '<table width="30%" style="line-height:6px; border: 1px solid #a6a6a6;">';
+    echo '<th>Barang</th><th>Harga</th><th>Qty</th><th>Jumlah</th>';
     foreach ($data[$_GET['key']] as $key => $val) {
         if(is_array($val)) {
             $item = item($key);
             if (is_array($val)) {
                 echo '
-                    <tr class=""></td><td>'.$item.'</td><td align="right">'.currency($val['amount']).'</td><td></td></tr>
+                    <tr class=""></td><td>'.$item.'</td><td align="right">'.currency($val['price']).'</td><td align="center">'.$val['qty'].'</td><td align="right">'.currency($val['amount']).'</td></tr>
                 ';
             }
         }
