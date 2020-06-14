@@ -69,7 +69,6 @@
 		</tbody>
 	</table>
 </div>
-    
 
 <script type="text/javascript">
 	jQuery(function($){
