@@ -10,52 +10,12 @@ date_default_timezone_set('Asia/Makassar');
 $ot = $_SESSION['nama_outlet'];
 $tgl = date('Y-m-d');
 ?>
-<script src="js/bootstrap.js"></script>
-	    <script src="js/jquery.js"></script>
+<!-- <script src="js/bootstrap.js"></script>
+	    <script src="js/jquery.js"></script> -->
 	    <style>
 		.datepicker{z-index:1151;}
 	    </style>
-	    <script>
-		$(function(){
-		    $("#tanggal1").datepicker({
-			format:'yyyy/mm/dd'
-		    });
-                });
 
-		$(function(){
-		    $("#tanggal2").datepicker({
-			format:'yyyy/mm/dd'
-		    });
-                });
-
-		$(function(){
-		    $("#tanggal3").datepicker({
-			format:'yyyy/mm/dd'
-		    });
-                });
-
-		$(function(){
-		    $("#tanggal4").datepicker({
-			format:'yyyy/mm/dd'
-		    });
-                });
-
-	    </script>
-
-<script type="text/javascript">
-	
-	$(function(){
-
-		function cetak(){
-			window.open("pendapatan_harian_shift.php","", "width=800,height=800");
-		};
-
-		$('#tutupShift').on('click', function(){
-			cetak();
-		})	
-	})
-
-</script>
 
 <?php
 //$quang = mysqli_query($con, "select * from bukakasir where outlet='$ot' and tgl='$tgl'");
@@ -524,3 +484,19 @@ key = md5("QnC"+key100+"QnC");
 <script src="js/bootstrap-modal.js"></script>
 <script src="js/bootstrap-transition.js"></script>	
 <script src="js/bootstrap-datepicker.js"></script>
+
+<script>
+	jQuery(function($) {
+		$('#tanggal1, #tanggal2, #tanggal3, #tanggal4').datepicker({
+			format: 'yyyy/mm/dd'
+		});
+
+		$('#tutupShift').on('click', function(){
+			cetak();
+		})	
+	});
+
+	function cetak(){
+		window.open("pendapatan_harian_shift.php","", "width=800,height=800");
+	};
+</script>
