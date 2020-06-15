@@ -26,7 +26,7 @@ $telp = $r['no_telp'];
 	$('#telps').keypress(function(e){
 		var telp = $(this).val();     
         var panj = telp.length;
-        var telpd = "<?= $rcustomer1['no_telp'] ?>";
+        var telpd = "<?= $telp ?>";
         if(panj>11) {
             $("#d").text("Maksimal 12 Karakter").fadeIn('fast');
             $('#telps').val(telpd);
