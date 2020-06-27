@@ -13,52 +13,7 @@ $tgl = date('Y-m-d');
 
 
 <?php
-//$quang = mysqli_query($con, "select * from bukakasir where outlet='$ot' and tgl='$tgl'");
-//$nuang = mysqli_num_rows($quang);
-/*
-if ($nuang<1){
-?>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/sb-admin-2.css" rel="stylesheet">
-    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                <div align="center">
-                <br>
-Selamat datang di Halaman Resepsionis. <br>
-<marquee>Halaman ini wajib diisi ketika recepsionis membuka halaman QnC pertama kali tiap harinya.</marquee>               </div>
-
-                    <div class="panel-body">
-                    Selamat datang <?php echo $_SESSION['level']?>, <?php echo $_SESSION['user_id']."(".$_SESSION['id'].") Outlet : ".$_SESSION['nama_outlet']."jumlah".$nuang.$tgl; ?>
-
-                        <form role="form" action="act/saveuang.php" method="GET">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Masukkan Jumlah Uang Kecil" name="uang" type="text" autofocus required>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Masukkan Meteran Listrik" name="meteran" type="text" required>
-                                </div>
-                                <input type="submit" class="btn btn-lg btn-success btn-block" value="Simpan">
-
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-<?php
-}
-else{
-*/
 
 function rupiah($angka)
 {
@@ -92,12 +47,12 @@ include 'manifest_driver.php';
     <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
     <link href="css/sb-admin-2.css" rel="stylesheet">
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" href="css/datepicker.css">
-		<link rel="stylesheet" href="../admin/css/select2.min.css" />
+	<link rel="stylesheet" href="css/datepicker.css">
+	<link rel="stylesheet" href="../admin/css/select2.min.css" />
 
-		<style>
+	<style>
 		.datepicker{z-index:1151;}
-	    </style>
+	</style>
 
 </head>
 <body>
