@@ -3,6 +3,7 @@ date_default_timezone_set('Asia/Makassar');
 $qcus = $con->query("SELECT * FROM customer WHERE id='$_GET[id]'");
 $cus = $qcus->fetch_array();
 
+$jenis = isset($_GET['jenis']) ? $_GET['jenis'] : "";
 
 $nota = '<input type="checkbox" class="" name="notamanual" id="notamanual" value="1" onclick="return nota_manual()"> <label class="labelnotamanual" style="vertical-align: top;" >Nota Manual</label><br><input class="form-control" type="text" name="notain" autocomplete="off" placeholder="Nomor Nota" readonly="" id="notain" value="">';
 
@@ -905,7 +906,7 @@ echo str_replace('Rp.','',rupiah($totalall, true));
 
     id = '<?= $_GET['id'] ?>';
     nota = $('#notainput').val();
-    jenis = '<?= $_GET['jenis'] ?>';
+    jenis = '<?= $jenis ?>';
 
 
     function batal_order(){
@@ -926,7 +927,7 @@ echo str_replace('Rp.','',rupiah($totalall, true));
     }
 
     function back(){
-      idselect = '<?= $_GET['jenis'] ?>';
+      idselect = '<?= $jenis ?>';
     }
 
     function itemharga_potongan(){

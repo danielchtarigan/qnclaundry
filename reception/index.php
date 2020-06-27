@@ -10,6 +10,7 @@ date_default_timezone_set('Asia/Makassar');
 $ot = $_SESSION['nama_outlet'];
 $tgl = date('Y-m-d');
 ?>
+  
 <!-- <script src="js/bootstrap.js"></script>
 	    <script src="js/jquery.js"></script> -->
 	    <style>
