@@ -9,7 +9,7 @@ $nota = '<input type="checkbox" class="" name="notamanual" id="notamanual" value
 
 
 ?>
-<input class="form-control" type="text" name="notainput" hidden autocomplete="off" readonly="" id="notainput" value="">
+<input class="form-control" type="text" name="notainput" style="display:none" autocomplete="off" readonly="" id="notainput" value="">
 <div class="popup-wrapper" id="layanan">
   <div class="popup-container">
     <div class="row">

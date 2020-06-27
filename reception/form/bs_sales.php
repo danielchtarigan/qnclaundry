@@ -1079,8 +1079,9 @@ else
 
 <?php
 
-include 'include/inc_transaksi.php';
-
+// if (isset($_GET['jenis'])) {
+    include 'include/inc_transaksi.php';
+// }
 if (isset($_GET['payment'])){
     include "form/bs_payment.php";
 }
