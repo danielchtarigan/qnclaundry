@@ -3,18 +3,13 @@ session_start();
 include '../config.php';
 include '../auth.php';
 // include '../cek_session.php';
-// if ($_SESSION['nama_outlet']!='Toddopuli') {
-// 	include '../pop.php';
-// }
+if ($_SESSION['nama_outlet']!='Toddopuli') {
+	include '../pop.php';
+}
 date_default_timezone_set('Asia/Makassar');
 $ot = $_SESSION['nama_outlet'];
 $tgl = date('Y-m-d');
 ?>
-<!-- <script src="js/bootstrap.js"></script> -->
-	    <script src="js/jquery.js"></script>
-	    <style>
-		.datepicker{z-index:1151;}
-	    </style>
 
 
 <?php
@@ -99,6 +94,10 @@ include 'manifest_driver.php';
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="css/datepicker.css">
 		<link rel="stylesheet" href="../admin/css/select2.min.css" />
+
+		<style>
+		.datepicker{z-index:1151;}
+	    </style>
 
 </head>
 <body>
