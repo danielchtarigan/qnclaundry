@@ -17,7 +17,7 @@ $msg = "Belum";
 
 function customer($id) {
     global $con;
-    $customers = $con->query("Select * From Customer Where id=$id");   
+    $customers = $con->query("Select * From customer Where id=$id");   
     return $customers;
 }
 
@@ -1070,7 +1070,7 @@ else
             $("#tglantar").datepicker({
                 format:'dd/mm/yyyy',
                 autoclose: true,
-                <?php if ($express) echo "startDate: '+1d'"; else echo "startDate: '+3d'"; ?>
+                <?php if ($express) echo "startDate: '+1d'"; else echo "startDate: '+3d'"; ?>,
             });
         });
 
