@@ -22,7 +22,7 @@
                         <a class="nav-link" href="../admin">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Rule</a>
+                        <a class="nav-link" href="<?= ASSET ?>/rule">Rule</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
