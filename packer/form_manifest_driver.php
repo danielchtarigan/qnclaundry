@@ -7,6 +7,22 @@ $Workshop = $_SESSION['workshop'];
 $sdriver = $con->query("SELECT name,keterangan FROM user_driver WHERE status='1' ORDER BY created_at DESC");
 $rdriver = $sdriver->fetch_assoc();
 
+function laundryRules($rule = 1, $stmt) {
+	global $con;
+	$rules = $con->query("SELECT status FROM laundry_rule_details WHERE laundry_rule_id = 9 AND rule = $rule");
+	$row = $rules->fetch_assoc();
+	if($row['status'] == 3) {
+		return "";
+	}
+	else {
+		return "AND $stmt = $row[status]";
+	}
+}
+
+$cuci = laundryRules(5, 'cuci');
+$kering = laundryRules(6, 'kering');
+$setrika = laundryRules(7, 'setrika');
+$packing = laundryRules(8, 'packing');
 
 
 ?>
@@ -25,7 +41,7 @@ $rdriver = $sdriver->fetch_assoc();
 			$sql = $con->query("SELECT no_nota FROM manifest WHERE kd_serah<>'' AND kd_terima=''");
 		} 
 		else {
-			$sql = $con->query("SELECT b.no_nota FROM manifest a,reception b WHERE a.no_nota=b.no_nota AND kd_serah3='' AND b.packing=true AND b.kembali=false AND b.tgl_so='0000-00-00 00:00:00'");
+			$sql = $con->query("SELECT b.no_nota FROM manifest a,reception b WHERE a.no_nota=b.no_nota AND kd_serah3='' $cuci $kering $setrika $packing AND b.kembali=false AND b.tgl_so='0000-00-00 00:00:00'");
 		}
 		
 		while($cekNota = $sql->fetch_array()){

@@ -8,15 +8,24 @@ $date = date('Y-m-d');
 $sdriver = $con->query("SELECT name,keterangan FROM user_driver WHERE status='1' ORDER BY created_at DESC");
 $rdriver = $sdriver->fetch_assoc();
 
-function laundryRules($rule = 1) {
+function laundryRules($rule = 1, $stmt) {
 	global $con;
 	$rules = $con->query("SELECT status FROM laundry_rule_details WHERE laundry_rule_id = 3 AND rule = $rule");
 	$row = $rules->fetch_assoc();
-	return $row['status'];
+	if ($row['status'] == 3) {
+		return "";
+	}
+	else  {
+		return "AND $stmt = $row[status]";
+	}
 }
 
-$lunas = laundryRules(1);
-$spk = laundryRules(2);
+
+$lunas = laundryRules(1, 'lunas');
+$spk = laundryRules(2, 'spk');
+$cuci = laundryRules(5, 'cuci');
+
+
 
 
 ?>
@@ -33,7 +42,7 @@ $spk = laundryRules(2);
 		<?php 
 		$i = 0;
 		if($rdriver['keterangan']=="kotor") {
-			$sql = $con->query("SELECT b.no_nota FROM manifest a, reception b WHERE a.no_nota=b.no_nota AND a.kd_serah='' AND a.outlet='$ot' AND b.spk='$spk' AND DATE_FORMAT(b.tgl_input, '%Y-%m-%d') >= '2019-03-01' ");
+			$sql = $con->query("SELECT b.no_nota FROM manifest a, reception b WHERE a.no_nota=b.no_nota AND a.kd_serah='' AND a.outlet='$ot' $lunas $spk $cuci AND DATE_FORMAT(b.tgl_input, '%Y-%m-%d') >= '2019-03-01' ");
 		} 
 		else {
 			$sql = $con->query("SELECT no_nota FROM manifest a, man_serah b WHERE a.kd_serah3=b.kode_serah AND kd_serah3<>'' AND kd_terima3='' AND outlet='$ot'");

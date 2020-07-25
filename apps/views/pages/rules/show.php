@@ -9,15 +9,21 @@
                 <p class="card-text"><?= $detail['name'] ?></p>
                 <form action="#" id="form-rule" data-id="<?= $detail['id'] ?>">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>" id="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>1" value="1" <?= $detail['status'] == true ? 'checked' : '' ?>>
+                        <input class="form-check-input" type="radio" name="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>" id="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>1" value="1" <?= $detail['status'] == 1 ? 'checked' : '' ?>>
                         <label class="form-check-label" for="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>1">
                             Ya
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>" id="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>2" value="0" <?= $detail['status'] == false ? 'checked' : '' ?>>
+                        <input class="form-check-input" type="radio" name="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>" id="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>2" value="0" <?= $detail['status'] == 0 ? 'checked' : '' ?>>
                         <label class="form-check-label" for="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>2">
                             Belum
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>" id="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>3" value="3" <?= $detail['status'] == 3 ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="<?= strtolower(str_replace(' ', '_', $detail['name']))  ?>3">
+                            Abaikan
                         </label>
                     </div>
                 </form>
