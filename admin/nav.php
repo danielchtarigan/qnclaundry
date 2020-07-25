@@ -137,7 +137,7 @@
                             <a href="#"><i class="fa fa-files-o fa-fw"></i> Halaman<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="../accounting/">Accounting</a>
+                                    <a href="../apps">Apps</a>
                                 </li>
                                 <li>
                                     <a href="../reception/">Receptionist</a>

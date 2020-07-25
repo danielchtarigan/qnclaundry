@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Signika&display=swap');
+* {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Fira Sans', Arial, Helvetica, sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+svg {
+    fill: currentColor;
+}
+.hide {
+    display: none;
+}
+.navbar {
+    background-color: rgb(14, 117, 10) !important;
+}
+.navbar a {
+    color: #fff !important;
+}
+.navbar-brand {
+    font-family: 'Signika', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 28px;
+    margin: -20px 0;
+}
+#content {
+    /* height: 80vh !important; */
+}
+#content>.card {
+    border: none;
+    height: 100vh !important;
+}
+#content>.card .card-body {
+    height: 100% !important;
+    overflow-y: auto;
+}
+body, #content>.card .card-header {
+    background-color: rgb(187, 196, 184);
+}
+.card-header a {
+    font-weight: bold;
+    color: rgb(14, 117, 10);
+}
+.card-body {
+    font-size: 12px;
+}
+.card .card-title {
+    font-size: 20px !important;
+}
+
+#rules {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#list-rule {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 30px 0;
+    width: 100% !important;
+    cursor: pointer;
+}
+#list-rule span {
+    margin: auto;
+}
+#list-rule:hover {
+    background-color: rgb(120, 194, 77);
+    color: #fff;
+}
+
+.list-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.list-group-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd !important;
+    border-radius: 3px;
+    padding: 15px !important;
+    width: 100% !important;
+}
+
+/* Flash Message */
+.flash-message {
+    position: absolute;
+    top: 40%;
+    left: 5%;
+    right: 5%;
+    z-index: 2;
+    opacity: .8;
+}
+
+
+@media (min-width: 1024px) { 
+    #list-rule {
+        width: 20% !important;
+    }
+    .list-group-item {
+        width: 20% !important;
+    }
+    .flash-message {
+        position: absolute;
+        top: 20%;
+        left: 30%;
+        right: 30%;
+        z-index: 2;
+        opacity: .8;
+    }
+ }
