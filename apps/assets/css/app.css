@@ -27,6 +27,14 @@ svg {
     font-size: 28px;
     margin: -20px 0;
 }
+#dropdown-user {
+    background-color: rgb(14, 117, 10) !important;
+    box-shadow: 0 0 1px #eee;
+}
+#dropdown-user>.dropdown-item:hover {
+    background-color: rgb(9, 78, 7) !important;
+}
+
 #content {
     /* height: 80vh !important; */
 }
