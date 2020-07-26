@@ -39,12 +39,12 @@ if($_GET['carabayar']=="undefined"){
 	$hargapaket = $_GET['hargapaket'];
 	$paket = $_GET['paket'];
 
-	if($_SESSION['cabang']=="Mojokerto") {
-		$hargakilo = 7000;
-	} else if($_SESSION['cabang']=="Medan") {
+	if($_SESSION['cabang']=="Medan") {
 		$hargakilo = 7000;
 	} else if($_SESSION['cabang']=="Jakarta"){
 		$hargakilo = ($_SESSION['outlet']=="Gading Serpong") ? 8000 : 8800;
+	} else {
+		$hargakilo = 7000;
 	}
 		
 
@@ -86,7 +86,7 @@ if($_GET['carabayar']=="undefined"){
 
 		mysqli_query($con, "UPDATE customer SET lgn='1' WHERE id='$_GET[id]'");
 
-		mysqli_query($con, "INSERT INTO langganan VALUES ('','$date','$_GET[id]','$addkuota','$addkiloan','$addpotongan','$endDate')");
+		mysqli_query($con, "INSERT INTO langganan VALUES ('','$date','$_GET[id]','$addkuota','$addkiloan','$addpotongan','$hargakilo','$endDate')");
 	}
 
 	?>

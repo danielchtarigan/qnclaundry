@@ -1710,11 +1710,7 @@ if($row['lgn']=='1'){
       		$("#peringatan").html("");
       		var cabang = "<?php echo $cabang ?>";
       		var outlet = "<?php echo $outlet ?>";
-      		if(cabang=="Mojokerto") {
-  				var a = "210000";
-  				var b = "239000";
-  				var c = "643000";
-  			} else if(cabang=="Medan") {
+      		if(cabang=="Medan") {
   				var a = "210000";
   				var b = "239000";
   				var c = "643000"
@@ -1728,6 +1724,10 @@ if($row['lgn']=='1'){
 	  				var b = "275000";
 	  				var c = "715000";
   				}	  				
+  			} else {
+  				var a = "210000";
+  				var b = "239000";
+  				var c = "643000";
   			}
       		if(aktif=='1'){  
 	      		if(paket=='all_kiloan'){      		

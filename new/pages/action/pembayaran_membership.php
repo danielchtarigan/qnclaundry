@@ -11,37 +11,19 @@ if($_GET['level']=="undefined" or $_GET['pembayaran']=="undefined" or $_GET['car
 		$level = "RED";
 		$dateEnd = date('Y-m-d', strtotime('+12 months', strtotime($nowDate)));
 	} else {
-	    if($_GET['cabang']=="Mojokerto"){
-	        if($_GET['harga']=="3") {
-    			$harga = "100000";
-    			$level = "Blue 3 Bulan";
-    			$dateEnd = date('Y-m-d', strtotime('+3 months', strtotime($nowDate)));
-    		} else if($_GET['harga']=="6"){
-    			$harga = "150000";
-    			$level = "Blue 6 Bulan";
-    			$dateEnd = date('Y-m-d', strtotime('+6 months', strtotime($nowDate)));
-    		} else if($_GET['harga']=="12"){
-    			$harga = "200000";
-    			$level = "Blue 12 Bulan";
-    			$dateEnd = date('Y-m-d', strtotime('+12 months', strtotime($nowDate)));
-    		}
-	    }
-	    else {
-	        if($_GET['harga']=="3") {
-    			$harga = "100000";
-    			$level = "Blue 3 Bulan";
-    			$dateEnd = date('Y-m-d', strtotime('+3 months', strtotime($nowDate)));
-    		} else if($_GET['harga']=="6"){
-    			$harga = "150000";
-    			$level = "Blue 6 Bulan";
-    			$dateEnd = date('Y-m-d', strtotime('+6 months', strtotime($nowDate)));
-    		} else if($_GET['harga']=="12"){
-    			$harga = "250000";
-    			$level = "Blue 12 Bulan";
-    			$dateEnd = date('Y-m-d', strtotime('+12 months', strtotime($nowDate)));
-    		}
-	    }
-    		
+		if($_GET['harga']=="3") {
+			$harga = "100000";
+			$level = "Blue 3 Bulan";
+			$dateEnd = date('Y-m-d', strtotime('+3 months', strtotime($nowDate)));
+		} else if($_GET['harga']=="6"){
+			$harga = "150000";
+			$level = "Blue 6 Bulan";
+			$dateEnd = date('Y-m-d', strtotime('+6 months', strtotime($nowDate)));
+		} else if($_GET['harga']=="12"){
+			$harga = "250000";
+			$level = "Blue 12 Bulan";
+			$dateEnd = date('Y-m-d', strtotime('+12 months', strtotime($nowDate)));
+		}
 
 	}
 
@@ -54,7 +36,7 @@ if($_GET['level']=="undefined" or $_GET['pembayaran']=="undefined" or $_GET['car
 
 
 
-	$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' AND no_so LIKE '$kode_faktur%' ORDER BY id DESC LIMIT 0,1");
+	$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' AND no_faktur_urut LIKE '$kode_faktur%' ORDER BY id DESC LIMIT 0,1");
 		$result = mysqli_fetch_row($query);
 
 	if(strlen($result[0]) == 10) {
