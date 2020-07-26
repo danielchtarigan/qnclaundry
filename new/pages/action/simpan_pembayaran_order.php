@@ -6,7 +6,8 @@ include '../kode.php';
 // Load Composer's autoloader mailer
 // require '../../../../phpmailer/vendor/autoload.php';
 
-$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' ORDER BY id DESC LIMIT 0,1");
+
+$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' AND no_faktur_urut LIKE '$kode_faktur%' ORDER BY id DESC LIMIT 0,1");
 $result = mysqli_fetch_row($query);
 
 if(strlen($result[0]) == 10) {
@@ -16,8 +17,7 @@ else {
 	$lastfaktur = (int)substr($result[0], 8, 3)+1;
 }
 
-$ym = date('ym');
-$no_faktur = $kode_faktur.$ym.sprintf('%03s', $lastfaktur);
+$no_faktur = $kode_faktur.sprintf('%03s', $lastfaktur);
 
 $idcst = $_GET['id'];
 $outlet = $_SESSION['outlet'];

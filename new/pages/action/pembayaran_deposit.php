@@ -19,8 +19,14 @@ if($_GET['carabayar']=="undefined"){
 	$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' ORDER BY id DESC LIMIT 0,1");
 	$result = mysqli_fetch_row($query);
 
-	$lastfaktur = (int)substr($result[0], 4)+1;
-	$no_faktur = $kode_faktur.sprintf('%06s', $lastfaktur);
+	if(strlen($result[0]) == 10) {
+		$lastfaktur = (int)substr($result[0], 4, 6)+1;
+	}
+	else {
+		$lastfaktur = (int)substr($result[0], 8, 3)+1;
+	}
+	
+	$no_faktur = $kode_faktur.sprintf('%03s', $lastfaktur);
 
 
 	mysqli_query($con, "INSERT INTO faktur_penjualan (no_faktur,no_faktur_urut,nama_outlet,rcp,tgl_transaksi,total,cara_bayar,id_customer,jenis_transaksi) VALUES ('$no_faktur','$no_faktur','$_SESSION[outlet]','$_SESSION[user_id]','$nowDate','$_GET[hargapaket]','$_GET[carabayar]','$_GET[id]','deposit')");

@@ -54,11 +54,17 @@ if($_GET['level']=="undefined" or $_GET['pembayaran']=="undefined" or $_GET['car
 
 
 
-	$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' ORDER BY id DESC LIMIT 0,1");
+	$query = mysqli_query($con, "SELECT no_faktur_urut FROM faktur_penjualan WHERE nama_outlet='$_SESSION[outlet]' AND no_so LIKE '$kode_faktur%' ORDER BY id DESC LIMIT 0,1");
 		$result = mysqli_fetch_row($query);
 
-	$lastfaktur = (int)substr($result[0], 4)+1;
-	$no_faktur = $kode_faktur.sprintf('%06s', $lastfaktur);
+	if(strlen($result[0]) == 10) {
+		$lastfaktur = (int)substr($result[0], 4, 6)+1;
+	}
+	else {
+		$lastfaktur = (int)substr($result[0], 8, 3)+1;
+	}
+	
+	$no_faktur = $kode_faktur.sprintf('%03s', $lastfaktur);
 
 	$custData = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM customer WHERE id='$_GET[id]'"));
 
