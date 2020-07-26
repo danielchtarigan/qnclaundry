@@ -127,11 +127,7 @@ else {
 				<?php 
 				$ritem = mysqli_query($con, "SELECT * FROM item_spk WHERE jenis_item='k' AND nama_item LIKE '%Cuci Kering Setrika%'");
 				while($item = mysqli_fetch_assoc($ritem)){
-					if($_SESSION['cabang']=="Mojokerto") {
-						$berat = $item['berat'];
-						$harga = $item['harga_mjkt'];
-						$hargalgn = $berat*7000;						
-					} else if($_SESSION['cabang']=="Medan") {
+					if($_SESSION['cabang']=="Medan") {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
 						$hargalgn = $berat*7920;
@@ -139,6 +135,10 @@ else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
 						$hargalgn = ($outlet=="Gading Serpong") ? $berat*8000 : $berat*8800;
+					} else {
+						$berat = $item['berat'];
+						$harga = $item['harga_mjkt'];
+						$hargalgn = $berat*7000;						
 					}
 
 					if($status=="langganan") {
@@ -161,11 +161,7 @@ else {
 				<?php 
 				$ritem = mysqli_query($con, "SELECT * FROM item_spk WHERE jenis_item='k' AND nama_item LIKE 'Setrika%'");
 				while($item = mysqli_fetch_assoc($ritem)){
-					if($_SESSION['cabang']=="Mojokerto") {
-						$berat = $item['berat'];
-						$harga = $item['harga_mjkt'];
-						$hargalgn = $berat*4000;						
-					} else if($_SESSION['cabang']=="Medan") {
+					if($_SESSION['cabang']=="Medan") {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
 						$hargalgn = $berat*4000;
@@ -173,6 +169,10 @@ else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
 						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*6400;
+					} else {
+						$berat = $item['berat'];
+						$harga = $item['harga_mjkt'];
+						$hargalgn = $berat*4000;	
 					}
 
 					if($status=="langganan") {
@@ -195,11 +195,7 @@ else {
 				<?php 
 				$ritem = mysqli_query($con, "SELECT * FROM item_spk WHERE jenis_item='k' AND nama_item LIKE 'Cuci Kering Lipat%'");
 				while($item = mysqli_fetch_assoc($ritem)){
-					if($_SESSION['cabang']=="Mojokerto") {
-						$berat = $item['berat'];
-						$harga = $item['harga_mjkt'];
-						$hargalgn = $berat*5000;						
-					} else if($_SESSION['cabang']=="Medan") {
+					if($_SESSION['cabang']=="Medan") {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
 						$hargalgn = $berat*5000;
@@ -207,6 +203,10 @@ else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
 						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*7400;
+					} else {
+						$berat = $item['berat'];
+						$harga = $item['harga_mjkt'];
+						$hargalgn = $berat*5000;
 					}
 
 					if($status=="langganan") {

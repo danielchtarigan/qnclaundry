@@ -86,10 +86,10 @@ if($_SESSION['level']!='admin2'){
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Control</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
             <li><a class="treeview-item" href="?r=control&v=daftar-user"><i class="icon fa fa-circle"></i> Daftar User</a></li>
-            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Hari Selesai</a></li>
+            <!-- <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Hari Selesai</a></li>
             <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Kode Promo</a></li>
             <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Langganan</a></li>
-            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Membership</a></li>  
+            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Membership</a></li>   -->
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Data</span><i class="treeview-indicator fa fa-angle-right"></i></a>

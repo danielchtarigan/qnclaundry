@@ -699,11 +699,7 @@ if($row['lgn']=='1'){
 
 		var cabang = '<?= $cabang ?>';
 		var outlet = '<?= $outlet ?>';
-		if(cabang=="Mojokerto"){
-			var hkcks = 7000;
-			var hss = 4000;
-			var hckl = 5000;
-		} else if(cabang=="Medan"){
+		if(cabang=="Medan"){
 			var hkcks = 7000;
 			var hss = 4000;
 			var hckl = 5000;
@@ -719,6 +715,10 @@ if($row['lgn']=='1'){
 				var hckl = 7400;
 			}
 				
+		} else {
+			var hkcks = 7000;
+			var hss = 4000;
+			var hckl = 5000;
 		}
 
 		var totsisakuota = "<?php echo $lgn['kilo_cks'] ?>"*hkcks;
@@ -806,11 +806,7 @@ if($row['lgn']=='1'){
 
 		var cabang = '<?= $cabang ?>';
 		var outlet = '<?= $outlet ?>';
-		if(cabang=="Mojokerto"){
-			var hkcks = 7000;
-			var hss = 4000;
-			var hckl = 5000;
-		} else if(cabang=="Medan"){
+		if(cabang=="Medan"){
 			var hkcks = 7000;
 			var hss = 4000;
 			var hckl = 5000;
@@ -826,6 +822,10 @@ if($row['lgn']=='1'){
 				var hckl = 7400;
 			}
 				
+		} else {
+			var hkcks = 7000;
+			var hss = 4000;
+			var hckl = 5000;
 		}
 
 		var kuota = cks*hkcks+ss*hss+ckl*hckl+kuota_potongan*1;
