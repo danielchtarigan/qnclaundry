@@ -4,10 +4,17 @@ include '../zonawaktu.php';
 include '../kode.php';
 
 $query = mysqli_query($con, "SELECT MAX(no_so) AS no_so FROM reception WHERE nama_outlet='$_SESSION[outlet]'");
-$row = mysqli_fetch_row($query)[0];
+$row = mysqli_num_rows($query) > 0 ? mysqli_fetch_row($query)[0] : 0;
 
-$no_urut = (int)substr($row, 5, 6)+1;
-$no_so = $kode_order.sprintf('%06s', $no_urut);
+if(strlen($row) == 11) {
+	$no_urut = (int)substr($row, 5, 6)+1;
+}
+else {
+	$no_urut = (int)substr($row, 9, 3)+1;
+}
+
+$ym = date('ym');
+$no_so = $kode_order.$ym.sprintf('%03s', $no_urut);
 
 if($_GET['nota']<>''){
 	$no_nota = $_GET['nota'];
