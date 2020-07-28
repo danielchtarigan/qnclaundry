@@ -43,7 +43,7 @@ if($_GET['level']=="undefined" or $_GET['pembayaran']=="undefined" or $_GET['car
 		$lastfaktur = (int)substr($result[0], 4, 6)+1;
 	}
 	else {
-		$lastfaktur = (int)substr($result[0], 8, 3)+1;
+		$lastfaktur = (int)substr($result[0], 10, 3)+1;
 	}
 	
 	$no_faktur = $kode_faktur.sprintf('%03s', $lastfaktur);
