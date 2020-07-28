@@ -4,7 +4,6 @@ include '../zonawaktu.php';
 include '../kode.php';
 
 
-
 $query = mysqli_query($con, "SELECT MAX(no_so) AS no_so FROM reception WHERE nama_outlet='$_SESSION[outlet]' AND no_so LIKE '$kode_order%' ");
 $row = mysqli_fetch_row($query)[0];
 

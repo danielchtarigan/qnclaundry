@@ -7,7 +7,7 @@
 			<div class="form-group">
 				<label for="faktur" class="control-label col-md-3" >Nota Faktur</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" id="faktur" name="faktur" maxlength="10" required placeholder="Nomor Nota Pembayaran">	
+					<input type="text" class="form-control" id="faktur" name="faktur" maxlength="11" required placeholder="Nomor Nota Pembayaran">	
 				</div>
 				<div class="col-md-3 col-xs-12">
 					<button class="btn btn-md btn-active btn-default" type="submit" name="btn_cek2" id="btn_cek2" value="Search">Search</button>
