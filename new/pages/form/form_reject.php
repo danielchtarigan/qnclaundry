@@ -3,7 +3,7 @@
 	<div class="form-group">
 		<label class="col-md-4 control-label">No Nota</label>
 		<div class="col-md-6">
-			<input type="text" class="form-control" id="nota" name="" readonly="" value="<?php echo $_GET['nota'] ?>">
+			<input type="text" class="form-control" id="nota" name="" maxlength="14" readonly="" value="<?php echo $_GET['nota'] ?>">
 		</div>
 	</div>
 	<div class="form-group">
