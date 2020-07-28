@@ -113,12 +113,7 @@ if($terbayar=='0') {
 
 	mysqli_query($con, "UPDATE cara_bayar SET tgl_order='$tgl_order',rcp_order='$rcp_order',outlet_order='$outlet_order' WHERE no_faktur='$no_faktur'");
     
-    if($cabang=="Mojokerto") {
-        $kiloan = ($_GET['cks']*7000+$_GET['ss']*4000+$_GET['ckl']*5000)/7000;
-    	$potongan = $_GET['kuota_potongan'];
-    	$allkuota = $potongan+$kiloan*7000;
-
-    } else if($cabang=="Medan") {
+    if($cabang=="Medan") {
         $kiloan = ($_GET['cks']*7000+$_GET['ss']*4000+$_GET['ckl']*5000)/7000;
     	$potongan = $_GET['kuota_potongan'];
     	$allkuota = $potongan+$kiloan*7000;

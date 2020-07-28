@@ -170,7 +170,7 @@ if($row['lgn']=='1'){
 							<?php
 						}
 
-						if($_SESSION['cabang']=="Mojokerto" || ($_SESSION['cabang']=="Jakarta" && $_SESSION['outlet']!="Gading Serpong")){
+						if($_SESSION['cabang']=="Palopo" || ($_SESSION['cabang']=="Jakarta" && $_SESSION['outlet']!="Gading Serpong")){
 							echo '<tr><td colspan="3" style="color: red"><marquee scrollamount="5">Order harus lunas agar bisa diproses di Operasional!</marquee></td></tr>';
 						}
 
@@ -371,7 +371,7 @@ if($row['lgn']=='1'){
 		</div>
 	</div>
 	<?php 
-	if($_SESSION['cabang']=="Jakarta") {
+	if($_SESSION['cabang']=="Jakarta" || $_SESSION['cabang']=="Palopo") {
 		echo '
 		<div class="form-group" id="jenis_kiloan">
 			<div class="radio" align="center">
@@ -703,7 +703,7 @@ if($row['lgn']=='1'){
 			var hkcks = 7000;
 			var hss = 4000;
 			var hckl = 5000;
-		} else if(cabang=="Jakarta"){
+		} else{
 			if(outlet=="Gading Serpong") {
 				var hkcks = 8000;
 				var hss = 6000;
@@ -715,10 +715,6 @@ if($row['lgn']=='1'){
 				var hckl = 7400;
 			}
 				
-		} else {
-			var hkcks = 7000;
-			var hss = 4000;
-			var hckl = 5000;
 		}
 
 		var totsisakuota = "<?php echo $lgn['kilo_cks'] ?>"*hkcks;
@@ -810,7 +806,7 @@ if($row['lgn']=='1'){
 			var hkcks = 7000;
 			var hss = 4000;
 			var hckl = 5000;
-		} else if(cabang=="Jakarta"){
+		} else {
 			if(outlet=="Gading Serpong") {
 				var hkcks = 8000;
 				var hss = 6000;
@@ -822,10 +818,6 @@ if($row['lgn']=='1'){
 				var hckl = 7400;
 			}
 				
-		} else {
-			var hkcks = 7000;
-			var hss = 4000;
-			var hckl = 5000;
 		}
 
 		var kuota = cks*hkcks+ss*hss+ckl*hckl+kuota_potongan*1;
@@ -1714,7 +1706,7 @@ if($row['lgn']=='1'){
   				var a = "210000";
   				var b = "239000";
   				var c = "643000"
-  			} else if(cabang=="Jakarta") {
+  			} else {
   				if(outlet=="Gading Serpong") {
   					var a = "240000";
 	  				var b = "275000";
@@ -1724,10 +1716,6 @@ if($row['lgn']=='1'){
 	  				var b = "275000";
 	  				var c = "715000";
   				}	  				
-  			} else {
-  				var a = "210000";
-  				var b = "239000";
-  				var c = "643000";
   			}
       		if(aktif=='1'){  
 	      		if(paket=='all_kiloan'){      		

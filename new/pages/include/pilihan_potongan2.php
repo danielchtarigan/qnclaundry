@@ -65,9 +65,7 @@ if($row['lgn']=='1'){
 					echo '<option disabled>'.$katnew.'</option>';
 					$ritem = mysqli_query($con, "SELECT *FROM item_spk WHERE kategory='$kat[0]'");
 					while($item = mysqli_fetch_assoc($ritem)){
-						if($_SESSION['cabang']=="Mojokerto") {
-							$harga = $item['harga_mjkt'];						
-						} else if($_SESSION['cabang']=="Medan") {
+						if($_SESSION['cabang']=="Medan") {
 							$harga = $item['harga_medan'];
 						} else {
 							$harga = $item['harga_jkt'];

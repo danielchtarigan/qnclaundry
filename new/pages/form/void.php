@@ -6,7 +6,7 @@
 			<div class="form-group">
 				<label for="nota" class="control-label col-md-3">Nota Order</label>
 				<div class="col-md-6 col-xs-9">
-					<input type="text" class="form-control" id="nota" name="nota" maxlength="11" required placeholder="Isi hanya untuk satu nota">								
+					<input type="text" class="form-control" id="nota" name="nota" maxlength="12" required placeholder="Isi hanya untuk satu nota">								
 				</div>
 				<div class="col-md-3 col-xs-12">
 					<button class="btn btn-sm btn-active btn-default" type="submit" name="btn_cek" id="btn_cek" value="Search">Search</button>

@@ -17,7 +17,7 @@ if($row['lgn']=='1'){
 	$status = "normal";
 } 
 
-if($cabang=="Jakarta"){
+if($cabang=="Jakarta" || $cabang=="Palopo"){
 
 	if($_GET['jenis']=="cks") { ?>
 			<label class="control-label col-md-4 col-xs-3">Item</label>
@@ -131,14 +131,10 @@ else {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
 						$hargalgn = $berat*7920;
-					} else if($_SESSION['cabang']=="Jakarta") {
+					} else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
 						$hargalgn = ($outlet=="Gading Serpong") ? $berat*8000 : $berat*8800;
-					} else {
-						$berat = $item['berat'];
-						$harga = $item['harga_mjkt'];
-						$hargalgn = $berat*7000;						
 					}
 
 					if($status=="langganan") {
@@ -165,14 +161,10 @@ else {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
 						$hargalgn = $berat*4000;
-					} else if($_SESSION['cabang']=="Jakarta") {
+					} else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
 						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*6400;
-					} else {
-						$berat = $item['berat'];
-						$harga = $item['harga_mjkt'];
-						$hargalgn = $berat*4000;	
 					}
 
 					if($status=="langganan") {
@@ -199,14 +191,10 @@ else {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
 						$hargalgn = $berat*5000;
-					} else if($_SESSION['cabang']=="Jakarta"){
+					} else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
 						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*7400;
-					} else {
-						$berat = $item['berat'];
-						$harga = $item['harga_mjkt'];
-						$hargalgn = $berat*5000;
 					}
 
 					if($status=="langganan") {

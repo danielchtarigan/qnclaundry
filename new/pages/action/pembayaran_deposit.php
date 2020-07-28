@@ -41,10 +41,8 @@ if($_GET['carabayar']=="undefined"){
 
 	if($_SESSION['cabang']=="Medan") {
 		$hargakilo = 7000;
-	} else if($_SESSION['cabang']=="Jakarta"){
-		$hargakilo = ($_SESSION['outlet']=="Gading Serpong") ? 8000 : 8800;
 	} else {
-		$hargakilo = 7000;
+		$hargakilo = ($_SESSION['outlet']=="Gading Serpong") ? 8000 : 8800;
 	}
 		
 
