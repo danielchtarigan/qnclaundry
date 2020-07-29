@@ -12,15 +12,17 @@ $query = "SELECT kode FROM outlet WHERE nama_outlet='$outlet'";
 $hasil = mysqli_query($con,$query);
 $data  = mysqli_fetch_array($hasil);
 
+$ym = date('ym');
+
 if($_POST['keterangan']=="kotor") {
 
-	$kode = "MSK".$data['kode'];
+	$kode = "MO".$data['kode'].$ym;
 
-	$sql = $con->query("SELECT kd_serah FROM manifest WHERE outlet='$outlet' AND kd_serah LIKE '%$kode%' ORDER BY kd_serah DESC LIMIT 0,1");
+	$sql = $con->query("SELECT number_code FROM shipping_manifests WHERE origin='$outlet' AND number_code LIKE '%$kode%' ORDER BY id DESC LIMIT 0,1");
 	if(mysqli_num_rows($sql)>0) {
 		$rsql = $sql->fetch_array();
 
-		$last = (int)substr($rsql['kd_serah'], 6,6) ;
+		$last = (int)substr($rsql['kd_serah'], 11,3) ;
 		
 	}
 	else {
@@ -28,7 +30,7 @@ if($_POST['keterangan']=="kotor") {
 	}
 
 	$next =  $last+1;
-	$kode_serah = $kode.sprintf('%06s', $next);
+	$kode_serah = $kode.sprintf('%03s', $next);
 
 	$driver = $_POST['driver'];
 	$jumlah = $_POST['jumlah'];
@@ -37,7 +39,7 @@ if($_POST['keterangan']=="kotor") {
 	$no_nota = explode(" ",$_POST["nota"]);
 	  foreach($no_nota as $key => $value){
 	  	if($value!='') {
-	  		$q = mysqli_query($con," INSERT INTO man_serah (kode_serah,tgl,pemberi,driver,jumlah,tempat,tipe) VALUES ('$kode_serah','$date','$reception','$driver','$jumlah','$outlet','1') ");
+	  		$q = mysqli_query($con," INSERT INTO shipping_manifests () VALUES ('$kode_serah','$date','$reception','$driver','$jumlah','$outlet','1') ");
 
 	  		$q .= mysqli_query($con, "UPDATE manifest SET kd_serah='$kode_serah' WHERE no_nota='$value'");
 	  	}   	

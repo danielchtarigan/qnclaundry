@@ -4,7 +4,13 @@ include '../zonawaktu.php';
 
 $jumlah = mysqli_fetch_array(mysqli_query($con, "SELECT SUM(jumlah) FROM detail_spk WHERE no_nota='$_GET[nota]'"))[0];
 
-mysqli_query($con, "UPDATE reception SET spk='1',rcp_spk='$_SESSION[user_id]',tgl_spk='$nowDate',jumlah='$jumlah' WHERE no_nota='$_GET[nota]' ");
+$rejects = "SELECT * FROM rijeck WHERE no_nota='$_GET[nota]' AND status=0";
+$query = mysqli_query($con, $rejects);
+if ($query > 0) {
+    mysqli_query($con, "UPDATE rijeck SET status='1' WHERE no_nota='$_GET[nota]'");
+}
+
+mysqli_query($con, "UPDATE reception SET spk='1',rcp_spk='$_SESSION[user_id]',tgl_spk='$nowDate',jumlah='$jumlah', rijeck='0' WHERE no_nota='$_GET[nota]' ");
 
 if($_SESSION['outlet']=="Casa deParco") {
     mysqli_query($con, "UPDATE reception SET workshop='Casa deParco', tgl_workshop='$nowDate', cuci='1', tgl_cuci='$nowDate', pengering='1', setrika='1', tgl_setrika='$nowDate' WHERE no_nota='$_GET[nota]' ");

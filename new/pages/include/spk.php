@@ -88,25 +88,9 @@ if($jenis=="k") {
 				} 
 				
 				?>
-				<!-- <tr>
-					<td align="center" colspan="3">-- 0 --</td>
-				</tr> -->
-
 			</tbody>
 		</table>
-		<!-- <table id="smn">
-			<?php 
-			if(mysqli_num_rows($query)>0) {
-				?>
-				<tr>
-					<td><button class="btn btn-sm btn-success btn-selesai"> Selesai</button></td>
-				</tr>
 
-				<?php
-			}
-
-			?>
-		</table> -->
 	</div>
 </div>
 
@@ -119,7 +103,6 @@ if($jenis=="k") {
 		$('.spinner1').ace_spinner({value:1,min:0,max:200,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'})
 			.closest('.ace-spinner')
 			.on('changed.fu.spinbox', function(){
-			//console.log($('#spinner1').val())
 		});
 
 		
@@ -179,30 +162,6 @@ if($jenis=="k") {
 			})
 		})
 
-		// $( "#show-option" ).tooltip({
-		// 	show: {
-		// 		effect: "slideDown",
-		// 		delay: 250
-		// 	}
-		// });
-	
-		// $( "#hide-option" ).tooltip({
-		// 	hide: {
-		// 		effect: "explode",
-		// 		delay: 250
-		// 	}
-		// });
-
-		// $( ".btn-hapus" ).tooltip({
-		// 	show: null,
-		// 	position: {
-		// 		my: "left top",
-		// 		at: "left bottom"
-		// 	},
-		// 	open: function( event, ui ) {
-		// 		ui.tooltip.animate({ top: ui.tooltip.position().top + 3 }, "fast" );
-		// 	}
-		// });
 	})
 </script>
 
