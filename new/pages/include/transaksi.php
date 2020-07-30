@@ -144,9 +144,8 @@ if($row['lgn']=='1'){
 				<a href="#" class="btn btn-success btn-sm btdeposit" name="btdeposit" id="btpotongan" style="width:49%">Potongan</a>
 				<hr>
 				<h5><strong>Pengambilan &amp; Audit</strong></h5>
-				<a href="#" class="btn btn-success btn-sm btdeposit" name="btdeposit" id="btdeposit" style="width:49%">Ambil Barang</a>
-				<a href="#" class="btn btn-success btn-sm btdeposit" name="btdeposit" id="btdeposit" style="width:49%">Komplain</a>
-				<a href="#" class="btn btn-block btn-success btn-sm btdeposit" name="btdeposit" id="btdeposit">Quality Audit</a>
+				<a href="#" class="btn btn-success btn-sm" style="width:49%" id="laundry_ready">Ambil Barang</a>
+				<a href="#" class="btn btn-success btn-sm" style="width:49%">Komplain</a>
 			</div>			
 		</div>
 	</div>
@@ -983,6 +982,10 @@ if($row['lgn']=='1'){
 	<div class="form-group" id="cara_bayar3">
 	</div> 
 </form>
+
+
+<div id="parse_dialog" title="Judul Dialog">
+</div>
 
 <script type="text/javascript">
 	function clocker(){
@@ -1866,8 +1869,33 @@ if($row['lgn']=='1'){
 			]
 	        
 	      });
-      }; 
+	  };
 
+	var dialog = $('#parse_dialog').dialog({
+		autoOpen: false,
+		resizable: false,
+		minWidth: 600,
+		modal: true,
+		show: {
+			effect: "blind",
+			duration: 500
+		},
+		title: "<div class='widget-header widget-header-small'><h4 class='smaller bolder blue'><i class='ace-icon fa fa-check'></i> Form Pembayaran</h4></div>",
+		title_html: true
+	});
+
+	$('#laundry_ready').on('click', function(e) {
+		e.preventDefault();
+		
+		$('.widget-header').html("<h4 class='smaller bolder blue'><i class='ace-icon fa fa-check'></i> Cucian Selesai</h4>");
+		$('button.ui-button').css('border', 'none');
+		let customer = '<?= $_GET['id'] ?>';
+		$.get('include/cucian_selesai.php?customer='+customer, function (data) {
+			$('#parse_dialog').html(data);
+			$('#parse_dialog').dialog('open');
+		})
+
+	});
 
   });
 </script>
