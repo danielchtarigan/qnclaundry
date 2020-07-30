@@ -8,26 +8,6 @@ $date = date('Y-m-d');
 $sdriver = $con->query("SELECT name,keterangan FROM user_driver WHERE status='1' ORDER BY created_at DESC");
 $rdriver = $sdriver->fetch_assoc();
 
-function laundryRules($rule = 1, $stmt) {
-	global $con;
-	$rules = $con->query("SELECT status FROM laundry_rule_details WHERE laundry_rule_id = 3 AND rule = $rule");
-	$row = $rules->fetch_assoc();
-	if ($row['status'] == 3) {
-		return "";
-	}
-	else  {
-		return "AND $stmt = $row[status]";
-	}
-}
-
-
-$lunas = laundryRules(1, 'lunas');
-$spk = laundryRules(2, 'spk');
-$cuci = laundryRules(5, 'cuci');
-$kering = laundryRules(6, 'pengering');
-$setrika = laundryRules(7, 'setrika');
-$packing = laundryRules(8, 'packing');
-
 
 ?>
 
@@ -43,13 +23,10 @@ $packing = laundryRules(8, 'packing');
 		<?php 
 		$i = 0;
 		if($rdriver['keterangan']=="kotor") {
-			// $sql = $con->query("SELECT b.no_nota FROM manifest a, reception b WHERE a.no_nota=b.no_nota AND a.kd_serah='' AND a.outlet='$ot' $lunas $spk $cuci AND DATE_FORMAT(b.tgl_input, '%Y-%m-%d') >= '2019-03-01' "); //manifest lama
-			$sql = $con->query("SELECT no_nota FROM reception WHERE nama_outlet='$ot' $lunas $spk $cuci $setrika $packing AND DATE_FORMAT(tgl_input, '%Y-%m-%d') >= '2020-07-01'");
+			$sql = $con->query("SELECT b.no_nota FROM manifest a, reception b WHERE a.no_nota=b.no_nota AND a.kd_serah='' AND a.outlet='$ot' AND b.spk=true AND DATE_FORMAT(b.tgl_input, '%Y-%m-%d') >= '2019-03-01' ");
 		} 
 		else {
-			// $sql = $con->query("SELECT no_nota FROM manifest a, man_serah b WHERE a.kd_serah3=b.kode_serah AND kd_serah3<>'' AND kd_terima3='' AND outlet='$ot'"); //manifest lama
-			$manifests = "SELECT * FROM shipping_manifests AS a JOIN shipping_manifest_details AS b ON a.id = b.shipping_manifest_id";
-			$sql = $con->query("SELECT no_nota FROM $manifests AS a JOIN reception AS b ON a.sales_order_id = b.id WHERE a.origin_type='Workshop' AND a.destination_type='Outlet' AND a.destination='$ot'");
+			$sql = $con->query("SELECT no_nota FROM manifest a, man_serah b WHERE a.kd_serah3=b.kode_serah AND kd_serah3<>'' AND kd_terima3='' AND outlet='$ot'");
 		}
 		
 		while($cekNota = $sql->fetch_array()){
