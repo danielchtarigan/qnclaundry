@@ -19,7 +19,7 @@
 
 	#info3 {
 		display: block;
-		width: 400px;
+		width: 600px;
 		height: auto;
 		border-radius: 8px;
 		position: relative;
@@ -29,16 +29,22 @@
 		box-shadow: 0 0 5px rgba(0,0,0,.4);
 		text-align: center;
 		margin: 15% auto;
-		background: #000;
+		background: #ddd;
 		border:2px solid #fff;
 		font: normal 1em Cambria,Georgia,Serif;
-		color: #fff;
+		font-size: 28px;
+		color: #000;
 		-webkit-box-shadow:0px 1px 3px rgba(0,0,0,0.4);
 		-moz-box-shadow:0px 1px 3px rgba(0,0,0,0.4);
 		box-shadow:0px 1px 3px rgba(0,0,0,0.4);		
 		animation: 1s growin ease-in-out;;
 		animation-fill-mode: forwards;
 
+	}
+
+	#info3>p {
+		font-size: 20px;
+		margin-top: 20px;
 	}
 
 	#info2 {

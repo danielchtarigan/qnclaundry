@@ -37,9 +37,10 @@ if($_POST['keterangan']=="kotor") {
 	$no_nota = explode(" ",$_POST["nota"]);
 	  foreach($no_nota as $key => $value){
 	  	if($value!='') {
-	  		$q = mysqli_query($con," INSERT INTO man_serah (kode_serah,tgl,pemberi,driver,jumlah,tempat,tipe) VALUES ('$kode_serah','$date','$reception','$driver','$jumlah','$outlet','1') ");
+			$q = mysqli_query($con, "INSERT INTO manifest (no_nota, outlet, kd_serah) VALUES ('$value', '$outlet', '$kode_serah')"); 
+	  		$q .= mysqli_query($con," INSERT INTO man_serah (kode_serah,tgl,pemberi,driver,jumlah,tempat,tipe) VALUES ('$kode_serah','$date','$reception','$driver','$jumlah','$outlet','1') ");
 
-	  		$q .= mysqli_query($con, "UPDATE manifest SET kd_serah='$kode_serah' WHERE no_nota='$value'");
+	  		// $q .= mysqli_query($con, "UPDATE manifest SET kd_serah='$kode_serah' WHERE no_nota='$value'"); query lama
 	  	}   	
 	  }
 

@@ -597,7 +597,7 @@ $r = $sql5->fetch_assoc();
     
     
     $tambah=mysqli_query($con," update reception set spk='1',tgl_spk='$jam',rcp_spk='$us',jumlah='$t', workshop='$workshop',tgl_workshop='$tgl_workshop', op_workshop='$op_wk' WHERE no_nota='$no_nota'");
-    $tambah.=mysqli_query($con," insert into manifest value('$no_nota','$ot','','','','','','')");//penginputan data manifest per nota
+    // $tambah.=mysqli_query($con," insert into manifest value('$no_nota','$ot','','','','','','')");//penginputan data manifest per nota
     
     //cek item setrika saja
     $qitem = mysqli_query($con, "SELECT * FROM detail_penjualan WHERE item LIKE 'Setrika%' AND no_nota='$no_nota'");

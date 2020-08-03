@@ -6,13 +6,16 @@ $sql = $con->query("SELECT * FROM user_driver WHERE status=true AND lokasiform='
 
 if(mysqli_num_rows($sql)>0) {
     $data = $sql->fetch_assoc();
-    $ket = ($data['keterangan']=="kotor") ? "menjemput cucian yang sudah dishortir (SPK)" : "mengantar cucian selesai (Packing)";
+    $ket = ($data['keterangan']=="kotor") ? "menjemput cucian kotor" : "mengantar cucian selesai (Packing)";
 	echo '
 		<div id="data-data-popup">
 			<div id="info3">
-		        <strong>Warning!</strong> '.$data['name'].' akan '.$ket.'
+		        <strong>Warning!</strong> '.$data['name'].' akan '.$ket.' Outlet '.$data['lokasi'].'
 		        <br>
-		        <p style="font-size: 12px">Persilahkan untuk menscan semua nota dan jangan ada yang terlewat!</p>
+				<p>Nota yang belum di SPK bisa discan, <br> Tolong input semua cucian kotor !</p>
+				<br>
+				<p><i>Tertanda,</i></p>
+				<p><u>Office</u></p>
 			</div>	
 		</div>
 	';
