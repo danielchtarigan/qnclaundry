@@ -1918,9 +1918,9 @@ if($row['lgn']=='1'){
 		}
 	};
 	
-	statusc = "<?= $status ?>";
-	if(statusc=="member" || statusc=="langganan") {
-	    $("#kode_voucher").prop('disabled', true);
-	    $('#pesan_voucher').html("Membership tidak berlaku voucher..!").css("color", "red");
-	} 
+	// statusc = "<?= $status ?>";
+	// if(statusc=="member" || statusc=="langganan") {
+	//     $("#kode_voucher").prop('disabled', true);
+	//     $('#pesan_voucher').html("Membership tidak berlaku voucher..!").css("color", "red");
+	// } 
 </script>

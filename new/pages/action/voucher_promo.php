@@ -239,11 +239,13 @@ if($_GET['kode_voucher']==""){
 				$usingPromo = mysqli_fetch_row(mysqli_query($con, "SELECT COUNT(voucher) FROM reception WHERE voucher LIKE '$kode'"))[0];
 				$maxPromo = $res3['max_penggunaan'];
 				$kategory = $res3['kategori_item'];
-				$jenisOrder = ($jenis=="Potongan") ? "p" : "k";
+				$jenisOrder = $res3['item_order'];
 
 				$diskon = ($jenisOrder=="p" && $harga>20000) ? 20000 : $diskon; 
 
 				$disc = $diskon*-1;
+
+				$jenisItem = ($res3['item_order'] == "All") ? " " : "AND jenis_item = '$jenisOrder'";
 
 				$qcekcs = $con->query("SELECT * FROM telemarketer_sms_upload WHERE id_kode_promo='$idKode'");
 				if(mysqli_num_rows($qcekcs)>0){
@@ -292,7 +294,7 @@ if($_GET['kode_voucher']==""){
 			            if($kategory=="All") {
 			                $qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]'");
 			            } else {
-			                $qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]' AND jenis_item='$jenisOrder' AND kategori_item='$kategory' ");
+			                $qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]' $jenisItem AND kategori_item='$kategory' ");
 			            }
 						
 						$ckat = mysqli_num_rows($qkat);
