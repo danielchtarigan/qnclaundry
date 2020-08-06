@@ -61,8 +61,8 @@ if($jumNotamasuk==$jumNotaSpk){
     		
     		case '1':
     			
-    			$message = strip_tags($headMessage)." - Customer Yth.\\nCucian Anda dengan nomor order ".strip_tags($noNota)." sudah dihitung dengan jumlah ".strip_tags($jumlah)." pcs.\\n\\n";
-    			$message .= "Update status cucian Anda secara real-time di ".strip_tags($urlf)."\\n\\n";
+    			// $message = strip_tags($headMessage)." - Customer Yth.\\nCucian Anda dengan nomor order ".strip_tags($noNota)." sudah dihitung dengan jumlah ".strip_tags($jumlah)." pcs.\\n\\n";
+    			// $message .= "Update status cucian Anda secara real-time di ".strip_tags($urlf)."\\n\\n";
     			sendWassenger($telp,$message,"normal");		
     			
     			/*$message = mysqli_fetch_row(mysqli_query($con, "SELECT value FROM settings WHERE name='notif_spk'"))[0];
@@ -97,8 +97,8 @@ if($jumNotamasuk==$jumNotaSpk){
     	$con->query("INSERT INTO notifikasi_customer VALUES ('$id_cs','$cus[no_telp]','1',NOW())");
     	//$con->query("INSERT INTO notifikasi_customer VALUES ('$id_cs','$cus[no_telp]','0',NOW())");
     
-    	$message = strip_tags($headMessage)." - Customer Yth.\\nCucian Anda dengan nomor order ".strip_tags($noNota)." sudah dihitung dengan jumlah ".strip_tags($jumlah)." pcs.\\n\\n";
-    	$message .= "Update status cucian Anda secara real-time di ".strip_tags($urlf)."\\n\\n";
+    	// $message = strip_tags($headMessage)." - Customer Yth.\\nCucian Anda dengan nomor order ".strip_tags($noNota)." sudah dihitung dengan jumlah ".strip_tags($jumlah)." pcs.\\n\\n";
+    	// $message .= "Update status cucian Anda secara real-time di ".strip_tags($urlf)."\\n\\n";
     	sendWassenger($telp,$message,"normal");
     	
     	$message = mysqli_fetch_row(mysqli_query($con, "SELECT value FROM settings WHERE name='notif_spk'"))[0];
