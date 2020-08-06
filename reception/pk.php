@@ -581,19 +581,23 @@ $jam=date("Y-m-d H:i:s");
 $r = $sql5->fetch_assoc();
   $t=$r['total'];  
   
-    if($ot=="Toddopuli" || $ot=="support") {
-        $workshop = "Toddopuli";
+//     if($ot=="Toddopuli" || $ot=="support") {
+//         $workshop = "Toddopuli";
+//         $tgl_workshop = $jam;
+//         $op_wk = $us;
+//     } else if($ot=="Antang") {
+//         $workshop = "Daya";
+//         $tgl_workshop = $jam;
+//         $op_wk = $us;
+//     } else {
+//         $workshop = "";
+//         $tgl_workshop = "0000-00-00 00:00:00";
+//         $op_wk = "";
+//     }
+	
+	$workshop = "Toddopuli";
         $tgl_workshop = $jam;
         $op_wk = $us;
-    } else if($ot=="Antang") {
-        $workshop = "Daya";
-        $tgl_workshop = $jam;
-        $op_wk = $us;
-    } else {
-        $workshop = "";
-        $tgl_workshop = "0000-00-00 00:00:00";
-        $op_wk = "";
-    }
     
     
     $tambah=mysqli_query($con," update reception set spk='1',tgl_spk='$jam',rcp_spk='$us',jumlah='$t', workshop='$workshop',tgl_workshop='$tgl_workshop', op_workshop='$op_wk' WHERE no_nota='$no_nota'");
