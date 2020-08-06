@@ -75,10 +75,11 @@ function rupiah($angka){
       {               
         no_nota=$("#no_nota1").val();
         id_cs=$("#id_cs").val();
+        workshop = '<?= $r['workshop'] ?>';
 
         $.ajax({
           url:"pk.php",
-          data:"op=selesai&no_nota="+no_nota+"&id_cs="+id_cs,
+          data:"op=selesai&no_nota="+no_nota+"&id_cs="+id_cs+"&workshop="+workshop,
           cache:false,
           success:function(msg)
           {
@@ -146,6 +147,7 @@ $('input:radio[name="warna"]').change(function() {
     </tr>
     </thead>
     <tbody>
+
 <?php
 if ($r['jenis']=='p'){
  ?>

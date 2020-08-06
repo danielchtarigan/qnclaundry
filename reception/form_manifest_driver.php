@@ -23,7 +23,7 @@ $rdriver = $sdriver->fetch_assoc();
 		<?php 
 		$i = 0;
 		if($rdriver['keterangan']=="kotor") {
-			$query = "SELECT a.no_nota FROM reception a LEFT JOIN manifest b ON a.no_nota = b.no_nota WHERE b.no_nota IS NULL AND a.nama_outlet = '$ot' AND cuci = false AND packing = false AND DATE(tgl_input) >= '2019-03-01'";
+			$query = "SELECT a.no_nota FROM reception a LEFT JOIN manifest b ON a.no_nota = b.no_nota WHERE b.no_nota IS NULL AND a.nama_outlet = '$ot' AND cara_bayar <> 'Void' AND cuci = false AND packing = false AND DATE(tgl_input) >= '2019-03-01'";
 			$sql = mysqli_query($con, $query);
 			// $sql = $con->query("SELECT b.no_nota FROM manifest a, reception b WHERE a.no_nota=b.no_nota AND a.kd_serah='' AND a.outlet='$ot' AND b.spk=true AND DATE_FORMAT(b.tgl_input, '%Y-%m-%d') >= '2019-03-01' ");
 		} 

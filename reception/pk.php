@@ -438,7 +438,7 @@ elseif($op=='rincian_spk')
 {
 	$id_cs=$_GET['id_cs'];
 	$no_nota=$_GET['no_nota'];
-	$qrep = mysqli_query($con,"select * from reception WHERE no_nota='$no_nota'");
+	$qrep = mysqli_query($con,"select * from reception WHERE no_nota='SOBRG190508002'");
 	$rrep = mysqli_fetch_array($qrep);
 	if ($rrep['jenis']=='p'){
     $brg=mysqli_query($con,"select * from detail_spk WHERE no_nota='$no_nota'");
@@ -581,24 +581,28 @@ $jam=date("Y-m-d H:i:s");
 $r = $sql5->fetch_assoc();
   $t=$r['total'];  
   
-    if($ot=="Toddopuli" || $ot=="support") {
-        $workshop = "Toddopuli";
-        $tgl_workshop = $jam;
-        $op_wk = $us;
-    } else if($ot=="Antang") {
-        $workshop = "Daya";
-        $tgl_workshop = $jam;
-        $op_wk = $us;
-    } else {
-        $workshop = "";
-        $tgl_workshop = "0000-00-00 00:00:00";
-        $op_wk = "";
+    if (empty($_GET['workshop'])) {
+        if($ot=="Toddopuli" || $ot=="support") {
+            $workshop = "Toddopuli";
+            $tgl_workshop = $jam;
+            $op_wk = $us;
+        } else if($ot=="Antang") {
+            $workshop = "Daya";
+            $tgl_workshop = $jam;
+            $op_wk = $us;
+        } else {
+            $workshop = "";
+            $tgl_workshop = "0000-00-00 00:00:00";
+            $op_wk = "";
+        }
+        
+        $tambah=mysqli_query($con," update reception set spk='1',tgl_spk='$jam',rcp_spk='$us',jumlah='$t', workshop='$workshop',tgl_workshop='$tgl_workshop', op_workshop='$op_wk' WHERE no_nota='$no_nota'");
     }
     
-    
-    $tambah=mysqli_query($con," update reception set spk='1',tgl_spk='$jam',rcp_spk='$us',jumlah='$t', workshop='$workshop',tgl_workshop='$tgl_workshop', op_workshop='$op_wk' WHERE no_nota='$no_nota'");
-    // $tambah.=mysqli_query($con," insert into manifest value('$no_nota','$ot','','','','','','')");//penginputan data manifest per nota
-    
+    else {
+        $tambah=mysqli_query($con," update reception set spk='1',tgl_spk='$jam',rcp_spk='$us',jumlah='$t' WHERE no_nota='$no_nota'");
+    }
+        
     //cek item setrika saja
     $qitem = mysqli_query($con, "SELECT * FROM detail_penjualan WHERE item LIKE 'Setrika%' AND no_nota='$no_nota'");
   	$countI = mysqli_num_rows($qitem);
