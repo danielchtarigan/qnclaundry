@@ -304,6 +304,15 @@ if($_SESSION['user_id']==false){
 
 									<b class="arrow"></b>
 								</li>
+
+								<li class="">
+									<a href="?form=tracking_laundry">
+										<i class="menu-icon fa fa-caret-right"></i>
+										Tracking Laundry
+									</a>
+
+									<b class="arrow"></b>
+								</li>
 							</ul>
 						</li>
 
@@ -666,7 +675,9 @@ if($_SESSION['user_id']==false){
 			                    		include 'form/form_pembatalan.php';    
 			                    	} else if($form=="tutup_kasir") {
 			                    		include 'form/tutup_kasir.php';    
-			                    	} 
+			                    	} else if ($form=="tracking_laundry") {
+										include 'form/tracking.php';
+									}
 			                    }
 
 			                    else{ ?>

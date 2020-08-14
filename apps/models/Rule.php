@@ -11,7 +11,7 @@ class Rule {
     public function getAllrules()
     {
         $this->conn->query("SELECT * FROM ". $this->table.' WHERE id <> 1');
-        return $this->conn->resultAll();
+        return $this->conn->all();
     }
 
     public function getRuleById($id)

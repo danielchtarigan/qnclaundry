@@ -4,12 +4,14 @@ class SalesOrderController extends Controller {
     
     public function tracking($userId)
     {
-        // $_POST['nota'] = 'SOIMB200728001';
         if (Authorize::accessGranted($userId)) {
             $data = $this->model('SalesOrder')->getOrders($_POST);
+            echo json_encode($data);
+        }
+        else {
+            echo "Akses pengguna tidak diberikan!";
         }
 
-        $data = (object) $data[0];
         
     }
 }

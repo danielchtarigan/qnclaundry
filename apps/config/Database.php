@@ -53,7 +53,7 @@ class Database {
         $this->stmt->execute();
     }
 
-    public function resultAll()
+    public function all()
     {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);

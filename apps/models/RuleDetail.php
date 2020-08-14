@@ -14,14 +14,14 @@ class RuleDetail {
     {
         $this->conn->query('SELECT * FROM '.$this->table.' WHERE laundry_rule_id=:id');
         $this->conn->bind('id', $id);
-        return $this->conn->resultAll();
+        return $this->conn->all();
     }
 
     public function getRules($id)
     {
         $this->conn->query('SELECT a.id, a.status, b.name FROM '.$this->table.' AS a RIGHT JOIN '.$this->rule.' As b ON a.rule=b.id WHERE a.laundry_rule_id=:id');
         $this->conn->bind('id', $id);
-        return $this->conn->resultAll();
+        return $this->conn->all();
     }
 
     public function update($data)
