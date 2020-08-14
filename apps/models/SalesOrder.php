@@ -11,8 +11,9 @@ class SalesOrder {
 
     public function getOrders($request)
     {
-        $query = "SELECT * FROM reception WHERE no_nota = '$request[nota]'";
+        $query = "SELECT * FROM $this->table WHERE no_nota = :nota";
         $this->conn->query($query);
+        $this->conn->bind('nota', $request['nota']);
         return $this->conn->resultAll();
     }
     
