@@ -1,5 +1,6 @@
 <?php 
 
+
 class SalesInvoiceController extends Controller {
     public function omset($userId)
     {

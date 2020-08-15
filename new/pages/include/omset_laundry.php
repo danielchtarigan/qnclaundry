@@ -64,7 +64,7 @@
 			let datatable = $('#omset').DataTable({
 				"processing": true,
 				"ajax": {
-					url: "../../apps/SalesInvoice/omset/"+userId,
+					url: "https://qnclaundry.com/apps/SalesInvoice/omset/"+userId,
 					type: "POST",
 					data: {startDate:startDate, endDate:endDate, outlet:outlet}
 				},
