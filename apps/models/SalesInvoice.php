@@ -11,18 +11,21 @@ class SalesInvoice {
 
     public function getOmsetByOutlet($data)
     {
-        $this->conn->query("SELECT SUM(total) FROM $this->table 
-                        WHERE jenis_transaksi = :jenis 
-                        AND nama_outlet = :outlet
-                        AND DATE(tgl_transaksi) = :startDate 
-                        AND DATE(tgl_transaksi) = :endDate ");
+        $this->conn->query("SELECT SUM(IF(jenis_transaksi = 'ritel', total, 0)) AS laundry,
+                        SUM(IF(jenis_transaksi = 'membership', total, 0)) AS membership,
+                        SUM(IF(jenis_transaksi = 'deposit', total, 0)) AS langganan,
+                        SUM(IF((jenis_transaksi = 'mlocker' OR jenis_transaksi = 'slocker'), total, 0)) AS locker,
+                        SUM(total) AS total,
+                        DATE(tgl_transaksi) AS tgl, rcp, nama_outlet FROM $this->table 
+                        WHERE nama_outlet = :outlet
+                        AND (DATE(tgl_transaksi) BETWEEN :startDate 
+                        AND :endDate) GROUP BY tgl ASC");
 
-        $this->conn->bind('jenis', $data['jenis']);
         $this->conn->bind('outlet', $data['outlet']);
         $this->conn->bind('startDate', $data['startDate']);
         $this->conn->bind('endDate', $data['endDate']);
 
-        return $this->conn->single();
+        return $this->conn->all();
     }
 
 }

@@ -437,6 +437,15 @@ if($_SESSION['user_id']==false){
 							</li>
 
 							<li class="">
+								<a href="?menu=omset_laundry">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Omset Laundry
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li class="">
 								<a href="?menu=info-reject">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Data Reject Operator
@@ -655,7 +664,9 @@ if($_SESSION['user_id']==false){
 		                        		include 'include/reject-opr.php';
 		                        	} else if($menu=="marketing_summary"){
 		                        		include 'include/marketing_summary.php';
-		                        	} 					                        
+		                        	} else if($menu=="omset_laundry"){
+										include 'include/omset_laundry.php';
+		                        	} 		                        
 			                    }
 
 			                    else if(isset($_GET['transaksi'])) {
