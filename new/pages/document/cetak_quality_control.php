@@ -3,6 +3,7 @@ include '../../config.php';
 include '../zonawaktu.php';
 include '../../bar128.php';
 include '../../../send_sms.php';
+include '../../../wassenger_send.php';
 
 $us = $_SESSION['user_id'];
 
@@ -18,7 +19,18 @@ $msg_selesai = mysqli_fetch_array(mysqli_query($con, "SELECT value FROM settings
 
 $message = str_replace("[NO_ORDER]", $_GET['nota'], $msg_selesai);
 
+// Send sms
 sendSMS($telp,$message);
+
+// Send Whatsapp
+$phone = $telp;
+$message =  "QnC Laundry - Cucian Selesai\\n";
+$message .= "Cucian Anda dengan nomor ".strip_tags($_GET['nota'])." sudah selesai.\\n\\n";
+$message .= "**Syarat dan ketentuan keluhan layanan QnC Laundry dapat dilihat di https://www.qnclaundry.net/complaint\\n";
+$message .= "***Pesan ini dikirim secara otomatis\\n\\n";
+
+sendWassenger($phone,$message,"normal");
+
 
 
 
