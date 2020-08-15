@@ -498,6 +498,9 @@ if($_SESSION['user_id']==false){
 				                        } else if($menu=="laporan_omset"){
 				                        	echo "Omset ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
+				                        } else if($menu=="omset_laundry"){
+				                        	echo "Omset ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Laundry</small>';
 				                        } else if($menu=="checkout-control"){
 				                        	echo "Receipt Label ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> checkout Label</small>';
