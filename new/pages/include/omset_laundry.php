@@ -52,21 +52,22 @@
 
 		$('button#cari').on('click', function (e) {
 			e.preventDefault();
+			let token = $('meta[name=branch_token]').attr('content');
 			let userId = '<?= $_SESSION['id'] ?>';
 			let startDate = $('#tanggal1').val();
 			let endDate = $('#tanggal2').val();
 			let outlet = '<?= $_SESSION['outlet'] ?>';
 			$('#omset').DataTable().destroy();
-			datatable(startDate, endDate, outlet, userId);
+			datatable(startDate, endDate, outlet, userId, token);
 		});
 		
-		function datatable(startDate, endDate, outlet, userId) {
+		function datatable(startDate, endDate, outlet, userId, token) {
 			let datatable = $('#omset').DataTable({
 				"processing": true,
 				"ajax": {
-					url: "https://qnclaundry.com/apps/SalesInvoice/omset/"+userId,
+					url: "https://qnclaundry.test/qnclaundry/apps/SalesInvoice/omset/",
 					type: "POST",
-					data: {startDate:startDate, endDate:endDate, outlet:outlet}
+					data: {startDate:startDate, endDate:endDate, outlet:outlet, userId: userId, token: token}
 				},
 				"columns": [
 					{ "data": "tgl" },

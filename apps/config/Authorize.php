@@ -2,6 +2,7 @@
 
 class Authorize {
     private $table = 'user';
+    private $response = 0;
     private $conn;
 
     public function __construct()
@@ -9,19 +10,21 @@ class Authorize {
         $this->conn = new Database;
     }
 
-    public static function accessGranted($userId)
+    public static function accessGranted($token)
     {
-        return (new self)->getUser($userId);
+        return (new self)->tokenChecked($token);
     }
 
-    public function getUser($userId)
+    public function tokenChecked($token)
     {
-        $query = "SELECT * FROM $this->table WHERE user_id = :id AND aktif = 'Ya'";
-        $this->conn->query($query);
-        $this->conn->bind('id', $userId);
-        $this->conn->execute();
+        if ($token == base64_encode("qnclaundrycabangcabang")) {
+            $this->response = 1;
+        }
+        else {
+            $this->response = 0;
+        }
 
-        return $this->conn->rowCount();
+        return $this->response;
     }
 
 

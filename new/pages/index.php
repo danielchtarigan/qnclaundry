@@ -34,6 +34,7 @@ if($_SESSION['user_id']==false){
 
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="branch_token" content="cW5jbGF1bmRyeWNhYmFuZ2NhYmFuZw==">
 
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
