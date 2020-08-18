@@ -2,9 +2,9 @@
 
 class SalesOrderController extends Controller {
     
-    public function tracking($userId)
+    public function tracking()
     {
-        if (Authorize::accessGranted($userId)) {
+        if (Authorize::accessGranted($_POST['token'])) {
             $data = $this->model('SalesOrder')->getOrders($_POST);
             echo json_encode($data);
         }

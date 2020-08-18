@@ -29,15 +29,16 @@
 <script>
     $('#tracking').on('submit', function (e) {
         e.preventDefault();
+        let token = $('meta[name=branch_token]').attr('content');
         let userId = '<?= $_SESSION['id'] ?>';
         let nota = $('#nota').val();
 
         $('#result table tr').not(':first').remove();
 
         $.ajax({
-            url: 'https://qnclaundry.com/apps/SalesOrder/tracking/'+userId,
+            url: 'https://qnclaundry.com/apps/SalesOrder/tracking/',
             method: 'POST',
-            data: {nota:nota},
+            data: {nota:nota, token:token},
             beforeSend: function () {
                 $('#result table tr:first-child>td').text("Sedang memuat...");
             },
