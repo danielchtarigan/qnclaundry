@@ -40,7 +40,7 @@ $ws=$_SESSION['workshop'];
 		</thead>
 		<tbody>
 			<?php
-			$query = "SELECT * FROM reception natural join control where setrika=false and pengering=true and packing=false and kembali=false and ambil=false and jenis='k' and nama_outlet<>'mojokerto' AND workshop='$ws' ORDER BY express desc, priority desc, tgl_input asc ";//LIMIT 7" ;
+			$query = "SELECT * FROM reception where setrika=false and pengering=true and packing=false and kembali=false and ambil=false and jenis='k' and nama_outlet<>'mojokerto' AND workshop='$ws' ORDER BY express desc, priority desc, tgl_input asc ";//LIMIT 7" ;
 			$tampil = mysqli_query($con, $query);
 
 			$no = 1;
