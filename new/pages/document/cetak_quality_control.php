@@ -14,16 +14,16 @@ $sql = mysqli_query($con, "SELECT * FROM reception a, customer b WHERE a.id_cust
 $q = mysqli_fetch_array($sql);
 
 $telp = $q['no_telp'];
+$phone = str_replace("0", "+62", substr($telp, 0, 1)).substr($telp, 1);
 
 $msg_selesai = mysqli_fetch_array(mysqli_query($con, "SELECT value FROM settings WHERE name='sms_selesai_global'"))[0];
 
 $message = str_replace("[NO_ORDER]", $_GET['nota'], $msg_selesai);
 
 // Send sms
-sendSMS($telp,$message);
+sendSMS($phone,$message);
 
 // Send Whatsapp
-$phone = $telp;
 $message =  "QnC Laundry - Cucian Selesai\\n";
 $message .= "Cucian Anda dengan nomor ".strip_tags($_GET['nota'])." sudah selesai.\\n\\n";
 $message .= "**Syarat dan ketentuan keluhan layanan QnC Laundry dapat dilihat di https://www.qnclaundry.net/complaint\\n";
