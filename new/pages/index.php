@@ -447,6 +447,24 @@ if($_SESSION['user_id']==false){
 							</li>
 
 							<li class="">
+								<a href="?menu=langganan">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Langganan
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li class="">
+								<a href="?menu=membership">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Membership
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li class="">
 								<a href="?menu=info-reject">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Data Reject Operator
@@ -501,7 +519,13 @@ if($_SESSION['user_id']==false){
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
 				                        } else if($menu=="omset_laundry"){
 				                        	echo "Omset ";
-				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Laundry</small>';
+											echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Laundry</small>';
+										} else if($menu=="langganan"){
+				                        	echo "Customer ";
+											echo '<small><i class="ace-icon fa fa-angle-double-right"></i> langganan</small>';
+										} else if($menu=="membership"){
+				                        	echo "Customer ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Membership</small>';
 				                        } else if($menu=="checkout-control"){
 				                        	echo "Receipt Label ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> checkout Label</small>';
