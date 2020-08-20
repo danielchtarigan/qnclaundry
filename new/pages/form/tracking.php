@@ -43,9 +43,9 @@
                 $('#result table tr:first-child>td').text("Sedang memuat...");
             },
             success: function (response) {
-                let obj = JSON.parse(response);
+                let obj = response;
                 $('#result table tr:first-child>td').text(obj.no_nota);
-                $('#result table').append('<tr><td>Tanggal Masuk: '+obj.tgl_input+'</td><td>Diterima Oleh: '+obj.nama_reception+'</td></tr><tr><td>Tanggal SPK: '+obj.tgl_input+'</td><td>Dispk Oleh: '+obj.rcp_spk+'</td></tr><tr><td>Tanggal Cuci: '+obj.tgl_cuci+'</td><td>Dicuci Oleh: '+obj.op_cuci+'</td></tr><tr><td>Tanggal Setrika: '+obj.tgl_setrika+'</td><td>Disetrika Oleh: '+obj.user_setrika+'</td></tr><tr><td>Tanggal Packing: '+obj.tgl_packing+'</td><td>Dipacking Oleh: '+obj.user_packing+'</td></tr>');
+                $('#result table').append('<tr><td>Tanggal Masuk: '+obj.tgl_input+'</td><td>Diterima Oleh: '+obj.nama_reception+'</td></tr><tr><td>Tanggal SPK: '+obj.tgl_input+'</td><td>Dispk Oleh: '+obj.rcp_spk+'</td></tr><tr><td>Tanggal Cuci: '+obj.tgl_cuci+'</td><td>Dicuci Oleh: '+obj.op_cuci+'</td></tr><tr><td>Tanggal Setrika: '+obj.tgl_setrika+'</td><td>Disetrika Oleh: '+obj.user_setrika+'</td></tr><tr><td>Tanggal Packing: '+obj.tgl_packing+'</td><td>Dipacking Oleh: '+obj.user_packing+'</td></tr><tr><td>Tanggal Kembali: '+obj.tgl_kembali+'</td><td>Diterima Oleh: '+obj.reception_kembali+'</td></tr>');
 
                 $('#nota').val('');
             }
