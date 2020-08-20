@@ -386,6 +386,8 @@ if($row['lgn']=='1'){
 		$qres = mysqli_query($con,"SELECT * FROM reception WHERE no_nota='$nota'");
 		$rres = mysqli_fetch_array($qres);
 
+		for ($i = 0; $i<2; $i++) {
+
 		?>
 		<div style="page-break-before:always;">
 			<div style="font-size: 9pt; font-family: Tahoma" >
@@ -742,6 +744,8 @@ if($row['lgn']=='1'){
 
 		 </div>
 		 <br><br><br>		
+
+		<?php } ?>
 	 </div>
 
     </div>
