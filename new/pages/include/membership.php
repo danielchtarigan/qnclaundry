@@ -47,7 +47,7 @@
 			let start_at = $('#tanggal1').val();
 			let end_at = $('#tanggal2').val();
 			$('#langganan').DataTable().destroy();
-			datatable(start_at, end_at, outlet = "Toddopuli", token);
+			datatable(start_at, end_at, outlet, token);
 		});
 		
 		function datatable(start_at, end_at, outlet, token) {
