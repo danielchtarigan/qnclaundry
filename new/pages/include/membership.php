@@ -56,7 +56,7 @@
 				"ajax": {
 					url: "https://qnclaundry.com/apps/membership/index/"+outlet,
 					type: "POST",
-					data: {start_at:start_at, end_at:end_at, outlet:"outlet", token: token}
+					data: {start_at:start_at, end_at:end_at, outlet:outlet, token: token}
 				},
 				"columns": [
                     { "data": "name" },
