@@ -670,7 +670,11 @@ if($_SESSION['user_id']==false){
 		                        		include 'include/marketing_summary.php';
 		                        	} else if($menu=="omset_laundry"){
 										include 'include/omset_laundry.php';
-		                        	} 		                        
+		                        	} else if($menu=="langganan"){
+										include 'include/langganan.php';
+		                        	} else if($menu=="membership"){
+										include 'include/membership.php';
+									}	                        
 			                    }
 
 			                    else if(isset($_GET['transaksi'])) {
