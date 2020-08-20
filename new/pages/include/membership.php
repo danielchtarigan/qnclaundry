@@ -43,7 +43,7 @@
         let outlet = '<?= $_SESSION['outlet'] ?>';
         
 		$('button#cari').on('click', function (e) {
-			e.preventDefault();
+            e.preventDefault();            
 			let start_at = $('#tanggal1').val();
 			let end_at = $('#tanggal2').val();
 			$('#langganan').DataTable().destroy();
@@ -54,7 +54,7 @@
 			let datatable = $('#langganan').DataTable({
 				"processing": true,
 				"ajax": {
-					url: "https://qnclaundry.com/apps/membership/index/"+outlet,
+					url: "https://qnclaundry.com/apps/Membership/index/"+outlet,
 					type: "POST",
 					data: {start_at:start_at, end_at:end_at, outlet:outlet, token: token}
 				},
