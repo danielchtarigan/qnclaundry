@@ -9,7 +9,7 @@ class MembershipController extends Controller {
                 $_POST['start_at'] = "2020-01-01";
                 $_POST['end_at'] = date('Y-m-d');
             }
-            $data['data'] = $this->model('membership')->membershipByOutlet($outlet, $_POST);
+            $data['data'] = $this->model('Membership')->membershipByOutlet($outlet, $_POST);
     
             echo json_encode($data);
         }
