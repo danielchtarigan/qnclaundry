@@ -1,5 +1,5 @@
 <?php
-ini_set('session.cookie_domain', '.qnclaundry.com');
+// ini_set('session.cookie_domain', '.qnclaundry.com');
 $SETT = array (
 	'db_host'	=> 'localhost',
 	'db_username' 	=> 'qnclaund_qncop',

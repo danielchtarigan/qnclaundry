@@ -59,6 +59,11 @@ if($row['lgn']=='1'){
 					<tr>
 						<td colspan="3"><?php echo ucwords($row['alamat']) ?></td>
 					</tr>
+					<tr>
+						<td>
+							<a href="#" id="edit_data">Ubah Data</a>
+						</td>
+					</tr>
 					<?php 
 					if($status=="normal"){
 						echo '
@@ -68,6 +73,7 @@ if($row['lgn']=='1'){
 					}
 
 					?>
+					
 				</table>
 				<?php 
 				$langganan = mysqli_query($con, "SELECT * FROM langganan WHERE id_customer='$id'");
@@ -1894,6 +1900,19 @@ if($row['lgn']=='1'){
 			$('#parse_dialog').html(data);
 			$('#parse_dialog').dialog('open');
 		})
+
+	});
+
+	$('#edit_data').on('click', function (e) {  
+		e.preventDefault();
+		$('.widget-header').html("<h4 class='smaller bolder blue'><i class='ace-icon fa fa-check'></i> Ubah Data</h4>");
+		$('button.ui-button').css('border', 'none');		
+		let customer = '<?= $_GET['id'] ?>';
+		
+		$.get('form/edit_customer.php?id='+customer, function (response) {
+			$('#parse_dialog').html(response);
+			$('#parse_dialog').dialog('open');
+		});
 
 	});
 
