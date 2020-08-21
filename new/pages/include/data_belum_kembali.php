@@ -24,7 +24,7 @@ $outlet = $_SESSION['outlet'];
 				</thead>
 				<tbody>
 					<?php 
-					$query = mysqli_query($con, "SELECT * FROM reception WHERE spk=true AND lunas=true AND kembali=false AND ambil=false AND tgl_so='0000-00-00 00:00:00' AND nama_outlet='$outlet' ORDER BY id DESC");
+					$query = mysqli_query($con, "SELECT * FROM reception WHERE (cara_bayar <> 'Reject' OR cara_bayar <> 'Void') AND spk=true AND lunas=true AND kembali=false AND ambil=false AND tgl_so='0000-00-00 00:00:00' AND nama_outlet='$outlet' ORDER BY id DESC");
 					while($data = mysqli_fetch_array($query)){
 						?>
 						<tr>
