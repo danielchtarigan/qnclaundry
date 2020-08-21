@@ -93,22 +93,32 @@ if($row['lgn']=='1'){
 						<td><?php echo rp($lgn['potongan']) ?> (Potongan)</td>
 						<td></td>
 					</tr>
+					<tr>
+						<td>Aktif Sampai <?= date_format(date_create($lgn['tgl_expire']), 'd/m/Y') ?></td>
+					</tr>
 				</table>
 				<?php
 				} 
-				if($row['member']=="1"){ ?>
+				if($row['member']=="1"){
+				
+				$members = mysqli_query($con, "SELECT * FROM membership WHERE customer_id='$id' ORDER BY id DESC LIMIT 0, 1");
+				$mbr = mysqli_fetch_assoc($members);
+				?>
 				<table style="margin-bottom: 15px">
 					<tr>
 						<td style="font-weight: bold;" width="100%">Membership</td>
 						<td class="pull-right"><button type="button" class="btn btn-white btn-danger btn-sm no-border"> <i class="fa fa-times" aria-hidden="true"></i></button></td>
 					</tr>
 					<tr>
-						<td style="font-style: oblique;color: #6878CC; font-weight: bolder"><?php echo $row['jenis_member'] ?></td>
+						<td style="font-style: oblique;color: #6878CC; font-weight: bolder"><?php echo $mbr['level'] ?></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td style="font-size: 12pt; font-style: oblique; font-weight: bolder; color: #6878CC"><a href=""><?php echo $row['poin'].' Poin Rewards' ?></a></td>
 						<td></td>
+					</tr>
+					<tr>
+						<td>Aktif Sampai <?= date_format(date_create($mbr['expire_date']), 'd/m/Y') ?></td>
 					</tr>
 				</table>
 				<?php
