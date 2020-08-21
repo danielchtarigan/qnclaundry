@@ -694,6 +694,8 @@ if($_SESSION['user_id']==false){
 		                        		include 'include/marketing_summary.php';
 		                        	} else if($menu=="omset_laundry"){
 										include 'include/omset_laundry.php';
+		                        	} else if($menu=="data_laundry"){
+										include 'include/data_laundry.php';
 		                        	} else if($menu=="langganan"){
 										include 'include/langganan.php';
 		                        	} else if($menu=="membership"){
