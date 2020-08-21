@@ -472,6 +472,15 @@ if($_SESSION['user_id']==false){
 
 								<b class="arrow"></b>
 							</li>
+
+							<li class="">
+								<a href="?menu=data_laundry">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Data Laundry
+								</a>
+
+								<b class="arrow"></b>
+							</li>
 							
 							<li class="">
 								<a href="?menu=marketing_summary">
@@ -535,6 +544,9 @@ if($_SESSION['user_id']==false){
 				                        } else if($menu=="info-reject"){
 				                        	echo "Info ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Reject Operator</small>';
+				                        } else if($menu=="data_laundry"){
+				                        	echo "Data ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Data Laundry</small>';
 				                        } 
 				                    }
 
