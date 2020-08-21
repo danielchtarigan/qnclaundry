@@ -10,8 +10,9 @@ class SalesInvoiceController extends Controller {
                 $data['outlet'] = $_POST['outlet'];
                 $data['startDate'] = $_POST['startDate'];
                 $data['endDate'] = $_POST['endDate'];
-                $data['data']  = $this->model('SalesInvoice')->getOmsetByOutlet($data);
-                echo json_encode($data);
+                $result = $this->model('SalesInvoice')->getOmsetByOutlet($data);
+
+                echo json_encode($result);
             }            
         }
     }
