@@ -21,7 +21,7 @@
 
 <script>
     let id = '<?= $_GET['id'] ?>';
-    $.get('https://localhost/qnclaundry/apps/customer/show/'+id, function (response) {
+    $.get('https://qnclaundry.com/apps/customer/show/'+id, function (response) {
         obj = response;
         $('#name').val(obj.nama_customer);
         $('#alamat').val(obj.alamat);
