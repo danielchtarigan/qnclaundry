@@ -38,7 +38,7 @@
 
         $('.alert').remove();
         $.ajax({
-            url: 'https://qnclaundry.com/apps/customer/update/'+id,
+            url: 'https://qnclaundry.com/apps/Customer/update/'+id,
             type: 'POST',
             data: {token:token, alamat:alamat, email:email, telp:telp},
             success: function (obj) {  
