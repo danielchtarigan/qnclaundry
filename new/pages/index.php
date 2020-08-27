@@ -433,9 +433,9 @@ if($_SESSION['user_id']==false){
 
 						<ul class="submenu">
 							<li class="">
-								<a href="?menu=laporan_omset">
+								<a href="?menu=omset_order">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Omset
+									Omset Order
 								</a>
 
 								<b class="arrow"></b>
@@ -527,7 +527,7 @@ if($_SESSION['user_id']==false){
 				                        } else if($menu=="antrian_potongan"){
 				                        	echo "Laundry Process ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> antrian potongan</small>';
-				                        } else if($menu=="laporan_omset"){
+				                        } else if($menu=="omset_order"){
 				                        	echo "Omset ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
 				                        } else if($menu=="omset_laundry"){
@@ -698,8 +698,6 @@ if($_SESSION['user_id']==false){
 			                        	include 'include/antrian_potongan.php';
 			                        } else if($menu=="test"){
 		                        		include 'test.php';
-		                        	} else if($menu=="laporan_omset"){
-		                        		include 'include/omset.php';
 		                        	} else if($menu=="checkout-control"){
 		                        		include 'include/checkout_control.php';
 		                        	} else if($menu=="checkin-workshop"){
