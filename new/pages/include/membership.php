@@ -54,7 +54,7 @@
 			let datatable = $('#langganan').DataTable({
 				"processing": true,
 				"ajax": {
-					url: "https://qnclaundry.com/apps/Membership/index/"+outlet,
+					url: apiURL+"Membership/index/"+outlet,
 					type: "POST",
 					data: {start_at:start_at, end_at:end_at, outlet:outlet, token: token}
 				},

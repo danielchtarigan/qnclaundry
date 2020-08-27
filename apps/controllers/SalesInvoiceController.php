@@ -1,35 +1,17 @@
 <?php 
 
-
 class SalesInvoiceController extends Controller {
 
     public function omset()
     {
-        if (Authorize::accessGranted($_POST['token'])) {
-            if (isset($_POST['outlet'])) {
-                $data['outlet'] = $_POST['outlet'];
-                $data['startDate'] = $_POST['startDate'];
-                $data['endDate'] = $_POST['endDate'];
-                $result['data']  = $this->model('SalesInvoice')->getOmsetByOutlet($data);
-                echo json_encode($result);
-            }            
-        }
-    }
-
-    public function unionPayment()
-    {
-        $result['data'] = $this->model('SalesInvoice')->invoiceUnionPayment();
+        $result['data']  = $this->model('SalesInvoice')->getOmsetByOutlet($_POST);
         echo json_encode($result);
     }
 
-    public function omset2()
+    public function omset_order()
     {
-        if (isset($_POST['outlet'])) {
-            $data['outlet'] = $_POST['outlet'];
-            $data['startDate'] = $_POST['startDate'];
-            $data['endDate'] = $_POST['endDate'];
-            $result['data']  = $this->model('SalesInvoice')->omsets($data);
-            echo json_encode($result);
-        }           
+        $data['data']  = $this->model('SalesInvoice')->getOmsetByOrder($_POST);
+
+        echo json_encode($data);
     }
 }

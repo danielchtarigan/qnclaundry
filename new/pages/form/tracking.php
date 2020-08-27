@@ -36,7 +36,7 @@
         $('#result table tr').not(':first').remove();
 
         $.ajax({
-            url: 'https://qnclaundry.com/apps/SalesOrder/tracking/',
+            url: apiURL+'SalesOrder/tracking/',
             method: 'POST',
             data: {nota:nota, token:token},
             beforeSend: function () {

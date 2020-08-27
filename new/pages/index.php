@@ -12,6 +12,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
 $outlet = $_SESSION['outlet'];
 $cabang = $_SESSION['cabang'];
 
+
 function rupiah($angka){
 	$jadi = number_format($angka,0,'.','.');
 	return $jadi;
@@ -34,7 +35,7 @@ if($_SESSION['user_id']==false){
 
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-		<meta name="branch_token" content="cW5jbGF1bmRyeWNhYmFuZ2NhYmFuZw==">
+		<meta name="branch_token" content="$2y$16$dPo2yBTovrL/5TvCZyI/8utLhMTMx3VayE1RUKWcMx.0sk1xY1b3W">
 
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -94,7 +95,10 @@ if($_SESSION['user_id']==false){
 
         </style>
 
-    
+			
+		<script>
+			let apiURL = 'https://qnclaundry.com/apps/';
+		</script>
 
 		<!-- inline styles related to this page -->
 
@@ -712,6 +716,8 @@ if($_SESSION['user_id']==false){
 										include 'include/langganan.php';
 		                        	} else if($menu=="membership"){
 										include 'include/membership.php';
+		                        	} else if($menu=="omset_order"){
+										include 'include/omset_order.php';
 									}	                        
 			                    }
 

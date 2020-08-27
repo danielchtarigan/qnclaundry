@@ -17,7 +17,8 @@ class Authorize {
 
     public function tokenChecked($token)
     {
-        if ($token == base64_encode("qnclaundrycabangcabang")) {
+        $password = "qnclaundrycabang";
+        if (password_verify($password, $token)) {
             $this->response = 1;
         }
         else {

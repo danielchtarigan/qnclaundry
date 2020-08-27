@@ -18,19 +18,15 @@
 		<thead>
 			<tr>
 				<th>Tanggal</th>
-				<th>Nama Outelet</th>
-				<th>Laundry</th>
-				<th>Membership</th>
-				<th>Langganan</th>
-				<th>Locker</th>
+				<th>Reception</th>
+				<th>Kiloan</th>
+				<th>Potongan</th>
 				<th>Jumlah</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
 				<th colspan="2" style="text-align:right">Total:</th>
-				<th></th>
-				<th></th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -42,6 +38,7 @@
 
 <script type="text/javascript">
 	$(function(){
+		
 		$('#tanggal1').datepicker({
 			dateFormat : 'yy/mm/dd',
 		});
@@ -65,33 +62,21 @@
 			let datatable = $('#omset').DataTable({
 				"processing": true,
 				"ajax": {
-					url: apiURL+"SalesInvoice/omset/",
+					url: apiURL+"SalesInvoice/omset_order/",
 					type: "POST",
 					data: {startDate:startDate, endDate:endDate, outlet:outlet, userId: userId, token: token}
 				},
 				"columns": [
 					{ "data": "tgl" },
-					{ "data": "nama_outlet" },
+					{ "data": "reception" },
 					{ 
-						"data": "laundry",  
+						"data": "kiloan",  
 						render: function ( data, type, row ) {
 							return Number(data).toLocaleString("id-ID");
 						} 
 					},
 					{ 
-						"data": "membership",  
-						render: function ( data, type, row ) {
-							return Number(data).toLocaleString("id-ID");
-						} 
-					},
-					{ 
-						"data": "langganan",  
-						render: function ( data, type, row ) {
-							return Number(data).toLocaleString("id-ID");
-						} 
-					},
-					{ 
-						"data": "locker",  
+						"data": "potongan",  
 						render: function ( data, type, row ) {
 							return Number(data).toLocaleString("id-ID");
 						} 
@@ -116,36 +101,22 @@
 					};
 		
 					// Total over all pages
-					let totalLaundry = api
+					let kiloan = api
 						.column( 2 )
 						.data()
 						.reduce( function (a, b) {
 							return intVal(a) + intVal(b);
 						}, 0 );
 
-					let totalMember = api
+					let potongan = api
 						.column( 3 )
 						.data()
 						.reduce( function (a, b) {
 							return intVal(a) + intVal(b);
 						}, 0 );
 
-					let totalLangganan = api
-						.column( 4 )
-						.data()
-						.reduce( function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0 );
-
-					let totalLocker = api
-						.column( 5 )
-						.data()
-						.reduce( function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0 );
-
 					let total = api
-						.column( 6 )
+						.column( 4 )
 						.data()
 						.reduce( function (a, b) {
 							return intVal(a) + intVal(b);
@@ -161,18 +132,12 @@
 		
 					// Update footer
 					$( api.column( 2 ).footer() ).html(
-						 'Rp '+ totalLaundry.toLocaleString("id-ID")
+						 'Rp '+ kiloan.toLocaleString("id-ID")
 					);
 					$( api.column( 3 ).footer() ).html(
-						 'Rp '+ totalMember.toLocaleString("id-ID")
+						 'Rp '+ potongan.toLocaleString("id-ID")
 					);
 					$( api.column( 4 ).footer() ).html(
-						 'Rp '+ totalLangganan.toLocaleString("id-ID")
-					);
-					$( api.column( 5 ).footer() ).html(
-						 'Rp '+ totalLocker.toLocaleString("id-ID")
-					);
-					$( api.column( 6 ).footer() ).html(
 						 'Rp '+ total.toLocaleString("id-ID")
 					);
 				}

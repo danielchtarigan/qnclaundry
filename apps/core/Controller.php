@@ -6,8 +6,19 @@ class Controller {
    }
 
    public function model($model)
-   {
-       include_once 'models/'.$model.'.php';
-       return new $model;
+   {       
+       if (isset($_POST['token'])) {
+           if (Authorize::accessGranted($_POST['token'])) {
+               include_once 'models/'.$model.'.php';
+               return new $model;
+            }
+            else {
+                echo "Access is not granted";
+            }
+        }
+        else {
+            echo "Unauthorized";
+        }
+
    }
 }
