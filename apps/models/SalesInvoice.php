@@ -26,7 +26,7 @@ class SalesInvoice {
                     AND (DATE(tgl_transaksi) BETWEEN :startDate 
                     AND :endDate) GROUP BY tgl ASC";
 
-        $this->conn->query("SELECT b.laundry, a.membership, a.langganan, a.locker, a.tgl, a.outlet FROM ($query1) AS a JOIN ($query2) AS b ON a.tgl = b.tgl");
+        $this->conn->query("SELECT b.laundry, a.membership, a.langganan, a.locker, (a.total + b.laundry) AS total , a.tgl, a.outlet AS nama_outlet FROM ($query1) AS a JOIN ($query2) AS b ON a.tgl = b.tgl");
         $this->conn->bind('outlet', $data['outlet']);
         $this->conn->bind('startDate', $data['startDate']);
         $this->conn->bind('endDate', $data['endDate']);

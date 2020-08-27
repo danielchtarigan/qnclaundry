@@ -18,7 +18,7 @@
 		<thead>
 			<tr>
 				<th>Tanggal</th>
-				<th>Nama Outelet</th>
+				<th>Nama Outlet</th>
 				<th>Laundry</th>
 				<th>Membership</th>
 				<th>Langganan</th>
