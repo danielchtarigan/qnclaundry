@@ -11,16 +11,22 @@ class SalesInvoice {
 
     public function getOmsetByOutlet($data)
     {
-        $this->conn->query("SELECT SUM(IF(jenis_transaksi = 'ritel', total, 0)) AS laundry,
-                        SUM(IF(jenis_transaksi = 'membership', total, 0)) AS membership,
+        $paymentMethod = 'cara_bayar';
+        $query1 = "SELECT SUM(IF(jenis_transaksi = 'membership', total, 0)) AS membership,
                         SUM(IF(jenis_transaksi = 'deposit', total, 0)) AS langganan,
                         SUM(IF((jenis_transaksi = 'mlocker' OR jenis_transaksi = 'slocker'), total, 0)) AS locker,
-                        SUM(total) AS total,
-                        DATE(tgl_transaksi) AS tgl, rcp, nama_outlet FROM $this->table 
+                        SUM(IF(jenis_transaksi <> 'ritel', total, 0)) AS total,
+                        DATE(tgl_transaksi) AS tgl, rcp, nama_outlet AS outlet FROM $this->table 
                         WHERE nama_outlet = :outlet
                         AND (DATE(tgl_transaksi) BETWEEN :startDate 
-                        AND :endDate) GROUP BY tgl ASC");
+                        AND :endDate) GROUP BY tgl ASC";                        
 
+        $query2 = "SELECT SUM(IF(a.cara_bayar <> 'Kuota', jumlah, 0)) AS laundry, DATE(tgl_transaksi) AS tgl FROM $paymentMethod a LEFT JOIN $this->table b ON a.no_faktur = b.no_faktur
+                    WHERE nama_outlet = :outlet
+                    AND (DATE(tgl_transaksi) BETWEEN :startDate 
+                    AND :endDate) GROUP BY tgl ASC";
+
+        $this->conn->query("SELECT b.laundry, a.membership, a.langganan, a.locker, a.tgl, a.outlet FROM ($query1) AS a JOIN ($query2) AS b ON a.tgl = b.tgl");
         $this->conn->bind('outlet', $data['outlet']);
         $this->conn->bind('startDate', $data['startDate']);
         $this->conn->bind('endDate', $data['endDate']);
