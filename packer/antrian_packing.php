@@ -60,7 +60,7 @@
 					</thead>
 					<tbody>
 						<?php
-						$query = "SELECT * FROM reception natural join control where setrika=true and packing=false and kembali=false and ambil=false and jenis='k' and nama_outlet<>'mojokerto' AND workshop='$ws' AND status_order='' ORDER BY express desc, priority desc, tgl_input asc" ;
+						$query = "SELECT * FROM reception where setrika=true and packing=false and kembali=false and ambil=false and jenis='k' and nama_outlet<>'mojokerto' AND workshop='$ws' AND status_order='' ORDER BY express desc, priority desc, tgl_input asc" ;
 						$tampil= mysqli_query($con, $query);
 
 						$no    = 1;
@@ -182,7 +182,7 @@
 					</thead>
 					<tbody>
 						<?php
-						$query = "SELECT * FROM reception natural join control where cuci=true and packing=false and kembali=false and ambil=false and jenis='p' and nama_outlet<>'mojokerto' AND workshop='$ws' AND status_order='' ORDER BY express desc, priority desc, tgl_input asc" ;
+						$query = "SELECT * FROM reception where cuci=true and packing=false and kembali=false and ambil=false and jenis='p' and nama_outlet<>'mojokerto' AND workshop='$ws' AND status_order='' ORDER BY express desc, priority desc, tgl_input asc" ;
 						$tampil= mysqli_query($con, $query);
 
 						$no    = 1;
