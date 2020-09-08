@@ -247,81 +247,75 @@ if($_GET['kode_voucher']==""){
 
 				$jenisItem = ($res3['item_order'] == "All") ? " " : "AND jenis_item = '$jenisOrder'";
 
-				$qcekcs = $con->query("SELECT * FROM telemarketer_sms_upload WHERE id_kode_promo='$idKode'");
-				if(mysqli_num_rows($qcekcs)>0){
+				switch ($kategory) {
+					case '5':
+						$kat = "Beddings";
+						break;
+					case '6':
+						$kat = "Clothes";
+						break;
+					case '7':
+						$kat = "Dolls & Shoes";
+						break;
+					case '8':
+						$kat = "Gordyn";
+						break;
+					case '9':
+						$kat = "Carpet";
+						break;
+					case '4':
+						$kat = "Pillow Case";
+						break;
+					default:
+						$kat = "All";
+						break;
+				}
+
+				$cekKontrols = $con->query("SELECT * FROM telemarketer_kontrol_kode_promo WHERE id_customer='$id_cs' AND id_kode_promo='$idKode'");
+
+				if(mysqli_num_rows($cekKontrols)>0){
+					$cekKontrol = $cekKontrols->fetch_array();
+					$usingPromo = $cekKontrol['penggunaan'];
+				}
+				else {
+					$usingPromo = 0;
+				}
+
+				if($usingPromo>=$maxPromo) {
 					echo "X";
 				}
 				else {
-
-					switch ($kategory) {
-						case '5':
-							$kat = "Beddings";
-							break;
-						case '6':
-							$kat = "Clothes";
-							break;
-						case '7':
-							$kat = "Dolls & Shoes";
-							break;
-						case '8':
-							$kat = "Gordyn";
-							break;
-						case '9':
-							$kat = "Carpet";
-							break;
-						case '4':
-							$kat = "Pillow Case";
-							break;
-						default:
-							$kat = "All";
-							break;
+					if($kategory=="All") {
+						$qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]'");
+					} else {
+						$qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]' $jenisItem AND kategori_item='$kategory' ");
 					}
+					
+					$ckat = mysqli_num_rows($qkat);
 
-					$cekKontrols = $con->query("SELECT * FROM telemarketer_kontrol_kode_promo WHERE id_customer='$id_cs' AND id_kode_promo='$idKode'");
+					if($ckat>0) {
+						$using = $usingPromo+1;
 
-					if(mysqli_num_rows($cekKontrols)>0){
-						$cekKontrol = $cekKontrols->fetch_array();
-						$usingPromo = $cekKontrol['penggunaan'];
-					}
-					else {
-						$usingPromo = 0;
-					}
-
-					if($usingPromo>=$maxPromo) {
-						echo "X";
-					}
-					else {
-			            if($kategory=="All") {
-			                $qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]'");
-			            } else {
-			                $qkat = $con->query("SELECT * FROM kategori_item_order WHERE no_nota='$_GET[nota]' $jenisItem AND kategori_item='$kategory' ");
-			            }
-						
-						$ckat = mysqli_num_rows($qkat);
-
-						if($ckat>0) {
-							$using = $usingPromo+1;
-
-							if(mysqli_num_rows($cekKontrols)>0) {
-								$inKontrol = $con->query("UPDATE telemarketer_kontrol_kode_promo SET penggunaan='$using' WHERE id_kode_promo='$idKode' AND id_customer='$id_cs'");
-							} else {
-								$inKontrol = $con->query("INSERT INTO telemarketer_kontrol_kode_promo VALUES ('$idKode','$id_cs','$using')");
-							}
-							
-							$qq = mysqli_query($con, "INSERT INTO detail_penjualan values ('', '$nowDate', 'Voucher TLM $res3[kode_promo]', '$disc', '1', '$disc', '$_GET[nota]', '$id_cs', '0', 'Voucher TLM $res3[kode_promo]')");
-							$qq = mysqli_query($con, "UPDATE telemarketer_sms_upload SET penggunaan_kode_promo='$using' WHERE id_customer='$id_cs' AND id_kode_promo='$idKode'");
-
-							echo "V";
-
-							//hapus tabel kategori_item_order
-							mysqli_query($con, "DELETE FROM kategori_item_order WHERE no_nota='$_GET[nota]'");
+						if(mysqli_num_rows($cekKontrols)>0) {
+							$inKontrol = $con->query("UPDATE telemarketer_kontrol_kode_promo SET penggunaan='$using' WHERE id_kode_promo='$idKode' AND id_customer='$id_cs'");
+						} else {
+							$inKontrol = $con->query("INSERT INTO telemarketer_kontrol_kode_promo VALUES ('$idKode','$id_cs','$using')");
 						}
-						else {
-							echo "X";	
-						}	
+						
+						$qq = mysqli_query($con, "INSERT INTO detail_penjualan values ('', '$nowDate', 'Voucher TLM $res3[kode_promo]', '$disc', '1', '$disc', '$_GET[nota]', '$id_cs', '0', 'Voucher TLM $res3[kode_promo]')");
+						$qq = mysqli_query($con, "UPDATE telemarketer_sms_upload SET penggunaan_kode_promo='$using' WHERE id_customer='$id_cs' AND id_kode_promo='$idKode'");
 
+						echo "V";
+
+						//hapus tabel kategori_item_order
+						mysqli_query($con, "DELETE FROM kategori_item_order WHERE no_nota='$_GET[nota]'");
 					}
+					else {
+						echo "X";	
+					}	
+
 				}
+				
 
 				break;
 		}
