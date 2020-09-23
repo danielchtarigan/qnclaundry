@@ -200,7 +200,7 @@ echo $nama ;
 		</thead>
 		<tbody>
 			<?php
-			$query = "SELECT * FROM reception natural join control where setrika=false and cuci=true and packing=false and kembali=false and ambil=false and jenis='p' and nama_outlet<>'mojokerto' AND workshop='$ws' ORDER BY tgl_cuci asc " ;
+			$query = "SELECT * FROM reception where setrika=false and cuci=true and packing=false and kembali=false and ambil=false and jenis='p' and nama_outlet<>'mojokerto' AND workshop='$ws' ORDER BY tgl_cuci asc " ;
 			$tampil = mysqli_query($con, $query);
 
 			$no = 1;
