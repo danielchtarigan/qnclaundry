@@ -17,7 +17,7 @@ if($row['lgn']=='1'){
 	$status = "normal";
 } 
 
-if($cabang=="Jakarta" || $cabang=="Palopo"){
+if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa"){
 
 	if($_GET['jenis']=="cks") { ?>
 			<label class="control-label col-md-4 col-xs-3">Item</label>

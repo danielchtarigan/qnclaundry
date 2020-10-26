@@ -185,7 +185,7 @@ if($row['lgn']=='1'){
 							<?php
 						}
 
-						if($_SESSION['cabang']=="Palopo" || ($_SESSION['cabang']=="Jakarta" && $_SESSION['outlet']!="Gading Serpong")){
+						if($_SESSION['cabang']=="Palopo" || $_SESSION['cabang']=="Belopa" || ($_SESSION['cabang']=="Jakarta" && $_SESSION['outlet']!="Gading Serpong")){
 							echo '<tr><td colspan="3" style="color: red"><marquee scrollamount="5">Order harus lunas agar bisa diproses di Operasional!</marquee></td></tr>';
 						}
 
@@ -385,51 +385,26 @@ if($row['lgn']=='1'){
 			<input class="hidden" type="text" name="" id="nota_orderkl2" autocomplete="off">
 		</div>
 	</div>
-	<?php 
-	if($_SESSION['cabang']=="Jakarta" || $_SESSION['cabang']=="Palopo") {
-		echo '
-		<div class="form-group" id="jenis_kiloan">
-			<div class="radio" align="center">
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="ck" id="jenis" />
-					<span class="lbl blue bolder"> Cuci Kering</span>
-				</label>
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="ckl" id="jenis" />
-					<span class="lbl blue bolder"> Cuci Kering Lipat</span>
-				</label>
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="cks" id="jenis"/>
-					<span class="lbl blue bolder"> Cuci Kering Setrika</span>
-				</label>
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="ss" id="jenis" />
-					<span class="lbl blue bolder"> Setrika &nbsp; &nbsp;</span>
-				</label>
-			</div>		
-		</div>';
-	}
-	else {
-		echo '
-		<div class="form-group" id="jenis_kiloan">
-			<div class="checkbox" align="center">
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="cks" id="jenis"/>
-					<span class="lbl blue bolder"> Cuci Kering Setrika</span>
-				</label>
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="ckl" id="jenis" />
-					<span class="lbl blue bolder"> Cuci Kering Lipat</span>
-				</label>
-				<label>
-					<input name="form-field-radio" type="radio" class="ace" value="ss" id="jenis" />
-					<span class="lbl blue bolder"> Setrika Saja</span>
-				</label>
-			</div>		
-		</div>
-		';
-	}
-	?>	
+	<div class="form-group" id="jenis_kiloan">
+		<div class="radio" align="center">
+			<label>
+				<input name="form-field-radio" type="radio" class="ace" value="ck" id="jenis" />
+				<span class="lbl blue bolder"> Cuci Kering</span>
+			</label>
+			<label>
+				<input name="form-field-radio" type="radio" class="ace" value="ckl" id="jenis" />
+				<span class="lbl blue bolder"> Cuci Kering Lipat</span>
+			</label>
+			<label>
+				<input name="form-field-radio" type="radio" class="ace" value="cks" id="jenis"/>
+				<span class="lbl blue bolder"> Cuci Kering Setrika</span>
+			</label>
+			<label>
+				<input name="form-field-radio" type="radio" class="ace" value="ss" id="jenis" />
+				<span class="lbl blue bolder"> Setrika &nbsp; &nbsp;</span>
+			</label>
+		</div>		
+	</div>
 
 	<div class="form-group" id="pilihan_item">		
 		<label class="control-label col-md-4 col-xs-3">Item</label>
