@@ -31,7 +31,7 @@
 					<?php 
 					$sql = $con-> query("SELECT cabang FROM cabang ORDER BY cabang ASC");
 					while($res = $sql -> fetch_array()){
-						echo '<option value='.$res['cabang'].'>'.$res['cabang'].'</option>';
+						echo '<option value="'.$res['cabang'].'">'.$res['cabang'].'</option>';
 					}
 
 					?>
