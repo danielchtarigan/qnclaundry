@@ -22,6 +22,7 @@ if($_SESSION['user_id']==false){
 	header("location: ../");
 }
 
+$token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 
 ?>
@@ -35,7 +36,7 @@ if($_SESSION['user_id']==false){
 
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-		<meta name="branch_token" content="$2y$16$dPo2yBTovrL/5TvCZyI/8utLhMTMx3VayE1RUKWcMx.0sk1xY1b3W">
+		<meta name="branch_token" content="<?= $token ?>">
 
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -98,6 +99,7 @@ if($_SESSION['user_id']==false){
 			
 		<script>
 			let apiURL = 'https://qnclaundry.com/apps/';
+			// let apiURL = 'https://localhost/qnclaundry/apps/';
 		</script>
 
 		<!-- inline styles related to this page -->
@@ -716,6 +718,8 @@ if($_SESSION['user_id']==false){
 										include 'include/membership.php';
 		                        	} else if($menu=="omset_order"){
 										include 'include/omset_order.php';
+		                        	} else if($menu=="get_item"){
+										include 'include/get_items.php';
 									}	                        
 			                    }
 

@@ -10,7 +10,7 @@
 		<div class="col-md-6">
 			<select class="form-control" id="item2">
 				<?php 
-				echo '<option>--Pilih Item--</option>';
+				echo '<option value="">--Pilih Item--</option>';
 				$order_tmp = mysqli_query($con, "SELECT * FROM order_potongan_tmp WHERE id_customer='$id' AND new_nota='' ORDER BY id DESC LIMIT 0,1");
 				if(mysqli_num_rows($order_tmp)>0){
 					$tmp = mysqli_fetch_assoc($order_tmp);

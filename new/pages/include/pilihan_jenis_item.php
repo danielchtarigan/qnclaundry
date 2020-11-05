@@ -17,7 +17,10 @@ if($row['lgn']=='1'){
 	$status = "normal";
 } 
 
-if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa"){
+$langganan = mysqli_query($con, "SELECT * FROM langganan WHERE id_customer='$_GET[id]'");
+$lgn = mysqli_fetch_assoc($langganan);
+
+if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa" || $cabang=="Bulukumba"){
 
 	if($_GET['jenis']=="cks") { ?>
 			<label class="control-label col-md-4 col-xs-3">Item</label>
@@ -29,7 +32,7 @@ if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa"){
 					while($item = mysqli_fetch_assoc($ritem)){
 						$berat = $item['berat'];
 						$harga = ($berat>3) ? 15000+$berat*8000 : 10000+8000*$berat;
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*8000 : $berat*8800;
+						$hargalgn = $berat*$lgn['harga_satuan'];
 
 						if($status=="langganan") {
 							echo '<option value="'.$item['nama_item'].'-'.$hargalgn.'">'.$item['nama_item'].'</option>';
@@ -53,7 +56,7 @@ if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa"){
 					while($item = mysqli_fetch_assoc($ritem)){
 						$berat = $item['berat'];
 						$harga = $berat*8000;
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*6400;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.44;
 
 						if($status=="langganan") {
 							echo '<option value="'.$item['nama_item'].'-'.$hargalgn.'">'.$item['nama_item'].'</option>';
@@ -77,7 +80,7 @@ if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa"){
 					while($item = mysqli_fetch_assoc($ritem)){
 						$berat = $item['berat'];
 						$harga = ($berat>3) ? 15000+$berat*4000 : 10000+4000*$berat ;
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*4000 : $berat*4000;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.78;
 
 						if($status=="langganan") {
 							echo '<option value="'.$item['nama_item'].'-'.$hargalgn.'">'.$item['nama_item'].'</option>';
@@ -102,7 +105,7 @@ if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa"){
 						$items = str_replace(" Lipat", "", $item['nama_item']);
 						$berat = $item['berat'];
 						$harga = ($berat>3) ? 15000 : 10000 ;
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*4000 : $berat*3300;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.44;
 
 						if($status=="langganan") {
 							echo '<option value="'.$items.'-'.$hargalgn.'">'.$items.'</option>';
@@ -130,11 +133,11 @@ else {
 					if($_SESSION['cabang']=="Medan") {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
-						$hargalgn = $berat*7920;
+						$hargalgn = $berat*$lgn['harga_satuan'];
 					} else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*8000 : $berat*8800;
+						$hargalgn = $berat*$lgn['harga_satuan'];
 					}
 
 					if($status=="langganan") {
@@ -160,11 +163,11 @@ else {
 					if($_SESSION['cabang']=="Medan") {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
-						$hargalgn = $berat*4000;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.44;
 					} else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*6400;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.44;
 					}
 
 					if($status=="langganan") {
@@ -190,11 +193,11 @@ else {
 					if($_SESSION['cabang']=="Medan") {
 						$berat = $item['berat'];
 						$harga = $item['harga_medan'];
-						$hargalgn = $berat*5000;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.78;
 					} else {
 						$berat = $item['berat'];
 						$harga = $item['harga'];
-						$hargalgn = ($outlet=="Gading Serpong") ? $berat*6000 : $berat*7400;
+						$hargalgn = $berat*$lgn['harga_satuan']*0.78;
 					}
 
 					if($status=="langganan") {

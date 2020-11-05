@@ -27,7 +27,7 @@ if($row['lgn']=='1'){
 		<div class="col-md-6">
 			<select class="form-control" id="item2">
 				<?php 
-				echo '<option>--Pilih Item--</option>';
+				echo '<option value="">--Pilih Item--</option>';
 				$order_tmp = mysqli_query($con, "SELECT * FROM order_potongan_tmp WHERE id_customer='$_GET[id]' AND new_nota='' ORDER BY id DESC LIMIT 0,1");
 				if(mysqli_num_rows($order_tmp)>0){
 					$tmp = mysqli_fetch_assoc($order_tmp);
@@ -120,22 +120,5 @@ if($row['lgn']=='1'){
 		$('#it2').val(item[0]);
 		$("#harga2").val(item[1]);
 	});
-
-	$("#save_item").click(function(){
-		var id = "<?php echo $_GET['id'] ?>";
-		var no_nota = $("#nota_order").val();
-		var item = $("#it2").val();
-		var harga = $("#harga2").val();
-		var jumlah = $("#jumlah2").val();
-		var ket = $("#ket2").val();
-		$.ajax({
-			url 	: 'action/simpan_item_sementara.php',
-			data 	: 'id='+id+'&no_nota='+no_nota+'&item='+item+'&harga='+harga+'&ket='+ket+'&jumlah='+jumlah,
-			success : function(data){
-				$("#data_potongan").html(data);
-				$("#pilihan_potongan").load("include/pilihan_potongan2.php?id="+id);
-				$("#rincian_potongan").load("include/rincian_potongan.php?id="+id);
-			}
-		})
-	});
 </script>
+

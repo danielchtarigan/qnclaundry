@@ -56,7 +56,10 @@
 				"ajax": {
 					url: apiURL+"Membership/index/"+outlet,
 					type: "POST",
-					data: {start_at:start_at, end_at:end_at, outlet:outlet, token: token}
+					data: {start_at:start_at, end_at:end_at, outlet:outlet},
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader("Authorization", token)
+					}
 				},
 				"columns": [
                     { "data": "name" },

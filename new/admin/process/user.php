@@ -26,7 +26,6 @@ switch ($userPost) {
 
 			header("location: ../?r=control&v=daftar-user");
 
-
 		}
 
 		break;

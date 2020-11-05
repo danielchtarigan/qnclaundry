@@ -64,7 +64,10 @@
 				"ajax": {
 					url: apiURL+"SalesInvoice/omset_order/",
 					type: "POST",
-					data: {startDate:startDate, endDate:endDate, outlet:outlet, userId: userId, token: token}
+					data: {startDate:startDate, endDate:endDate, outlet:outlet, userId: userId},
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader("Authorization", token)
+					}
 				},
 				"columns": [
 					{ "data": "tgl" },

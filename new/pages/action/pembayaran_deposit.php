@@ -44,7 +44,6 @@ if($_GET['carabayar']=="undefined"){
 	} else {
 		$hargakilo = ($_SESSION['outlet']=="Gading Serpong") ? 8000 : 8800;
 	}
-		
 
 	if(mysqli_num_rows($langganan)>0){
 		$getkuota = $hargapaket;
@@ -58,13 +57,15 @@ if($_GET['carabayar']=="undefined"){
 		} else if($paket=="double"){
 			$addkiloan = 40*$_GET['masa_aktif']+$row['kilo_cks'];
 			$addpotongan = 363000*$_GET['masa_aktif']+$row['potongan'];
-		} else if($paket=="custom"){
-			$addkiloan = $getkuota/$hargakilo+$row['kilo_cks'];
-			$addpotongan = 0;
+		} else if($paket=="hemat_50") {
+			$addkiloan = 50*$_GET['masa_aktif']+$row['kilo_cks'];
+			$addpotongan = 0+$row['potongan'];
 		}
+	
+		$hargakilo = ($hargapaket+($row['kilo_cks']*$row['harga_satuan']))/$addkiloan;
 
 		mysqli_query($con, "UPDATE customer SET lgn='1' WHERE id='$_GET[id]'");
-		mysqli_query($con, "UPDATE langganan SET tgl_expire='$endDate', all_kuota='$addkuota', kilo_cks='$addkiloan', potongan='$addpotongan' WHERE id_customer='$_GET[id]'");
+		mysqli_query($con, "UPDATE langganan SET tgl_expire='$endDate', all_kuota='$addkuota', kilo_cks='$addkiloan', potongan='$addpotongan', harga_satuan='$hargakilo' WHERE id_customer='$_GET[id]'");
 	} else {
 		$getkuota = $hargapaket;
 		$addkuota = $getkuota;
@@ -77,10 +78,12 @@ if($_GET['carabayar']=="undefined"){
 		} else if($paket=="double"){
 			$addkiloan = 40*$_GET['masa_aktif'];
 			$addpotongan = 363000*$_GET['masa_aktif'];
-		} else if($paket=="custom"){
-			$addkiloan = $getkuota/$hargakilo;
-			$addpotongan = 0;
+		} else if($paket=="hemat_50"){
+			$addkiloan = 50*$_GET['masa_aktif'];
+			$addpotongan = 0+$row['potongan'];
 		}
+
+		$hargakilo = $hargapaket/$addkiloan;
 
 		mysqli_query($con, "UPDATE customer SET lgn='1' WHERE id='$_GET[id]'");
 

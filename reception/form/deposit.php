@@ -92,7 +92,7 @@
 			}else if(paket=="single")
 			{
 				$("#hargapaket").val("275000");
-			}else if(paket==family")
+			}else if(paket=="family")
 			{
 				$("#hargapaket").val("715000");
 			}else if(paket=="professional")

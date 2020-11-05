@@ -59,9 +59,12 @@
                 "order": [[ 2, "asc" ]],
                 "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 				"ajax": {
-					url: "https://qnclaundry.com/apps/SalesOrder/data_laundry/",
+					url: apiURL + "SalesOrder/data_laundry/",
 					type: "POST",
-					data: {start_at:start_at, end_at:end_at, outlet:outlet, token: token}
+					data: {start_at:start_at, end_at:end_at, outlet:outlet},
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader("Authorization", token)
+					}
 				},
 				"columns": [
                     { "data": "nama_customer" },

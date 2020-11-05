@@ -7,17 +7,14 @@ class Controller {
 
    public function model($model)
    {       
-       if (isset($_POST['token'])) {
-           if (Authorize::accessGranted($_POST['token'])) {
-               include_once 'models/'.$model.'.php';
-               return new $model;
-            }
-            else {
-                echo "Access is not granted";
-            }
+        $header = apache_request_headers();
+        $token = $header['Authorization'];
+        if (Authorize::accessGranted($token)) {
+            include_once 'models/'.$model.'.php';
+            return new $model;
         }
         else {
-            echo "Unauthorized";
+            echo "Access is not granted";
         }
 
    }

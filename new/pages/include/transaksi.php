@@ -185,9 +185,7 @@ if($row['lgn']=='1'){
 							<?php
 						}
 
-						if($_SESSION['cabang']=="Palopo" || $_SESSION['cabang']=="Belopa" || ($_SESSION['cabang']=="Jakarta" && $_SESSION['outlet']!="Gading Serpong")){
-							echo '<tr><td colspan="3" style="color: red"><marquee scrollamount="5">Order harus lunas agar bisa diproses di Operasional!</marquee></td></tr>';
-						}
+						echo '<tr><td colspan="3" style="color: red"><marquee scrollamount="5">Order harus lunas agar bisa diproses di Operasional!</marquee></td></tr>';
 
 							
 					} else { ?>
@@ -436,7 +434,9 @@ if($row['lgn']=='1'){
 
 <div class="form-horizontal hide" id="form_potongan" style="background: #d9ffd9">
 	<div id="pilihan_potongan">
-		<?php include 'include/pilihan_potongan.php'; ?>
+		<?php 
+		include 'include/pilihan_potongan.php'; 
+		?>
 	</div>	
 
 	<div id="rincian_potongan">
@@ -584,7 +584,11 @@ if($row['lgn']=='1'){
 		$rtagihansetrika = mysqli_fetch_row($tagihansetrika);
 		$ss = $rtagihansetrika[0];
 
-		$totaltagihankuota = $cks*8800+$ss*6400;
+		$tagihanckl = mysqli_query($con, "SELECT COALESCE(SUM(a.berat),0) AS berat FROM detail_penjualan AS a INNER JOIN reception AS b ON a.no_nota=b.no_nota WHERE b.lunas=false AND b.cara_bayar='' AND a.item LIKE '%Lipat%' AND a.id_customer='$id'");
+		$rtagihanckl = mysqli_fetch_row($tagihanckl);
+		$ckl = $rtagihanckl[0];
+
+		$totaltagihankuota = $cks*$lgn['harga_satuan']+$ss*$lgn['harga_satuan']*0.44+$ckl*0.78;
 
 		if($status=="langganan"){ ?>
 			<tr>
@@ -689,23 +693,28 @@ if($row['lgn']=='1'){
 
 		var cabang = '<?= $cabang ?>';
 		var outlet = '<?= $outlet ?>';
-		if(cabang=="Medan"){
-			var hkcks = 7000;
-			var hss = 4000;
-			var hckl = 5000;
-		} else{
-			if(outlet=="Gading Serpong") {
-				var hkcks = 8000;
-				var hss = 6000;
-				var hckl = 6000;
-			}
-			else {
-				var hkcks = 8800;
-				var hss = 6400;
-				var hckl = 7400;
-			}
+
+		var hkcks = '<?= $lgn['harga_satuan'] ?>';
+		var hss = '<?= $lgn['harga_satuan']*0.44 ?>';
+		var hckl = '<?= $lgn['harga_satuan']*0.78 ?>';
+
+		// if(cabang=="Medan"){
+		// 	var hkcks = 7000;
+		// 	var hss = 4000;
+		// 	var hckl = 5000;
+		// } else{
+		// 	if(outlet=="Gading Serpong") {
+		// 		var hkcks = 8000;
+		// 		var hss = 6000;
+		// 		var hckl = 6000;
+		// 	}
+		// 	else {
+		// 		var hkcks = 8800;
+		// 		var hss = 6400;
+		// 		var hckl = 7400;
+		// 	}
 				
-		}
+		// }
 
 		var totsisakuota = "<?php echo $lgn['kilo_cks'] ?>"*hkcks;
 		var bayarkiloan = (cks*hkcks+ss*hss+ckl*hckl).toFixed();
@@ -792,23 +801,26 @@ if($row['lgn']=='1'){
 
 		var cabang = '<?= $cabang ?>';
 		var outlet = '<?= $outlet ?>';
-		if(cabang=="Medan"){
-			var hkcks = 7000;
-			var hss = 4000;
-			var hckl = 5000;
-		} else {
-			if(outlet=="Gading Serpong") {
-				var hkcks = 8000;
-				var hss = 6000;
-				var hckl = 6000;
-			}
-			else {
-				var hkcks = 8800;
-				var hss = 6400;
-				var hckl = 7400;
-			}
+		var hkcks = '<?= $lgn['harga_satuan'] ?>';
+		var hss = '<?= $lgn['harga_satuan']*0.44 ?>';
+		var hckl = '<?= $lgn['harga_satuan']*0.78 ?>';
+		// if(cabang=="Medan"){
+		// 	var hkcks = 7000;
+		// 	var hss = 4000;
+		// 	var hckl = 5000;
+		// } else {
+		// 	if(outlet=="Gading Serpong") {
+		// 		var hkcks = 8000;
+		// 		var hss = 6000;
+		// 		var hckl = 6000;
+		// 	}
+		// 	else {
+		// 		var hkcks = 8800;
+		// 		var hss = 6400;
+		// 		var hckl = 7400;
+		// 	}
 				
-		}
+		// }
 
 		var kuota = cks*hkcks+ss*hss+ckl*hckl+kuota_potongan*1;
 		$.ajax({
@@ -839,10 +851,10 @@ if($row['lgn']=='1'){
 		<div class="col-md-7">
 			<select class="form-control" placeholder="Click to Choose..." id="paket">
 				<option></option>
-				<option value="all_kiloan">All Kiloan</option>
+				<option value="all_kiloan">All Kiloan 30</option>
 				<option value="single">Single</option>
 				<option value="double">Double</option>
-				<option value="custom">Custom</option>			
+				<option value="hemat_50">Paket Hemat 50 Kg</option>
 			</select>
 		</div>
 	</div>
@@ -998,11 +1010,11 @@ if($row['lgn']=='1'){
 
 <script type="text/javascript">
   $(document).ready(function(){  	
-
+	  
   	$("#jenis_kiloan").change(function(){
   		var id = "<?php echo $id ?>";
   		var jenis = $("#jenis:checked").val();
-  		$('#harga').val(0);
+  		$('#harga').val(0);  
   		$("#pilihan_item").load("include/pilihan_jenis_item.php?jenis="+jenis+"&id="+id);
   	});
 
@@ -1043,22 +1055,25 @@ if($row['lgn']=='1'){
 		$("#harga2").val(item[1]);
 	});
 
-	$("#save_item").click(function(){
+	$("body").on("click", "#save_item", function(){
 		var id = "<?php echo $id ?>";
 		var no_nota = $("#nota_order").val();
 		var item = $("#it2").val();
 		var harga = $("#harga2").val();
 		var jumlah = $("#jumlah2").val();
 		var ket = $("#ket2").val();
-		$.ajax({
-			url 	: 'action/simpan_item_sementara.php',
-			data 	: 'id='+id+'&no_nota='+no_nota+'&item='+item+'&harga='+harga+'&ket='+ket+'&jumlah='+jumlah,
-			success : function(data){
-				$("#data_potongan").html(data);
-				$("#pilihan_potongan").load("include/pilihan_potongan2.php?id="+id);
-				$("#rincian_potongan").load("include/rincian_potongan.php?id="+id);
-			}
-		})
+
+		if (item != "") {
+			$.ajax({
+				url 	: 'action/simpan_item_sementara.php',
+				data 	: 'id='+id+'&no_nota='+no_nota+'&item='+item+'&harga='+harga+'&ket='+ket+'&jumlah='+jumlah,
+				success : function(data){
+					$("#data_potongan").html(data);
+					$("#pilihan_potongan").load("include/pilihan_potongan2.php?id="+id);
+					$("#rincian_potongan").load("include/rincian_potongan.php?id="+id);
+				}
+			})
+		}
 	});
 
     $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
@@ -1699,16 +1714,19 @@ if($row['lgn']=='1'){
       		if(cabang=="Medan") {
   				var a = "210000";
   				var b = "239000";
-  				var c = "643000"
+  				var c = "643000";
+				var d = "350000"
   			} else {
   				if(outlet=="Gading Serpong") {
   					var a = "240000";
 	  				var b = "275000";
 	  				var c = "715000";
+					var d = "350000"
   				} else {
   					var a = "265000";
 	  				var b = "275000";
 	  				var c = "715000";
+					var d = "350000";
   				}	  				
   			}
       		if(aktif=='1'){  
@@ -1726,6 +1744,9 @@ if($row['lgn']=='1'){
 		      	} else if(paket=='custom'){
 		      		$("#hargapaket").val("");
 		      		$("#hargapaket").prop('readonly', false);
+		      	} else if(paket=='hemat_50'){
+		      		$("#hargapaket").val(d);
+		      		$("#hargapaket").prop('readonly', false);
 		      	}
 		      } else if(aktif=='2'){
 	      		if(paket=='all_kiloan'){      		
@@ -1741,6 +1762,9 @@ if($row['lgn']=='1'){
 		      		$("#hargapaket").prop('readonly', true);
 		      	} else if(paket=='custom'){
 		      		$("#hargapaket").val("");
+		      		$("#hargapaket").prop('readonly', false);
+		      	} else if(paket=='hemat_50'){
+		      		$("#hargapaket").val(2*d);
 		      		$("#hargapaket").prop('readonly', false);
 		      	}
 		      }		      	
