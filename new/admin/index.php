@@ -29,6 +29,7 @@ if($_SESSION['level']!='admin2'){
 }
 
 
+$token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 
 ?>
@@ -47,6 +48,7 @@ if($_SESSION['level']!='admin2'){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="branch_token" content="<?= $token ?>">
     <link rel="icon" href="../Logo bulat 2017.png">
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main2.css">
@@ -54,6 +56,9 @@ if($_SESSION['level']!='admin2'){
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+      let apiURL = 'https://qnclaundry.com/apps/';
+    </script>
   </head>
   <body class="app sidebar-mini rtl">
     <!-- Navbar-->
@@ -108,6 +113,7 @@ if($_SESSION['level']!='admin2'){
           <ul class="treeview-menu">
             <!-- <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Saldo Kasir</a></li> -->
             <li><a class="treeview-item" href="?r=tabel&v=omset"><i class="icon fa fa-circle"></i> Tabel Omset</a></li>
+            <li><a class="treeview-item" href="?r=tabel&v=sales_receipt"><i class="icon fa fa-circle"></i> Tabel Penerimaan</a></li>
             <li><a class="treeview-item" href="?r=tabel&v=order-belum-lunas"><i class="icon fa fa-circle"></i> Order Belum Lunas</a></li>
             <li><a class="treeview-item" href="?r=tabel&v=order-dibatalkan"><i class="icon fa fa-circle"></i> Order Dibatalkan</a></li>
           </ul>
@@ -129,6 +135,8 @@ if($_SESSION['level']!='admin2'){
           switch ($v) {
             case 'omset':
               include 'tables/omset.php'; break;
+            case 'sales_receipt':
+              include 'tables/sales_receipt.php'; break;
             case 'ontime-performance':
               include 'tables/otp.php'; break;
             case 'kode-promo':

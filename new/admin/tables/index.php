@@ -8,7 +8,6 @@ if($_SESSION['cabang']!="makassar"){
 } else {
   $_SESSION['zonatime'] = date_default_timezone_set('Asia/Makassar');
 }
-
 $nowDate = date('Y-m-d H:i:s');
 $date = date('Y-m-d');
 ?>
@@ -37,6 +36,7 @@ $date = date('Y-m-d');
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
   </head>
   <body class="app sidebar-mini rtl">
     <!-- Navbar-->
@@ -112,6 +112,9 @@ $date = date('Y-m-d');
         $r = $_GET['r'];
         if($r=="omset"){
           include 'omset.php';
+        }
+        else if ($r=="sales_receipt") {
+          include_once "sales_receipt";
         }
       }
 

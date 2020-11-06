@@ -72,8 +72,8 @@ else {
 							<tr>
 								<td>'.$rs['nama_outlet'].'</td>';
 
-								$kiloan = mysqli_fetch_array(mysqli_query($con, "SELECT SUM(total_bayar) FROM reception WHERE jenis='k' AND nama_outlet='$rs[nama_outlet]' AND DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate'"))[0];
-								$potongan = mysqli_fetch_array(mysqli_query($con, "SELECT SUM(total_bayar) FROM reception WHERE jenis='p' AND nama_outlet='$rs[nama_outlet]' AND DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate'"))[0];
+								$kiloan = mysqli_fetch_array(mysqli_query($con, "SELECT SUM(total_bayar) FROM reception WHERE jenis='k' AND nama_outlet='$rs[nama_outlet]' AND lunas = true AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') AND DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate'"))[0];
+								$potongan = mysqli_fetch_array(mysqli_query($con, "SELECT SUM(total_bayar) FROM reception WHERE jenis='p' AND nama_outlet='$rs[nama_outlet]' AND lunas = true AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') AND DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate'"))[0];
 
 								$tKiloan += $kiloan;
 								$tPotongan += $potongan;

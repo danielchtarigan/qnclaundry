@@ -444,9 +444,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 							</li>
 
 							<li class="">
-								<a href="?menu=omset_laundry">
+								<a href="?menu=sales_receipt">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Omset Laundry
+									Penerimaan Penjualan
 								</a>
 
 								<b class="arrow"></b>
@@ -532,8 +532,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				                        } else if($menu=="omset_order"){
 				                        	echo "Omset ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
-				                        } else if($menu=="omset_laundry"){
-				                        	echo "Omset ";
+				                        } else if($menu=="sales_receipt"){
+				                        	echo "Penerimaan Penjualan ";
 											echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Laundry</small>';
 										} else if($menu=="langganan"){
 				                        	echo "Customer ";
@@ -708,8 +708,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		                        		include 'include/reject-opr.php';
 		                        	} else if($menu=="marketing_summary"){
 		                        		include 'include/marketing_summary.php';
-		                        	} else if($menu=="omset_laundry"){
-										include 'include/omset_laundry.php';
+		                        	} else if($menu=="sales_receipt"){
+										include 'include/sales_receipt.php';
 		                        	} else if($menu=="data_laundry"){
 										include 'include/data_laundry.php';
 		                        	} else if($menu=="langganan"){
