@@ -23,7 +23,7 @@ if($_GET['nota']<>''){
 	$no_nota = $no_so;
 }
 
-$cdetail = mysqli_query($con, "SELECT * FROM detail_penjualan WHERE no_nota='$no_nota' AND item NOT LIKE 'Plastik Hanger' OR item NOT LIKE 'Hanger' OR item NOT LIKE '%Express%'");
+$cdetail = mysqli_query($con, "SELECT * FROM detail_penjualan WHERE no_nota='$no_nota' AND item NOT LIKE 'Plastik Hanger' OR item NOT LIKE 'Hanger' OR item NOT LIKE '%Express%' ORDER BY id DESC LIMIT 0, 1");
 if(mysqli_num_rows($cdetail)>0) {
 	mysqli_query($con, "DELETE FROM detail_penjualan WHERE no_nota='$no_nota'");
 	mysqli_query($con, "DELETE FROM order_tmp WHERE no_nota='$no_nota'");
