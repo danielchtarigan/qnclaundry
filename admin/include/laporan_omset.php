@@ -55,8 +55,9 @@
 				<th>Kiloan</th>
 				<th>Potongan</th>
 				<th>Membership</th>
-				<th>Laundry</th>
-				<th>Barang</th>
+				<th>Langganan</th>
+				<th>Retail</th>
+				<th>Jumlah</th>
 			</tr>
 		</thead>
 		<tbody>

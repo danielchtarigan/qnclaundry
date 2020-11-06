@@ -12,7 +12,7 @@ function currency($number) {
 
 function sales_faktur($startDate,$endDate,$outlet) {
     global $con;
-    $sql = "SELECT a.nama_outlet AS nama_outlet, a.jenis_transaksi AS jenis_transaksi, a.no_faktur AS no_faktur, a.total AS total, c.amount AS total_goods FROM faktur_penjualan AS a LEFT JOIN detail_order_item AS c ON a.no_faktur=c.no_faktur WHERE DATE_FORMAT(a.tgl_transaksi, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate' AND a.nama_outlet='$outlet' AND a.jenis_transaksi<>'deposit'";
+    $sql = "SELECT a.nama_outlet AS nama_outlet, a.jenis_transaksi AS jenis_transaksi, a.no_faktur AS no_faktur, a.total AS total, c.amount AS total_goods FROM faktur_penjualan AS a LEFT JOIN detail_order_item AS c ON a.no_faktur=c.no_faktur WHERE DATE_FORMAT(a.tgl_transaksi, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate' AND a.nama_outlet='$outlet'";
     $query = $con->query($sql);
     // $numRows = mysqli_num_rows($query);
     while($row = $query->fetch_array()) {
@@ -35,17 +35,24 @@ function sales_faktur($startDate,$endDate,$outlet) {
     if(empty($omset[$outlet]['membership'])) {
         $omset[$outlet]['membership'] = 0;
     }
+    if(empty($omset[$outlet]['deposit'])) {
+        $omset[$outlet]['deposit'] = 0;
+    }
     if(empty($omset[$outlet]['ritel'])) {
         $omset[$outlet]['ritel'] = 0;
     }
     if(empty($omset['membership'])) {
         $omset['membership'] = 0;
     }
+    if(empty($omset['deposit'])) {
+        $omset['deposit'] = 0;
+    }
     
     $data[$outlet] = [
         'outlet' => $outlet,
         'member' => $omset[$outlet]['membership'],
-        'ritel' => $omset[$outlet]['ritel'],
+        'langganan' => $omset[$outlet]['deposit'],
+        // 'ritel' => $omset[$outlet]['ritel'],
         'goods' => $omsetGoods[$outlet]['goods']        
     ];
     return $data;
@@ -53,7 +60,7 @@ function sales_faktur($startDate,$endDate,$outlet) {
 
 function sales_laundry($startDate, $endDate, $outlet) {
     global $con; $rincian = array();
-    $sql = "SELECT * FROM reception WHERE DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate' AND nama_outlet='$outlet' AND lunas=true AND cara_bayar<>'Void' AND cara_bayar<>'Reject'";
+    $sql = "SELECT * FROM reception WHERE DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$startDate' AND '$endDate' AND nama_outlet='$outlet' AND lunas=true AND (cara_bayar<>'Void' AND cara_bayar<>'Reject' AND cara_bayar<>'Kuota')";
     $query = $con->query($sql);
     $numRows = mysqli_num_rows($query);
     while($row = $query->fetch_array()) {
@@ -105,8 +112,9 @@ while($row = $query->fetch_array()) {
             <th>Kiloan</th>
             <th>Potongan</th>
             <th>Membership</th>
-            <th>Laundry</th>
-            <th>Barang</th>
+            <th>Langganan</th>
+            <th>Retail</th>
+            <th>Jumlah</th>
         </tr>
     </thead>
     <tbody>
@@ -126,6 +134,11 @@ while($row = $query->fetch_array()) {
                 $tmembers = 0;
                 $tmembers += $salesFaktur[$data['outlet']]['member'];
                 $tmember[] = $tmembers;
+                $tmembers = 0;
+
+                $tlangganans = 0;
+                $tlangganans += $salesFaktur[$data['outlet']]['langganan'];
+                $tlangganan[] = $tlangganans;
 
                 $tgoodss = 0;
                 $tgoodss += $salesFaktur[$data['outlet']]['goods'];
@@ -137,8 +150,9 @@ while($row = $query->fetch_array()) {
                     <td align="center"><?= currency($salesLaundry[$data['outlet']]['kiloan']) ?></td>
                     <td align="center"><?= currency($salesLaundry[$data['outlet']]['potongan']) ?></td>
                     <td align="center"><?= currency($salesFaktur[$data['outlet']]['member']) ?></td>
-                    <td align="center"><?= currency(array_sum($salesLaundry[$data['outlet']]) + $salesFaktur[$data['outlet']]['member']) ?></td>
+                    <td align="center"><?= currency($salesFaktur[$data['outlet']]['langganan']) ?></td>
                     <td align="center"><?= currency($salesFaktur[$data['outlet']]['goods']) ?></td>
+                    <td align="center"><?= currency(array_sum($salesLaundry[$data['outlet']]) + array_sum($salesFaktur[$data['outlet']])) ?></td>
                 </tr>
 
             <?php
@@ -152,7 +166,8 @@ while($row = $query->fetch_array()) {
             <th style="background-color: #00A8FF"><?= currency(array_sum($tkiloan)) ?></th>
             <th style="background-color: #00A8FF"><?= currency(array_sum($tpotongan)) ?></th>
             <th style="background-color: #00A8FF"><?= currency(array_sum($tmember)) ?></th>
-            <th style="background-color: #00A8FF"><?= currency(array_sum($tkiloan) + array_sum($tpotongan) + array_sum($tmember)) ?></th>
+            <th style="background-color: #00A8FF"><?= currency(array_sum($tlangganan)) ?></th>
             <th style="background-color: #00A8FF"><?= currency(array_sum($tgoods)) ?></th>
+            <th style="background-color: #00A8FF"><?= currency(array_sum($tkiloan) + array_sum($tpotongan) + array_sum($tmember) + array_sum($tlangganan)  + array_sum($tgoods)) ?></th>
         </tr>
     </tfoot>
