@@ -112,8 +112,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
             <!-- <li><a class="treeview-item" href="#"><i class="icon fa fa-circle"></i> Saldo Kasir</a></li> -->
-            <li><a class="treeview-item" href="?r=tabel&v=data_order"><i class="icon fa fa-circle"></i> Data Transaksi</a></li>
             <li><a class="treeview-item" href="?r=tabel&v=sales_omset"><i class="icon fa fa-circle"></i> Omset Penjualan</a></li>
+            <li><a class="treeview-item" href="?r=tabel&v=sales_omset_laundry"><i class="icon fa fa-circle"></i> Omset Laundry</a></li>
             <li><a class="treeview-item" href="?r=tabel&v=order-belum-lunas"><i class="icon fa fa-circle"></i> Order Belum Lunas</a></li>
             <li><a class="treeview-item" href="?r=tabel&v=order-dibatalkan"><i class="icon fa fa-circle"></i> Order Dibatalkan</a></li>
           </ul>
@@ -133,8 +133,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
         {
 
           switch ($v) {
-            case 'data_order':
-              include 'tables/data_order.php'; break;
+            case 'sales_omset_laundry':
+              include 'tables/sales_omset_laundry.php'; break;
             case 'sales_omset':
               include 'tables/sales_omset.php'; break;
             case 'ontime-performance':

@@ -434,19 +434,20 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 						<b class="arrow"></b>
 
 						<ul class="submenu">
+
 							<li class="">
-								<a href="?menu=data_order">
+								<a href="?menu=sales_omset">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Data Transaksi
+									Omset Penjualan
 								</a>
 
 								<b class="arrow"></b>
 							</li>
 
 							<li class="">
-								<a href="?menu=sales_omset">
+								<a href="?menu=omset_laundry">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Omset Penjualan
+									Omset Laundry
 								</a>
 
 								<b class="arrow"></b>
@@ -480,9 +481,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 							</li>
 
 							<li class="">
-								<a href="?menu=data_laundry">
+								<a href="?menu=data_tracking">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Data Laundry
+									Data Tracking
 								</a>
 
 								<b class="arrow"></b>
@@ -529,8 +530,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				                        } else if($menu=="antrian_potongan"){
 				                        	echo "Laundry Process ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> antrian potongan</small>';
-				                        } else if($menu=="data_order"){
-				                        	echo "Data Transaksi ";
+				                        } else if($menu=="omset_laundry"){
+				                        	echo "Omset Laundry ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
 				                        } else if($menu=="sales_omset"){
 				                        	echo "Omset Penjualan ";
@@ -550,9 +551,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				                        } else if($menu=="info-reject"){
 				                        	echo "Info ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Reject Operator</small>';
-				                        } else if($menu=="data_laundry"){
+				                        } else if($menu=="data_tracking"){
 				                        	echo "Data ";
-				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Data Laundry</small>';
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Data Tracking</small>';
 				                        } 
 				                    }
 
@@ -710,14 +711,14 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		                        		include 'include/marketing_summary.php';
 		                        	} else if($menu=="sales_omset"){
 										include 'include/sales_omset.php';
-		                        	} else if($menu=="data_laundry"){
-										include 'include/data_laundry.php';
+		                        	} else if($menu=="data_tracking"){
+										include 'include/data_tracking.php';
 		                        	} else if($menu=="langganan"){
 										include 'include/langganan.php';
 		                        	} else if($menu=="membership"){
 										include 'include/membership.php';
-		                        	} else if($menu=="data_order"){
-										include 'include/data_order.php';
+		                        	} else if($menu=="omset_laundry"){
+										include 'include/sales_omset_laundry.php';
 		                        	} else if($menu=="get_item"){
 										include 'include/get_items.php';
 									}	                        

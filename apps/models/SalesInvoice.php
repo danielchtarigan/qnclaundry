@@ -44,7 +44,7 @@ class SalesInvoice {
                     FROM $invoice 
                     WHERE nama_outlet = :outlet
                     AND (DATE(tgl_input) BETWEEN :startDate 
-                    AND :endDate) AND lunas = true AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') GROUP BY tgl ASC, reception";
+                    AND :endDate) AND lunas = true AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject' AND cara_bayar<>'Kuota' ) GROUP BY tgl ASC, reception";
         $this->conn->query($query);
         $this->conn->bind('outlet', $data['outlet']);
         $this->conn->bind('startDate', $data['startDate']);
