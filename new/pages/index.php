@@ -435,18 +435,18 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 						<ul class="submenu">
 							<li class="">
-								<a href="?menu=omset_order">
+								<a href="?menu=data_order">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Omset Order
+									Data Transaksi
 								</a>
 
 								<b class="arrow"></b>
 							</li>
 
 							<li class="">
-								<a href="?menu=sales_receipt">
+								<a href="?menu=sales_omset">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Penerimaan Penjualan
+									Omset Penjualan
 								</a>
 
 								<b class="arrow"></b>
@@ -529,11 +529,11 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				                        } else if($menu=="antrian_potongan"){
 				                        	echo "Laundry Process ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> antrian potongan</small>';
-				                        } else if($menu=="omset_order"){
-				                        	echo "Omset ";
+				                        } else if($menu=="data_order"){
+				                        	echo "Data Transaksi ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
-				                        } else if($menu=="sales_receipt"){
-				                        	echo "Penerimaan Penjualan ";
+				                        } else if($menu=="sales_omset"){
+				                        	echo "Omset Penjualan ";
 											echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Laundry</small>';
 										} else if($menu=="langganan"){
 				                        	echo "Customer ";
@@ -708,16 +708,16 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		                        		include 'include/reject-opr.php';
 		                        	} else if($menu=="marketing_summary"){
 		                        		include 'include/marketing_summary.php';
-		                        	} else if($menu=="sales_receipt"){
-										include 'include/sales_receipt.php';
+		                        	} else if($menu=="sales_omset"){
+										include 'include/sales_omset.php';
 		                        	} else if($menu=="data_laundry"){
 										include 'include/data_laundry.php';
 		                        	} else if($menu=="langganan"){
 										include 'include/langganan.php';
 		                        	} else if($menu=="membership"){
 										include 'include/membership.php';
-		                        	} else if($menu=="omset_order"){
-										include 'include/omset_order.php';
+		                        	} else if($menu=="data_order"){
+										include 'include/data_order.php';
 		                        	} else if($menu=="get_item"){
 										include 'include/get_items.php';
 									}	                        

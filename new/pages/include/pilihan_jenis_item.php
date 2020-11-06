@@ -20,7 +20,7 @@ if($row['lgn']=='1'){
 $langganan = mysqli_query($con, "SELECT * FROM langganan WHERE id_customer='$_GET[id]'");
 $lgn = mysqli_fetch_assoc($langganan);
 
-if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa" || $cabang=="Bulukumba"){
+if($cabang=="Jakarta" || $cabang=="Palopo" || $cabang=="Belopa" || $cabang=="Bulukumba" || $cabang=="Makassar 2"){
 
 	if($_GET['jenis']=="cks") { ?>
 			<label class="control-label col-md-4 col-xs-3">Item</label>

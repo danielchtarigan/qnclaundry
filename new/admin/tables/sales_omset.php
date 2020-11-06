@@ -2,12 +2,12 @@
 <div class="app-title">
 <div>
   <h1><i class="fa fa-th-list"></i> Tables</h1>
-  <p>Tabel Penerimaan Penjualan</p>
+  <p>Omset Penjualan</p>
 </div>
 <ul class="app-breadcrumb breadcrumb side">
   <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
   <li class="breadcrumb-item">Tables</li>
-  <li class="breadcrumb-item active"><a href="#">Sales Receipt</a></li>
+  <li class="breadcrumb-item active"><a href="#">Sales Omset</a></li>
 </ul>
 </div>
 
@@ -31,7 +31,7 @@
 
 <div class="tile">
 <div class="tile-body">
-  <h4>Penerimaan Penjualan</h4>
+  <h4>Omset Penjualan</h4>
   <div class="table-responsive">
   <table id="omset" class="table table-bordered table-hover table-striped" style="width:100%">
 		<thead>

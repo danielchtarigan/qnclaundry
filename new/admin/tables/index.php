@@ -110,11 +110,11 @@ $date = date('Y-m-d');
       <?php 
       if(isset($_GET['r'])){
         $r = $_GET['r'];
-        if($r=="omset"){
-          include 'omset.php';
+        if($r=="data_order"){
+          include 'data_order.php';
         }
-        else if ($r=="sales_receipt") {
-          include_once "sales_receipt";
+        else if ($r=="sales_omset") {
+          include_once "sales_omset.php";
         }
       }
 
