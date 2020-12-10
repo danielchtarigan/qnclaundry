@@ -9,9 +9,56 @@ class Customer {
         $this->conn = new Database;
     }
 
+    public function getCustomer($data) {
+        $query = "SELECT id AS id, nama_customer AS name, alamat AS address, no_telp AS telp, 
+                    CASE 
+                        WHEN lgn = 1 THEN 'Langganan'
+                        WHEN member = 1 THEN 'Membership'
+                        ELSE 'Reguler'
+                    END AS status
+                    FROM $this->table WHERE kota = :branch ORDER BY nama_customer ASC";
+        $this->conn->query($query);
+        $this->conn->bind('branch', $data['branch']);
+        return $this->conn->all();
+    }
+
+    public function getCustomerById($id)
+    {
+        $query = "SELECT nama_customer AS name FROM $this->table WHERE id = :id";
+        $this->conn->query($query);
+        $this->conn->bind('id', $id);
+        return $this->conn->single();
+    }
+
+    public function addCustomer($data) {
+        $query = "INSERT INTO $this->table ( nama_customer, no_telp, alamat, kota, tgl_input, outlet, user_input ) 
+                    VALUES (:name, :telp, :address, :branch, :dateInput, :outlet, :userId)";
+        $this->conn->query($query);
+        $this->conn->bind('telp', $data['telp']);
+        $this->conn->bind('name', $data['name']);
+        $this->conn->bind('address', $data['address']);
+        $this->conn->bind('branch', $data['branch']);
+        $this->conn->bind('dateInput', $data['dateInput']);
+        $this->conn->bind('outlet', $data['outlet']);
+        $this->conn->bind('userId', $data['userId']);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function getCustomerByOrder($data) {
+        $query = "SELECT * FROM $this->table WHERE kota = :branch AND (nama_customer LIKE :id OR no_telp LIKE :id)";
+        $this->conn->query($query);
+        $this->conn->bind('branch', $data['branch']);
+        $this->conn->bind('id', '%'.$data['id'].'%');
+        return $this->conn->all();
+    }
+
     public function show($id)
     {
-        $query = "SELECT * FROM $this->table WHERE id = :id";
+        $query = "SELECT nama_customer AS name, no_telp AS telp, alamat AS address, 
+                    IF(lgn = 1, 'Langganan', '') AS langganan,
+                    IF(member = 1, 'Membership', '') AS membership
+                    FROM $this->table WHERE id = :id";
         $this->conn->query($query);
         $this->conn->bind('id', $id);
         return $this->conn->single();
@@ -34,6 +81,16 @@ class Customer {
         $this->conn->bind('telp', $request['telp']);
         $this->conn->bind('alamat', $request['alamat']);
         $this->conn->bind('email', $request['email']);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function updateStatusLangganan($customerId)
+    {
+        $query = "UPDATE $this->table SET lgn = :lgn WHERE id = :customer_id";
+        $this->conn->query($query);
+        $this->conn->bind('lgn', 1);
+        $this->conn->bind('customer_id', $customerId);
         $this->conn->execute();
         return $this->conn->rowCount();
     }

@@ -64,16 +64,6 @@ if($row['lgn']=='1'){
 							<a href="#" id="edit_data">Ubah Data</a>
 						</td>
 					</tr>
-					<?php 
-					if($status=="normal"){
-						echo '
-						<tr>
-							<td colspan="3"><a href="#" onclick="freeMember()" style="color:red; font-weight: bolder">Free Membership</a></td>
-						</tr>';
-					}
-
-					?>
-					
 				</table>
 				<?php 
 				$langganan = mysqli_query($con, "SELECT * FROM langganan WHERE id_customer='$id'");
@@ -384,7 +374,7 @@ if($row['lgn']=='1'){
 		</div>
 	</div>
 	<div class="form-group" id="jenis_kiloan">
-		<div class="radio" align="center">
+		<div class="radio" align="center" style="display: flex;">
 			<label>
 				<input name="form-field-radio" type="radio" class="ace" value="ck" id="jenis" />
 				<span class="lbl blue bolder"> Cuci Kering</span>

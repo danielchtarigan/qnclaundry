@@ -3,10 +3,63 @@
 class SalesInvoice {
     private $table = 'faktur_penjualan';
     private $conn;
+    private $count = 0;
 
     public function __construct()
     {
         $this->conn = new Database;
+    }
+
+    public function getInvoiceNumber($code)
+    {
+        $query = "SELECT no_faktur_urut AS invoiceNumber FROM $this->table WHERE no_faktur_urut LIKE :code ORDER BY id DESC LIMIT 0, 1";
+        $this->conn->query($query);
+        $this->conn->bind('code', $code.'%');
+        return $this->conn->single();
+    }
+
+    public function getPaymentsByCustomer($customerId)
+    {
+        $query = "SELECT no_faktur AS faktur, total AS total, nama_outlet AS outlet, rcp AS kasir, DATE(tgl_transaksi) AS createDate, cara_bayar AS payMehod, jenis_transaksi AS type FROM $this->table WHERE id_customer = :customer_id ORDER BY id DESC LIMIT 0, 10";
+        $this->conn->query($query);
+        $this->conn->bind('customer_id', $customerId);
+        return $this->conn->all();
+    }
+
+    public function insertSalesPayment($data)
+    {
+        $query = "INSERT INTO $this->table (no_faktur, no_faktur_urut, nama_outlet, rcp, tgl_transaksi, total, cara_bayar, id_customer, jenis_transaksi) 
+                VALUES (:invoice_number, :invoice_number, :outlet, :user, :nowdate, :total_pay, :pay_method, :customer_id, :istype)";
+        $this->conn->query($query);
+        $this->conn->bind('invoice_number', $data->invoice_number);
+        $this->conn->bind('outlet', $data->outlet);
+        $this->conn->bind('user', $data->user);
+        $this->conn->bind('nowdate', $data->nowdate);
+        $this->conn->bind('total_pay', $data->total_pay);
+        $this->conn->bind('pay_method', $data->method);
+        $this->conn->bind('customer_id', $data->customer_id);
+        $this->conn->bind('istype', $data->type);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function insertSalesPaymentMethod($data) {
+        $query = "INSERT INTO cara_bayar (no_faktur, cara_bayar, jumlah, resepsionis, outlet, tanggal_input)
+                VALUES (:invoice_number, :payment_method, :value_payment, :user, :outlet, :nowdate)";
+        $this->conn->query($query);
+
+        foreach ($data->data as $val) {
+            $this->conn->bind('invoice_number', $data->invoice_number);
+            $this->conn->bind('payment_method', $val->method);
+            $this->conn->bind('value_payment', $val->value);
+            $this->conn->bind('user', $data->user);
+            $this->conn->bind('outlet', $data->outlet);
+            $this->conn->bind('nowdate', $data->nowdate);
+            $this->conn->execute();
+            $this->count += $this->conn->rowCount();    
+        }
+
+        return $this->count;
     }
 
     public function getOmsetByOutlet($data)
@@ -44,7 +97,7 @@ class SalesInvoice {
                     FROM $invoice 
                     WHERE nama_outlet = :outlet
                     AND (DATE(tgl_input) BETWEEN :startDate 
-                    AND :endDate) AND lunas = true AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject' AND cara_bayar<>'Kuota' ) GROUP BY tgl ASC, reception";
+                    AND :endDate) AND lunas = true AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject' AND cara_bayar <> 'Kuota') GROUP BY tgl ASC, reception";
         $this->conn->query($query);
         $this->conn->bind('outlet', $data['outlet']);
         $this->conn->bind('startDate', $data['startDate']);

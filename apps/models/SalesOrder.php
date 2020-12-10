@@ -3,6 +3,7 @@
 class SalesOrder {
     private $table = 'reception';
     private $conn;
+    private $count = 0;
 
     public function __construct()
     {
@@ -17,6 +18,110 @@ class SalesOrder {
         return $this->conn->single();
     }
 
+    public function getListOrderItem($orderNumber) {
+        $query = "SELECT * FROM detail_penjualan WHERE no_nota = :orderNumber";
+        $this->conn->query($query);
+        $this->conn->bind('orderNumber', $orderNumber);
+        return $this->conn->all();
+    }
+
+    public function getCodeOutlet($outlet)
+    {
+        $query = "SELECT b.id AS branchId, a.id_outlet AS outletId FROM outlet AS a INNER JOIN cabang AS b on a.Kota = b.cabang
+                    WHERE nama_outlet = :outlet";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $outlet);
+        return $this->conn->single();
+    }
+
+    public function getOrderNumber($code)
+    {
+        $query = "SELECT no_so AS orderNumber FROM $this->table WHERE no_so LIKE :code ORDER BY id DESC LIMIT 0, 1";
+        $this->conn->query($query);
+        $this->conn->bind('code', $code.'%');
+        return $this->conn->single();
+    }
+
+    public function saveOrder($data)
+    {
+        $query = "INSERT INTO $this->table (nama_outlet, tgl_input, nama_reception, id_customer, nama_customer, no_nota, no_so, berat, jenis, express, total_bayar, diskon, cabang)
+                    VALUES (:outlet, :datenow, :userId, :customerId, :customer, :orderNumber, :orderNumber, :isWeight, :isType, :express, :total, :discount, :branch)";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $data['outlet']);
+        $this->conn->bind('datenow', $data['datenow']);
+        $this->conn->bind('userId', $data['user']);
+        $this->conn->bind('customerId', $data['customer_id']);
+        $this->conn->bind('customer', $data['customer']);
+        $this->conn->bind('orderNumber', $data['order_number']);
+        $this->conn->bind('isWeight', $data['is_weight']);
+        $this->conn->bind('isType', $data['is_type']);
+        $this->conn->bind('express', $data['express']);
+        $this->conn->bind('total', $data['total']);
+        $this->conn->bind('discount', $data['discount']);
+        $this->conn->bind('branch', $data['branch']);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
+    }
+
+    public function saveOrderItem($data, $datenow, $customerId)
+    {
+        $query = "INSERT INTO detail_penjualan (tgl_transaksi, item, harga, jumlah, total, no_nota, id_customer, berat, keterangan)
+                    VALUES (:datenow, :item, :price, :quantity, :total, :no_order, :customerId, :isWeight, :category)";
+        $this->conn->query($query);
+
+        foreach ($data->data as $val) {
+            $this->conn->bind('datenow', $datenow);
+            $this->conn->bind('item', $val->item);
+            $this->conn->bind('price', $val->price);
+            $this->conn->bind('quantity', $val->qty);
+            $this->conn->bind('total', $val->amount);
+            $this->conn->bind('no_order', $data->order_number);
+            $this->conn->bind('customerId', $customerId);
+            $this->conn->bind('isWeight', $val->weight);
+            $this->conn->bind('category', $val->category);
+            $this->conn->execute();
+            $this->count += $this->conn->rowCount();    
+        }
+
+        return $this->count;
+    }
+
+    public function getOrdersCreated($customerId, $outlet) 
+    {
+        $query = "SELECT no_nota AS orderNumber, total_bayar AS total FROM $this->table WHERE lunas = false AND nama_outlet = :outlet AND id_customer = :customerId";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $outlet);
+        $this->conn->bind('customerId', $customerId);
+        return $this->conn->all();
+    }
+
+    public function getOrderItems($orderNumber)
+    {
+        $query = "SELECT item, jumlah AS quantity, berat AS isweight, keterangan AS category, total FROM detail_penjualan WHERE no_nota = :order_number";
+        $this->conn->query($query);
+        $this->conn->bind('order_number', $orderNumber);
+        return $this->conn->all();
+    }
+
+    public function deleteOrder($orderNumber)
+    {
+        $query = "DELETE FROM $this->table WHERE no_nota = :orderNumber";        
+        $this->conn->query($query);
+        $this->conn->bind('orderNumber', $orderNumber);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function deleteOrderItems($orderNumber)
+    {
+        $query = "DELETE FROM detail_penjualan WHERE no_nota = :orderNumber";
+        $this->conn->query($query);
+        $this->conn->bind('orderNumber', $orderNumber);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
     public function OrderByDate($request)
     {
         $query = "SELECT * FROM $this->table WHERE nama_outlet = :outlet AND DATE(tgl_input) BETWEEN :start_at AND :end_at ORDER BY tgl_input ASC";
@@ -24,6 +129,29 @@ class SalesOrder {
         $this->conn->bind('outlet', $request['outlet']);
         $this->conn->bind('start_at', $request['start_at']);
         $this->conn->bind('end_at', $request['end_at']);
+        return $this->conn->all();
+    }
+
+    public function updateOrderPayOff($data)
+    {
+        $query = "UPDATE $this->table SET lunas = :pay_off, cara_bayar = :payment_method, no_faktur = :invoice_number WHERE no_nota = :order_number";
+        $this->conn->query($query);
+        foreach ($data->data_order as $val) {
+            $this->conn->bind('pay_off', 1);
+            $this->conn->bind('payment_method', $data->method);
+            $this->conn->bind('order_number', $val->number);
+            $this->conn->bind('invoice_number', $data->invoice_number);
+            $this->conn->execute();
+            $this->count += $this->conn->rowCount(); 
+        }
+        return $this->count;
+    }
+
+    public function getLaundryAlready($customerId)
+    {
+        $query = "SELECT no_nota AS order_number, jumlah AS quantity, DATE(tgl_input) AS order_date, nama_outlet AS outlet, IF(jenis = 'k', 'Kiloan', 'Potongan') AS order_type FROM $this->table WHERE id_customer = :customerId AND lunas = true AND packing = true AND ambil = false";
+        $this->conn->query($query);
+        $this->conn->bind('customerId', $customerId);
         return $this->conn->all();
     }
     

@@ -9,9 +9,9 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
     exit();
 }
 
+
 $outlet = $_SESSION['outlet'];
 $cabang = $_SESSION['cabang'];
-
 
 function rupiah($angka){
 	$jadi = number_format($angka,0,'.','.');
@@ -62,6 +62,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="assets/css/chosen.min.css" />
+		<link rel="stylesheet" href="assets/css/extrastyle.css">
 
 		
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.0/b-html5-1.5.0/datatables.min.css"/>
@@ -95,12 +96,18 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 			}
 
 
-        </style>
+		</style>
+		
+		<!-- mystyle -->
+		<link rel="stylesheet" href="assets/css/order-style.css">
 
 			
-		<script>
+		<script type="text/javascript">
 			let apiURL = 'https://qnclaundry.com/apps/';
-			// let apiURL = 'https://localhost/qnclaundry/apps/';
+			// const apiURL = 'https://localhost/qnclaundry/apps/';
+			const branch = '<?= $_SESSION['cabang']; ?>';
+			const outlet = '<?= $_SESSION['outlet']; ?>';
+			const userId = '<?= $_SESSION['user_id']; ?>';			
 		</script>
 
 		<!-- inline styles related to this page -->
@@ -230,6 +237,18 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					<?php 
 					if($_SESSION['level']!="mitra"){
 					   
+						if ($_SESSION['user_id'] == "testing") {
+							?>
+							<li class="">
+								<a href="?menu=customer">
+									<i class="menu-icon fa fa-desktop"></i>
+									<span class="menu-text">
+										Sale Point
+									</span>
+								</a>
+							</li>
+							<?php
+						}
 						?>
 						<li class="">
 							<a href="#" class="dropdown-toggle">
@@ -518,13 +537,19 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 						<ul class="breadcrumb">
 							<li>
-								<h1>
+								<h1 style="font-size: 29px !important;">
 									<?php
 				                    if(isset($_GET['menu'])){
 				                        $menu = $_GET['menu'];
 				                        if($menu=="data-customer"){
 				                        	echo "General Transaction ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Customer Data</small>';                     
+				                        } else if($menu=="customer"){
+				                        	echo "Transaksi ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Pelanggan</small>';                     
+				                        } else if($menu=="sale"){
+				                        	echo "Transaksi ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Penjualan</small>';                     
 				                        } else if($menu=="antrian_kiloan"){
 				                        	echo "Laundry Process ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> antrian kiloan</small>';
@@ -694,7 +719,10 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 									$menu = $_GET['menu'];
 			                        if($menu=="data-customer"){
 			                            include 'form/customer.php';
-			                        }
+									}
+									else if($menu=="customer") {
+										include 'views/customer.php';
+									}
 			                        else if($menu=="antrian_kiloan"){
 			                        	include 'include/antrian_kiloan.php';
 			                        }
@@ -722,6 +750,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 										include 'include/sales_omset_laundry.php';
 		                        	} else if($menu=="get_item"){
 										include 'include/get_items.php';
+		                        	} else if($menu=="sale"){
+										include 'views/sale.php';
 									}	                        
 			                    }
 
@@ -765,7 +795,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 									<div class="row extra-omset hidden">
 										<?php 
 										if($_SESSION['level']!="mitra"){
-											include 'dash/omset_bulanan.php';
+											// include 'dash/omset_bulanan.php';
 										} else {
 
 										}
@@ -877,6 +907,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.0/b-html5-1.5.0/b-print-1.5.0/datatables.min.js"></script>
+		
+		<script src="assets/js/get-database.js"></script>
 
 		<script type="text/javascript">
 			jQuery(function($) {

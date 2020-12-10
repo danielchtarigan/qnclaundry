@@ -10,33 +10,14 @@
         $(".select-custom").each(function (index) {
             let value = $(this).attr("placeholder");
             $(this).append($("<option></option>").attr("disabled", true).attr("selected", true).text(value));
-        })
-
-        // Get authorization value to get permission on send to api
-        let token = $('meta[name=branch_token]').attr('content');
-
-        // Load data from database
-        function get_items(url, token, response) {            
-            $.ajax({
-                url: url,
-                method: "GET",
-                data: "kota=Jakarta",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", token)
-                },  
-                success: function (res) {
-                    let data = res['data'];
-                    response(data);
-                },
-            });
-        }
+        });
 
         // Proccess Data
-        get_items(apiURL + "Items", token, function(data) {
+        getData("Items", { branch: branch, outlet: outlet }, function(data) {
             selected_item("category");
             function selected_item(id, parent_id) {
                 if (id == "category") {
-                    let map = data.reduce(function (result, item) {
+                    let map = data['data'].reduce(function (result, item) {
                         result[item.category] = result[item.category] || [];
                         result[item.category].push({'name': item.name, 'price': item.price});
                         return result;

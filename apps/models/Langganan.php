@@ -3,6 +3,7 @@
 class Langganan {
     private $table = 'langganan';
     private $conn;
+    private $count = 0;
 
     public function __construct()
     {
@@ -27,5 +28,53 @@ class Langganan {
         $this->conn->query($query);
         $this->conn->bind('id', $id);
         return $this->conn->single();
+    }
+
+    public function getKuota($customerId)
+    {
+        $query = "SELECT kilo_cks AS kiloan, potongan, tgl_expire AS expire FROM $this->table WHERE id_customer = :customer_id ORDER BY id LIMIT 0,1";
+        $this->conn->query($query);
+        $this->conn->bind('customer_id', $customerId);
+        return $this->conn->single();
+    }
+
+    public function updateQuota($data)
+    {
+        $query = "UPDATE $this->table SET kilo_cks = :kilos, all_kuota = :all_kuota WHERE id_customer = :customer_id";
+        $this->conn->query($query);
+        foreach ($data->data_kuota as $val) {
+            $this->conn->bind('kilos', $val->kilo);
+            $this->conn->bind('all_kuota', 0);
+            $this->conn->bind('customer_id', $data->customer_id);
+            $this->conn->execute();
+            $this->count += $this->conn->rowCount();
+        }
+        return $this->count;
+    }
+
+    public function insertQuotaNow($data)
+    {
+        $query = "INSERT INTO $this->table (id_customer, kilo_cks, tgl_expire) VALUES (:customer_id, :kiloan, DATE_ADD(CURDATE(), INTERVAL :expire DAY))";
+        $this->conn->query($query);
+
+        $this->conn->bind('customer_id', $data['customer']);
+        $this->conn->bind('kiloan', $data['kiloan']);
+        $this->conn->bind('expire', $data['days']);
+
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function updateQuotaNow($data)
+    {
+        $query = "UPDATE $this->table SET kilo_cks = :kiloan, all_kuota = :all_kuota, tgl_expire = DATE_ADD(CURDATE(), INTERVAL :expire DAY) WHERE id_customer = :customer_id";
+        $this->conn->query($query);
+        $this->conn->bind('kiloan', $data['kiloan']);
+        $this->conn->bind('all_kuota', 0);
+        $this->conn->bind('customer_id', $data['customer']);
+        $this->conn->bind('expire', $data['days']);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
     }
 }
