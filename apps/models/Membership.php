@@ -28,4 +28,21 @@ class Membership {
         $this->conn->bind('id', $id);
         return $this->conn->single();
     }
+
+    public function insertOrder($data)
+    {
+        $query = "INSERT INTO $this->table (customer_id, no_telp, level, join_date, expire_date, user_allow, status) 
+                    VALUES (:customer_id, :telp, :level, :nowdate, DATE_ADD(CURDATE(), INTERVAL :expire MONTH), :user, :status)";
+        $this->conn->query($query);
+        $this->conn->bind('customer_id', $data['customer_id']);
+        $this->conn->bind('telp', $data['telpon']);
+        $this->conn->bind('level', $data['data']['level']);
+        $this->conn->bind('nowdate', $data['data']['nowdate']);
+        $this->conn->bind('expire', $data['data']['months']);
+        $this->conn->bind('user', $data['user']);
+        $this->conn->bind('status', 1);
+
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
 }

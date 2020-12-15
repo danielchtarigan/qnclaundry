@@ -20,16 +20,25 @@ class SalesInvoice {
 
     public function getPaymentsByCustomer($customerId)
     {
-        $query = "SELECT no_faktur AS faktur, total AS total, nama_outlet AS outlet, rcp AS kasir, DATE(tgl_transaksi) AS createDate, cara_bayar AS payMehod, jenis_transaksi AS type FROM $this->table WHERE id_customer = :customer_id ORDER BY id DESC LIMIT 0, 10";
+        $query = "SELECT no_faktur AS faktur, total AS total, nama_outlet AS outlet, rcp AS kasir, DATE(tgl_transaksi) AS createDate, cara_bayar AS payMethod, jenis_transaksi AS type, item_package FROM $this->table WHERE id_customer = :customer_id AND DATE_ADD(CURDATE(), INTERVAL -3 DAY) ORDER BY id DESC";
         $this->conn->query($query);
         $this->conn->bind('customer_id', $customerId);
         return $this->conn->all();
     }
 
+    public function getPaymentMethodByInvoiceNumber($invoiceNumber)
+    {
+        $table = 'cara_bayar';
+        $query = "SELECT cara_bayar AS method, jumlah AS amount FROM $table WHERE no_faktur = :invoice_number";
+        $this->conn->query($query);
+        $this->conn->bind('invoice_number', $invoiceNumber);
+        return $this->conn->all();
+    }
+
     public function insertSalesPayment($data)
     {
-        $query = "INSERT INTO $this->table (no_faktur, no_faktur_urut, nama_outlet, rcp, tgl_transaksi, total, cara_bayar, id_customer, jenis_transaksi) 
-                VALUES (:invoice_number, :invoice_number, :outlet, :user, :nowdate, :total_pay, :pay_method, :customer_id, :istype)";
+        $query = "INSERT INTO $this->table (no_faktur, no_faktur_urut, nama_outlet, rcp, tgl_transaksi, total, cara_bayar, id_customer, jenis_transaksi, item_package) 
+                VALUES (:invoice_number, :invoice_number, :outlet, :user, :nowdate, :total_pay, :pay_method, :customer_id, :istype, :item_package)";
         $this->conn->query($query);
         $this->conn->bind('invoice_number', $data->invoice_number);
         $this->conn->bind('outlet', $data->outlet);
@@ -39,6 +48,7 @@ class SalesInvoice {
         $this->conn->bind('pay_method', $data->method);
         $this->conn->bind('customer_id', $data->customer_id);
         $this->conn->bind('istype', $data->type);
+        $this->conn->bind('item_package', $data->item_package);
         $this->conn->execute();
         return $this->conn->rowCount();
     }

@@ -24,11 +24,14 @@ class SalesInvoiceController extends Controller {
         }
         
         $invoiceNumber = $codeOutlet.sprintf('%03s', $addNumber);    
-        
-        $data = [
-            'invoice_number' => $invoiceNumber
-        ];
 
+        return $invoiceNumber;
+        
+    }
+
+    public function get_invoice_number($outlet)
+    {
+        $data['invoice_number'] = $this->set_invoice_number($outlet);
         echo json_encode($data);
     }
 
@@ -52,13 +55,44 @@ class SalesInvoiceController extends Controller {
             $data->success_kuota = $this->model('Langganan')->updateQuota($data);
         }
 
-
         echo json_encode($data);
+    }
+
+    public function save_payment_2($data)
+    {
+        date_default_timezone_set($data['timezone']);
+        $data['nowdate'] = date('Y-m-d H:i:s');
+        $data['invoice_number'] = $this->set_invoice_number($data['outlet']);
+        $data['total_pay'] = $data['data']['total_pay'];
+        $data['method'] =  $data['data']['method'];
+        $data['type'] = $data['data']['type'];
+
+        $obj = json_decode(json_encode($data));
+
+        // Insert to faktur_penjualan
+        $data['success'] = $this->model('SalesInvoice')->insertSalesPayment($obj);
+
+        if ($data['success']  > 0) {
+            $this->get_payments_history($obj->customer_id);
+        }
     }
 
     public function get_payments_history($customerId)
     {
         $data['data'] = $this->model('SalesInvoice')->getPaymentsByCustomer($customerId);
+
+        // foreach ($data['data'] as $key => $value) {
+        //     $data['data'][$key]['order'] = $this->model('SalesOrder')->getOrderByInvoice($value['faktur']);
+        //     $data['data'][$key]['method'] = $this->model('SalesInvoice')->getPaymentMethodByInvoiceNumber($value['faktur']);
+        // }
+
+        echo json_encode($data);
+    }
+
+    public function print_faktur($faktur)
+    {
+        $data['order'] = $this->model('SalesOrder')->getOrderByInvoice($faktur);
+        $data['method'] = $this->model('SalesInvoice')->getPaymentMethodByInvoiceNumber($faktur);
 
         echo json_encode($data);
     }

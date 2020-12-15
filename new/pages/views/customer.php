@@ -36,6 +36,9 @@
 
 <script type="text/javascript">
     jQuery(function ($) {
+        // set item price
+        itemPriceOutlet();
+
         let data = { branch : branch };
         let token = $('meta[name=branch_token]').attr('content');
         customer(token, data);
@@ -63,7 +66,8 @@
             $("#dcustomer tbody").on("click", "#selectCustomer", function () {
                 var data = table.row( $(this).parents('tr') ).data();
                 let id = data.id;      
-                window.location.href = "?menu=sale&id=" + id;       
+                let url = "?menu=sale&id=" + id;
+                window.open(url, '_blank');
             });
         }
 

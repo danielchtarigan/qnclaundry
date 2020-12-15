@@ -86,7 +86,9 @@ class SalesOrderController extends Controller {
             $saveOrderItem = $this->model('SalesOrder')->saveOrderItem($getData, $dateNow, $customerId);
         }
 
-        echo json_encode($saveOrderItem);
+        if ($saveOrderItem > 0) {
+            $this->list_order_created($customerId);
+        }
     }
 
     public function list_order_created($customerId) 
@@ -104,10 +106,12 @@ class SalesOrderController extends Controller {
     public function remove_order($orderNumber) 
     {
         if ($this->model('SalesOrder')->deleteOrder($orderNumber) > 0) {
-            $data = $this->model('SalesOrder')->deleteOrderItems($orderNumber);
+            $removeOrder = $this->model('SalesOrder')->deleteOrderItems($orderNumber);
         }
 
-        echo json_encode($data);
+        if ($removeOrder > 0) {
+            $this->list_order_created($_POST['customerId']);
+        }
     }
 
     public function get_list_order($orderNumber)

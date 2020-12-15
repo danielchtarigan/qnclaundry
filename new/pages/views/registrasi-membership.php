@@ -7,7 +7,7 @@
                 <div class="list-package" id="listPackage">
                     <div class="list-group">
                         <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading" id="level" data-value="red">RED</h4>
+                            <h4 class="list-group-item-heading" id="level" data-value="Red">RED</h4>
                             <p class="list-group-item-text">
                                 <b id="discount" data-value="20">Diskon 20%</b> | <span id="months" data-value="12">12 Bulan</span> |
                                 <b style="color: red" id="price" data-value="100000">Rp 100.000</b>
@@ -23,7 +23,7 @@
                             </p>
                         </a>
                         <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading" id="level" data-value="blue3">BLUE 3 Bulan</h4>
+                            <h4 class="list-group-item-heading" id="level" data-value="Blue 3 Bulan">BLUE 3 Bulan</h4>
                             <p class="list-group-item-text">
                                 <b id="discount" data-value="20">Diskon 20%</b> | <span id="months" data-value="3">3 Bulan</span> |
                                 <b style="color: red" id="price" data-value="100000">Rp 100.000</b>
@@ -42,7 +42,7 @@
                             </p>
                         </a>
                         <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading" id="level" data-value="blue6">BLUE 6 Bulan</h4>
+                            <h4 class="list-group-item-heading" id="level" data-value="Blue 6 Bulan">BLUE 6 Bulan</h4>
                             <p class="list-group-item-text">
                                 <b id="discount" data-value="20">Diskon 20%</b> | <span id="months" data-value="6">6 Bulan</span> |
                                 <b style="color: red" id="price" data-value="150000">Rp 150.000</b>
@@ -61,7 +61,7 @@
                             </p>
                         </a>
                         <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading" id="level" data-value="blue12">BLUE 12 Bulan</h4>
+                            <h4 class="list-group-item-heading" id="level" data-value="Blue 12 Bulan">BLUE 12 Bulan</h4>
                             <p class="list-group-item-text">
                                 <b id="discount" data-value="20">Diskon 20%</b> | <span id="months" data-value="12">12 Bulan</span> |
                                 <b style="color: red" id="price" data-value="250000">Rp 250.000</b>
@@ -109,19 +109,19 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_bca" name="pay-method" value="BCA">
+                            <input type="radio" class="form-control" id="edc_bca" name="pay-method" value="edcbca">
                             <label for="edc_bca">BCA</label>
                         </div>
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_bni" name="pay-method" value="BNI">
+                            <input type="radio" class="form-control" id="edc_bni" name="pay-method" value="edcbni">
                             <label for="edc_bni">BNI</label>
                         </div>
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_bri" name="pay-method" value="BRI">
+                            <input type="radio" class="form-control" id="edc_bri" name="pay-method" value="edcbri">
                             <label for="edc_bri">BRI</label>
                         </div>
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_mandiri" name="pay-method" value="Mandiri">
+                            <input type="radio" class="form-control" id="edc_mandiri" name="pay-method" value="edcmandiri">
                             <label for="edc_mandiri">Mandiri</label>
                         </div>
                     </div>
@@ -139,7 +139,9 @@
 <script>
 jQuery(function ($) {
     let level, months, price, order = {}, data = [];
-    let customerId = '<?= $_GET['id'] ?>';    
+    dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
+    let customerId = dataCustomer['customer_id'];   
+    let telpCustomer =  dataCustomer['telp'];
 
     $(".list-group-item").on("click", function () {
         $(this).addClass("active");
@@ -155,10 +157,10 @@ jQuery(function ($) {
             data.splice(id, 1);
         });
         
-        order.customer = customerId;
         order.level = level;
         order.months = months;
-        order.price = price;        
+        order.total_pay = price;    
+        order.poin = parseInt(price/25000);    
         data.push(order);
     });
 
@@ -170,12 +172,30 @@ jQuery(function ($) {
     });
 
     $("#payPackage").on("click", function () {
+        let getData = {};
         let payMethod = $("input[name='pay-method']:checked").val();
-        order.payment = payMethod;
-        $dataOrder = data[0];
+        order.method = payMethod;
+        order.type = "membership";
 
-        alert("Belum siap digunakan");
+        getData.data = order;
+        getData.timezone = getTimeZone();
+        getData.customer_id = customerId;
+        getData.telpon = telpCustomer;
+        getData.outlet = outlet;
+        getData.user = userId;
 
+        if (payMethod !== undefined) {
+            apiData("Membership/save_order/" + customerId, { getData }, function (data) {  
+                dialog.dialog("close");  
+                if (data.readyState == 0) {
+                    $(".data-pembayaran .data-body").html('<div id="load" align="center"><span></span></div>');
+					$(".data-pembayaran .data-body>.table-overlays").hide();
+				}
+				else {
+                    window.location.href = "";
+				}
+            });
+        }
     });
 });
 

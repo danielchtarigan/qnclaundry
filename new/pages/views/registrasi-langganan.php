@@ -68,19 +68,19 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_bca" name="pay-method" value="BCA">
+                            <input type="radio" class="form-control" id="edc_bca" name="pay-method" value="edcbca">
                             <label for="edc_bca">BCA</label>
                         </div>
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_bni" name="pay-method" value="BNI">
+                            <input type="radio" class="form-control" id="edc_bni" name="pay-method" value="edcbni">
                             <label for="edc_bni">BNI</label>
                         </div>
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_bri" name="pay-method" value="BRI">
+                            <input type="radio" class="form-control" id="edc_bri" name="pay-method" value="edcbri">
                             <label for="edc_bri">BRI</label>
                         </div>
                         <div class="form-group">
-                            <input type="radio" class="form-control" id="edc_mandiri" name="pay-method" value="Mandiri">
+                            <input type="radio" class="form-control" id="edc_mandiri" name="pay-method" value="edcmandiri">
                             <label for="edc_mandiri">Mandiri</label>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
 <script>
 jQuery(function ($) {
     let package, days, price, order = {}, data = [];
-    let customerId = '<?= $_GET['id'] ?>';    
+    let customerId = '<?= $_GET['id'] ?>';   
 
     $(".list-group-item").on("click", function () {
         $(this).addClass("active");
@@ -114,10 +114,9 @@ jQuery(function ($) {
             data.splice(id, 1);
         });
         
-        order.customer = customerId;
         order.package = package;
         order.days = days;
-        order.price = price;        
+        order.total_pay = price;
         data.push(order);
     });
 
@@ -129,16 +128,30 @@ jQuery(function ($) {
     });
 
     $("#payPackage").on("click", function () {
+        let getData = {};
         let payMethod = $("input[name='pay-method']:checked").val();
-        order.payment = payMethod;
-        dataOrder = data[0];
+        order.method = payMethod;
+        order.type = "deposit";
 
-        alert("Belum Siap");
-        // if (payMethod !== undefined) {
-        //     apiData("Langganan/save_langganan/" + customerId, { dataOrder }, function (data) {  
-        //         console.log(data);
-        //     });
-        // }
+        getData.timezone = getTimeZone();
+        getData.customer_id = customerId;
+        getData.outlet = outlet;
+        getData.user = userId;
+
+        getData.data = order;
+
+        if (payMethod !== undefined) {
+            apiData("Langganan/save_langganan/" + customerId, { getData }, function (data) {  
+                dialog.dialog("close");                   
+                if (data.readyState == 0) {
+                    $(".data-pembayaran .data-body").html('<div id="load" align="center"><span></span></div>');
+					$(".data-pembayaran .data-body>.table-overlays").hide();
+				}
+				else {
+                    window.location.href = "";
+				}
+            });
+        }
     });
 });
 

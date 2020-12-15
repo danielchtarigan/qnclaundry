@@ -54,12 +54,13 @@ class Langganan {
 
     public function insertQuotaNow($data)
     {
-        $query = "INSERT INTO $this->table (id_customer, kilo_cks, tgl_expire) VALUES (:customer_id, :kiloan, DATE_ADD(CURDATE(), INTERVAL :expire DAY))";
+        $query = "INSERT INTO $this->table (tgl_join, id_customer, kilo_cks, tgl_expire) VALUES (:nowdate,  :customer_id, :kiloan, DATE_ADD(CURDATE(), INTERVAL :expire DAY))";
         $this->conn->query($query);
 
-        $this->conn->bind('customer_id', $data['customer']);
-        $this->conn->bind('kiloan', $data['kiloan']);
-        $this->conn->bind('expire', $data['days']);
+        $this->conn->bind('nowdate', $data['data']['nowdate']);
+        $this->conn->bind('customer_id', $data['customer_id']);
+        $this->conn->bind('kiloan', $data['data']['kiloan']);
+        $this->conn->bind('expire', $data['data']['days']);
 
         $this->conn->execute();
         return $this->conn->rowCount();
@@ -69,10 +70,10 @@ class Langganan {
     {
         $query = "UPDATE $this->table SET kilo_cks = :kiloan, all_kuota = :all_kuota, tgl_expire = DATE_ADD(CURDATE(), INTERVAL :expire DAY) WHERE id_customer = :customer_id";
         $this->conn->query($query);
-        $this->conn->bind('kiloan', $data['kiloan']);
+        $this->conn->bind('kiloan', $data['data']['kiloan']);
         $this->conn->bind('all_kuota', 0);
-        $this->conn->bind('customer_id', $data['customer']);
-        $this->conn->bind('expire', $data['days']);
+        $this->conn->bind('customer_id', $data['customer_id']);
+        $this->conn->bind('expire', $data['data']['days']);
         $this->conn->execute();
 
         return $this->conn->rowCount();

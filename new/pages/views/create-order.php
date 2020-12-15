@@ -218,7 +218,12 @@ jQuery(function ($) {
         serviceItem = formServiceItem.find("#service_item"),
         serviceItemPrice = formServiceItem.find("#price");
 
-    apiData("Items/" + customerId, { branch: branch, outlet: outlet }, function (data) {
+
+    // Set Url item price
+    let dataI = JSON.parse(localStorage.getItem("setItemPrice"));
+    let urlItemPrice = (dataI.branch && dataI.outlet) ? "Items/get_price_outlet" : (dataI.branch && !dataI.outlet ? "Items/get_price_branch" : "Items/get_price_default"); 
+    
+    apiData(urlItemPrice, { branch: branch, outlet: outlet }, function (data) {
         if (data.readyState == 0) {
             formMainItem.hide();
             formMainItem.closest(".choose-item").find(".overlay-content").append($('<div id="load"><span></span></div>'));
@@ -485,204 +490,6 @@ jQuery(function ($) {
     function save_order(data) {
         //
     }
-    
-
-    // let discount = $(".detail-order .detail-footer").find("#discount").data('value');
-
-    // function amountItem(price, qty) {
-    //     price = (price == "") ? 0 : parseFloat(price.toString().replace(/\,/g, '.'));
-    //     qty = (qty == "") ? 0 : parseFloat(qty.toString().replace(/\,/g, '.'));
-    //     subtotal = price*qty;
-    //     amountPrice.attr('data-value', subtotal);
-    //     amountPrice.val(rupiah(subtotal));
-    // }
-
-    // getData("Items/" + customerId, { branch: branch, outlet: outlet }, function (data) {
-    //     if (data.readyState == 0) {
-    //         $("#select-item").hide();
-    //         let height = $("#select-item").closest(".choose-item").height();
-    //         $("#select-item").closest(".choose-item").find("div").append($('<div id="load" align="center"><span style="margin-top: '+(height+20)+'px"></span></div>'));
-    //     }
-    //     else {
-    //         $("#select-item").closest(".choose-item").find("div>#load").remove();
-    //         $("#select-item").show();
-                        
-    //         selectOpt("select_category", null, null);
-    //         selectOpt("select_category_service", null, null);
-
-    //         function selectOpt(id, parentId, value) {
-    //             let getDataItems = data['data'].filter(item => item.type != "Extra Service");
-    //             let getDataService = data['data'].filter(item => item.type == "Extra Service");
-
-    //             if (id == "select_category") {
-    //                 let map = getDataItems.reduce(function (result, item) {
-    //                     result[item.category] = result[item.category] || [];
-    //                     result[item.category].push({'name': item.item, 'price': item.price});
-    //                     return result;
-    //                 }, {});
-                    
-    //                 let categories = Object.keys(map);                    
-
-    //                 if (value != null) {
-    //                     categories = categories.filter(item => item.toLowerCase().indexOf(value) > -1);
-    //                 }
-    
-    //                 $.each(categories, function (i, val) {
-    //                     let content = $('<input type="radio" id="category1" name="category"><label for="category1">category 1</label>');
-    //                     $(content[0]).attr("value", val).attr("id", "cat"+(i+1));
-    //                     $(content[1]).attr("for", "cat"+(i+1)).text(val);
-    
-    //                     $(document).find("#" + id + ">#select-option").append(content);
-    //                 });
-    //             }
-
-    //             if (id == "select_item") {
-    //                 $("#select_item>#select-option>input, #select_item>#select-option>label").remove();
-    //                 let items = $.grep(getDataItems, val => val.category === parentId);
-
-    //                 if (value != null) {
-    //                     items = items.filter(item => item.item.toLowerCase().indexOf(value) > -1);
-    //                 }
-                    
-    //                 $.each(items, function(i, val) {
-    //                     let content = $('<input type="radio" id="category1" name="items"><label for="category1">category 1</label>');
-    //                     $(content[0]).attr("value", val.item).attr("id", "item"+(i+1));
-    //                     $(content[1]).attr("for", "item"+(i+1)).text(val.item);
-    //                     $(document).find("#" + id + ">#select-option").append(content);
-    //                 });
-
-    //                 let prices = $.grep(getDataItems, val => val.item === parentId)
-    //                 if (prices.length > 0) {
-    //                     $("#price").val(prices[0].price);
-    //                     let qty = quantity.val();
-    //                     amountItem(prices[0].price, qty);
-    //                 }
-    //             }
-
-    //             if (id == "select_category_service") {
-    //                 let map = getDataService.reduce(function (result, item) {
-    //                     result[item.category] = result[item.category] || [];
-    //                     result[item.category].push({'name': item.item, 'price': item.price});
-    //                     return result;
-    //                 }, {});
-                    
-    //                 let categories = Object.keys(map);
-
-    //                 if (value != null) {
-    //                     categories = categories.filter(item => item.toLowerCase().indexOf(value) > -1);
-    //                 }
-    
-    //                 $.each(categories, function (i, val) {
-    //                     let content = $('<input type="radio" id="" name="category-service-option"><label for=""></label>');
-    //                     $(content[0]).attr("value", val).attr("id", "catService"+(i+1));
-    //                     $(content[1]).attr("for", "catService"+(i+1)).text(val);
-    
-    //                     $(document).find("#" + id + ">#select-option").append(content);
-    //                 });
-    //             }
-
-    //             if (id == "select_item_service") {
-    //                 let items = $.grep(getDataService, val => val.category === parentId);
-
-    //                 if (value != null) {
-    //                     items = items.filter(item => item.item.toLowerCase().indexOf(value) > -1);
-    //                 }
-                    
-    //                 $.each(items, function(i, val) {
-    //                     let content = $('<input type="radio" id="" name="item-service-option"><label for=""></label>');
-    //                     $(content[0]).attr("value", val.item).attr("id", "itemService"+(i+1));
-    //                     $(content[1]).attr("for", "itemService"+(i+1)).text(val.item);
-    //                     $(document).find("#" + id + ">#select-option").append(content);
-    //                 });
-
-    //                 let prices = $.grep(getDataService, val => val.item === parentId)
-    //                 if (prices.length > 0) {
-    //                     $("#priceService").val(prices[0].price);
-    //                 }
-    //             }
-    //         }
-
-            // $(document).on("click", "#select_category_main_item", function () {
-            //     let value = $(this).data('value');
-            //     if (value != undefined) {
-            //         $("#select_category_main_item>#select-option>input, #select_category_main_item>#select-option>label").remove();
-            //         $(this).attr('readonly', true);
-            //         $(this).val(value);
-            //         value = value.toLowerCase();
-            //         selectOpt("select_category", null, value);
-            //     }
-            // })
-
-    //         $(document).on("keyup keypress", "#category_item", function () {
-    //             $("#select_category>#select-option>input, #select_category>#select-option>label").remove();
-    //             value = $(this).val();
-    //             selectOpt("select_category", null, value);
-    //         });
-
-    //         $(document).on("keyup keypress", "#item", function () {
-    //             value = $(this).val();
-    //             category = $("#category_item").val();
-    //             selectOpt("select_item", category, value);
-    //         });
-
-    //         $(document).on("click", "input[name=category]", function () {
-    //             $("#item").val("");
-    //             $("#price").val(0);
-    //             category = $("#category_item").val();
-    //             $("#category_item").closest(".form-group").removeClass("has-error");
-    //             selectOpt("select_item", category, null);
-    //         });
-
-    //         $(document).on("click", "input[type=radio][name=items]", function () {
-    //             $("#price").val(0);
-    //             let item = $("#item").val();
-    //             $("#item").closest(".form-group").removeClass("has-error");      
-    //             selectOpt("select_item", item, null);   
-    //         });
-
-    //         $(document).on("keyup", "#price, #quantity", function (event) {  
-    //             amountItem($("#price").val(), $("#quantity").val());
-    //         });
-
-    //         $(document).on("keyup keypress blur", "#price, #quantity, #priceService", function (event) {                
-    //             $(this).val($(this).val().replace(/[^0-9\.]/g,''));
-    //             if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-    //                 event.preventDefault();
-    //             }
-    //         });
-
-    //         $(document).on("keyup keypress", "#categoryService", function () {
-    //             $("#select_category_service>#select-option>input, #select_category_service>#select-option>label").remove();
-    //             value = $(this).val();
-    //             selectOpt("select_category_service", null, value);
-    //         });
-
-    //         $(document).on("click", "input[name=category-service-option]", function () {
-    //             $("#itemService").val("");
-    //             $("#priceService").val(0);
-    //             $("#select_item_service>#select-option>input, #select_item_service>#select-option>label").remove();
-    //             category = $("#categoryService").val();
-    //             $("#categoryService").closest(".form-group").removeClass("has-error");
-    //             selectOpt("select_item_service", category, null);
-    //         });
-
-    //         $(document).on("keyup keypress", "#itemService", function () {
-    //             $("#select_item_service>#select-option>input, #select_item_service>#select-option>label").remove();
-    //             value = $(this).val();
-    //             category = $("#categoryService").val();
-    //             selectOpt("select_item_service", category, value);
-    //         });
-
-    //         $(document).on("click", "input[type=radio][name=item-service-option]", function () {
-    //             $("#select_item_service>#select-option>input, #select_item_service>#select-option>label").remove();
-    //             $("#priceService").val(0);
-    //             let item = $("#itemService").val();
-    //             $("#itemService").closest(".form-group").removeClass("has-error");      
-    //             selectOpt("select_item_service", item, null);   
-    //         });
-    //     };
-
-    // });    
 
     function detailOrder(orderItem, type) {
         let dataItem, dataService, totalItem, totalService;
@@ -912,7 +719,6 @@ jQuery(function ($) {
     });
 
     $(document).on("click", "#addItem", function () {   
-        console.log(dataItemReady);     
         if (dataItemReady) {
             $(this).closest(".extra-services, .preview-order, .discount-order").removeClass("show");
             $(".choose-item").addClass("show");
@@ -957,8 +763,19 @@ jQuery(function ($) {
                 orderAllItem.weight = orderItem[0].weight;
             }
 
-            getData("SalesOrder/save_order/" + customerId, { jsonData: JSON.stringify(orderAllItem) }, function (data) {
-                $(document).find("#listOrder").trigger("click");
+            getData("SalesOrder/save_order/" + customerId, { jsonData: JSON.stringify(orderAllItem), outlet: outlet }, function (data) {
+                dialog.dialog("close");
+                if (data.readyState == 0) {
+					$(".data-pesanan .data-body").html('<div id="load" align="center"><span></span></div>');
+
+					localStorage.removeItem("dataOrder");
+					$(document).find("#orderCount").data('value', 0);
+					$(document).find("#orderCount").text('0 | '+ rupiah(0));
+				}
+				else {
+					localStorage.setItem("dataOrder", JSON.stringify(data));
+					getDataOrder();
+				}
             });
         }
     });    

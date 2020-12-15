@@ -147,6 +147,14 @@ class SalesOrder {
         return $this->count;
     }
 
+    public function getOrderByInvoice($invoiceNumber)
+    {
+        $query = "SELECT no_nota AS order_number, total_bayar AS total FROM $this->table WHERE no_faktur = :invoice_number";
+        $this->conn->query($query);
+        $this->conn->bind('invoice_number', $invoiceNumber);
+        return $this->conn->all();
+    }
+
     public function getLaundryAlready($customerId)
     {
         $query = "SELECT no_nota AS order_number, jumlah AS quantity, DATE(tgl_input) AS order_date, nama_outlet AS outlet, IF(jenis = 'k', 'Kiloan', 'Potongan') AS order_type FROM $this->table WHERE id_customer = :customerId AND lunas = true AND packing = true AND ambil = false";

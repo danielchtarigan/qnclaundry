@@ -19,3 +19,7 @@ else if (isset($_REQUEST['logout']) && $_REQUEST['logout'] == "true") {
 }
 
 ?>
+
+<script>
+	localStorage.clear();
+</script>

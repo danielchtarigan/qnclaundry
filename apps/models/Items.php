@@ -15,6 +15,22 @@ class Items {
         return $this->conn->all();
     }
 
+    public function checkOutletInItem($outletId)
+    {
+        $this->conn->query("SELECT * FROM bs_adjustment_prices WHERE outlet_id = :outlet_id");
+        $this->conn->bind('outlet_id', $outletId);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function checkBranchInItem($branchId)
+    {
+        $this->conn->query("SELECT * FROM bs_adjustment_prices WHERE branch_id = :branch_id");
+        $this->conn->bind('branch_id', $branchId);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }    
+
     public function getItemPriceDefault()
     {
         $this->conn->query("SELECT b.type AS type, b.name AS category, a.name AS item, price

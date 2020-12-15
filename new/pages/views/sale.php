@@ -106,6 +106,83 @@ $id = $_GET['id'];
 		margin-bottom: 15px;
 	}
 
+	.list-group-item-body {
+        margin-top: 14px;
+    }
+
+    .list-group-item-body>.info-heading>table {
+        width: 100%;
+    }
+
+    .list-group-item-body>.info-heading>table td {
+        line-height: 2;
+    }
+
+    .select-input-item,
+    .select-item-h {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .select-item-h {
+        align-items: center;
+        width: 50%;
+    }
+
+    .select-item-h label,
+    .select-item-h input[type=checkbox] {
+        margin: 0;
+    }
+
+    .select-item-h label {
+        margin-left: 10px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .title-method {
+        font-size: 14px;
+        font-weight: bold;
+        color: seagreen;
+    }
+
+    .list-group-item-body .list-choose-method {
+        /* background-color: salmon; */
+    }
+
+    .list-group-item-body .list-choose-method>.title-method {
+        border-bottom: 1px solid #ddd;
+        padding: 6px 0;
+    }
+
+	/* style Nota */
+	.areaPrintFaktur {
+		display: none;
+		position: absolute;
+		width: 100%;
+		top: 0;
+		bottom: 0;
+		background: rgba(0,0,0,.4);
+		padding: 15px;
+		z-index: -1;
+	}
+
+	.areaPrintFaktur>.content {
+		display: none;
+		max-width: 80mm;
+		padding: 3mm;
+		background-color: #fff;
+	}
+
+	.areaPrintFaktur>.content.show {
+		display: block;
+	}
+
+	.areaPrintFaktur.active {
+		display: block;
+		z-index: 99;
+	}
+
 	@media only screen and (max-width: 768px) {
 		.panel-260 {
 			flex-direction: column;
@@ -215,6 +292,18 @@ $id = $_GET['id'];
 						</div>
 					</div>
 				</div>
+				<div class="panel-footer">
+					<div class="button-action">
+						<div class="btn-group btn-group-justified" role="group" aria-label="...">
+							<div class="btn-group" role="group">
+								<span></span>
+							</div>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-success" id="reloadListPayments"><i class="fas fa-cash-register"></i> Reload</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -266,57 +355,59 @@ $id = $_GET['id'];
 	
 </div>
 
-<div id="areaPrintOrder" style="display: none;">
-	Ini adalah halaman untuk cetak nota
-</div>	
+<div id="areaPrintOrder" style="display: none"></div>	
 
 <script type="text/javascript">
     jQuery(function ($) {
         let customerId = '<?= $_GET['id'] ?>', dataCustomer = [];
 		customerId = customerId.toString();
 
+		getCustomer();
 		listOrders();
 		paymentHistory();
 		dataOutlet();
 
-        getData("Customer/show/" + customerId, {}, function (data) {
-			
-			if (data.readyState == 0) {
-				localStorage.removeItem("dataCustomer");
-				$(".data-customer .data-body").append('<div id="load" align="center"><span></span></div>');
-				$(".data-customer .data-body>.table-overlays").hide();
-			}
-			else {
-				dataCustomer.push(data);
-				localStorage.setItem("dataCustomer", JSON.stringify(data));
-
-				$(".data-customer .data-body").find("#load").remove();
-				$(".data-customer .data-body>.table-overlays").show();
-				$(".data-customer .data-body .panel-list #panel_data>.panel-body").append("<table><tr><td id='customer'>"+ data.name +"</td><td> &nbsp; | &nbsp; </td><td>"+ data.telp +"</td></tr><tr><td colspan='3'>" + data.address + "</td></tr><tr><td colspan='3'><a href='#' id='edit_data'>Ubah Data</a></td></tr></table>");
-
-				let elLangganan = "";
-				if (data.langganan == "Langganan") {
-					elLangganan = "<table style='margin-bottom: 8px'><tr><td style='font-weight: bold;' width='100%' id='langganan'>Berlangganan</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border' id='offlgn'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td id='kuotaKiloan' data-value='"+ data.kuota.kiloan +"'>"+ data.kuota.kiloan +" Kg (Cuci Kering Setrika)</td><td></td></tr><tr><td id='kuotaPotongan' data-value='"+ data.kuota.potongan +"'>"+ rupiah(data.kuota.potongan) +" (Potongan)</td><td></td></tr><tr><td>Aktif Sampai "+ data.kuota.expire +"</td></tr></table>";
-				} 
-				else {
-					elLangganan += '<div style="margin-bottom: 20px"><em>Belum Berlangganan</em></div>'; 
-				}
-				elLangganan += "<button type='button' class='btn btn-sm btn-success' id='regPackage'>Beli Paket</button>";				
-
-				elMembership = "";
-				if (data.membership == "Membership") {
-					elMembership += "<table style='margin-bottom: 15px'><tr><td style='font-weight: bold;' width='100%' id='membership'>Membership</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td style='font-style: oblique;color: #6878CC; font-weight: bolder'>Blue6Bulan</td><td></td></tr><tr><td style='font-size: 12pt; font-style: oblique; font-weight: bolder; color: #6878CC'><a href=''>12 Poin Rewards</a></td><td></td></tr><tr><td>Aktif Sampai xx/xx/xxxx</td></tr></table>"
+		function getCustomer()
+		{
+			getData("Customer/show/" + customerId, {}, function (data) {
+				
+				if (data.readyState == 0) {
+					localStorage.removeItem("dataCustomer");
+					$(".data-customer .data-body").append('<div id="load" align="center"><span></span></div>');
+					$(".data-customer .data-body>.table-overlays").hide();
 				}
 				else {
-					elMembership += '<div style="margin-bottom: 20px"><em>Belum menjadi membership</em></div>'; 
-					elMembership += "<button type='button' class='btn btn-sm btn-success' id='regMembership'>Membership</button>";
+					dataCustomer.push(data);
+					localStorage.setItem("dataCustomer", JSON.stringify(data));
+	
+					$(".data-customer .data-body").find("#load").remove();
+					$(".data-customer .data-body>.table-overlays").show();
+					$(".data-customer .data-body .panel-list #panel_data>.panel-body").append("<table><tr><td id='customer'>"+ data.name +"</td><td> &nbsp; | &nbsp; </td><td>"+ data.telp +"</td></tr><tr><td colspan='3'>" + data.address + "</td></tr><tr><td colspan='3'><a href='#' id='edit_data'>Ubah Data</a></td></tr></table>");
+	
+					let elLangganan = "";
+					if (data.langganan == "Langganan") {
+						elLangganan = "<table style='margin-bottom: 8px'><tr><td style='font-weight: bold;' width='100%' id='langganan'>Berlangganan</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border' id='offlgn'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td id='kuotaKiloan' data-value='"+ data.kuota.kiloan +"'>"+ data.kuota.kiloan +" Kg (Cuci Kering Setrika)</td><td></td></tr><tr><td id='kuotaPotongan' data-value='"+ data.kuota.potongan +"'>"+ rupiah(data.kuota.potongan) +" (Potongan)</td><td></td></tr><tr><td>Aktif Sampai "+ data.kuota.expire +"</td></tr></table>";
+					} 
+					else {
+						elLangganan += '<div style="margin-bottom: 20px"><em>Belum Berlangganan</em></div>'; 
+					}
+					elLangganan += "<button type='button' class='btn btn-sm btn-success' id='regPackage'>Beli Paket</button>";				
+	
+					elMembership = "";
+					if (data.membership == "Membership") {
+						elMembership += "<table style='margin-bottom: 15px'><tr><td style='font-weight: bold;' width='100%' id='membership'>Membership</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td style='font-style: oblique;color: #6878CC; font-weight: bolder'>Blue6Bulan</td><td></td></tr><tr><td style='font-size: 12pt; font-style: oblique; font-weight: bolder; color: #6878CC'><a href=''>12 Poin Rewards</a></td><td></td></tr><tr><td>Aktif Sampai xx/xx/xxxx</td></tr></table>"
+					}
+					else {
+						elMembership += '<div style="margin-bottom: 20px"><em>Belum menjadi membership</em></div>'; 
+						elMembership += "<button type='button' class='btn btn-sm btn-success' id='regMembership'>Membership</button>";
+					}
+	
+					$(elLangganan).appendTo("#panel_langganan>.panel-body");
+					$(elMembership).appendTo("#panel_membership>.panel-body");
+	
 				}
-
-				$(elLangganan).appendTo("#panel_langganan>.panel-body");
-				$(elMembership).appendTo("#panel_membership>.panel-body");
-
-			}
-        });
+			});
+		}
 
 		function dataOutlet() {
 			apiData("Outlet/"+ outlet, { }, function (data) {
@@ -332,70 +423,38 @@ $id = $_GET['id'];
 		function listOrders() {
 			getData("SalesOrder/list_order_created/" + customerId, { outlet: outlet }, function (data) {
 				if (data.readyState == 0) {
-					$(".data-pesanan .data-body").append('<div id="load" align="center"><span></span></div>');
-					$(".data-pesanan .data-body>.list-order>.list-group").remove();
+					$(".data-pesanan .data-body").html('<div id="load" align="center"><span></span></div>');
 
 					localStorage.removeItem("dataOrder");
 					$(document).find("#orderCount").data('value', 0);
 					$(document).find("#orderCount").text('0 | '+ rupiah(0));
 				}
 				else {
-					$(".data-pesanan .data-body").find("#load").remove();
-
 					localStorage.setItem("dataOrder", JSON.stringify(data));
-
-					let getData = data['data'];
-
-					let items = [];
-
-					if (getData.length > 0) {
-						$(".data-pesanan .data-body>.list-order").append($('<ul class="list-group"></ul>'));
-						$.each(getData, function (i, val) {
-							let content = $('<li href="#" class="list-group-item order-number" data-id="'+val.orderNumber+'" id="orderNumber" data-kilos="'+ val.kilos +'">'+ val.orderNumber +' | <span style="color: green">' + rupiah(val.total) + '</span> | <span style="display: inline-block; text-align: right"><i class="ace-icon fa fa-trash-o" style="cursor: pointer; color: red" id="removeOrder"></i> &nbsp;<i class="ace-icon fa fa-print" style="cursor: pointer; color: green" id="showPrintAreaOrder"></i></span></li>');
-							$(".data-pesanan .data-body>.list-order>.list-group").append(content);
-
-							$.each(val.items, function (i, val) {
-								items.push(val);
-							});
-						});
-					} else {
-						$(".data-pesanan .data-body>.list-order").html('<span>Belum ada pesanan</span>');
-					}
-
-					items = items.filter(v => v.category == "Kiloan");
-					if (items.length > 0) {
-						$.each(items, function (i, val) {
-							let content = $('<div class="list-items" style="display: none"><div class="item-kiloan"><span id="item">'+ val.item +'</span><span id="quantity">'+ val.quantity +'</span><span id="weight">' + val.isweight + '</span><span id="total">' + val.total + '</span></div></div>');
-							$(".data-pesanan .data-body>.list-order>.list-group").append(content);
-						});
-					}
-
-					amount = getData.reduce( function (a, b) { 
-						return parseInt(a) + parseInt(b.total);
-					}, 0);
-
-					$(document).find("#orderCount").data('value', amount);
-					$(document).find("#orderCount").text(getData.length +' | '+ rupiah(amount));
+					getDataOrder();
 				}
 			});
-		}
+		}		
 		
 		// Dapatkan riwayat pembayaran
 		function paymentHistory()
 		{
 			getData("SalesInvoice/get_payments_history/"+ customerId, { }, function (data) {
 				if(data.readyState == 0) {
-					$(".data-pembayaran .data-body").append('<div id="load" align="center"><span></span></div>');
-					$(".data-pembayaran .data-body>.table-overlays").hide();
+					localStorage.removeItem("dataFaktur");
+					$(".data-pembayaran .data-body").html('<div id="load" align="center"><span></span></div>');
 				}
 				else{
+					localStorage.setItem("dataFaktur", JSON.stringify(data));
 					$(".data-pembayaran .data-body").find("#load").remove();
-					$(".data-pembayaran .data-body>.table-overlays").show();
+
+					$(".data-pembayaran .data-body").html('<div class="table-overlays"><div class="list-faktur"><ul class="list-group"></ul></div></div>');
 
 					let mapData = data['data'];
 					$.each(mapData, function (i, val) {
 						let type = val.type == "ritel" ? "Retail" : val.type;
-						let element = '<li class="list-group-item" id="itemFaktur" data-value="'+val.faktur+'"><div style="display: flex; width: 100%; justify-content: space-between"><h4 class="list-group-item-heading">'+ val.faktur +'</h4><small>'+val.createDate+'</small></div><p class="list-group-item-text"><b>'+ type +'</b> | <b style="color: red">'+ rupiah(val.total) +'</b> | <span><i class="ace-icon fa fa-print" style="cursor: pointer; color: green" id="printFaktur"></i></span></p></li>';
+						let element = '<li class="list-group-item invoice-number" id="itemFaktur" data-value="'+val.faktur+'"><div style="display: flex; width: 100%; justify-content: space-between"><h4 class="list-group-item-heading">'+ val.faktur +'</h4><small>'+val.createDate+'</small></div><p class="list-group-item-text"><b>'+ toFirstWorlds(type) +'</b> | <b style="color: red">'+ rupiah(val.total) +'</b> | <span><i class="ace-icon fa fa-print" style="cursor: pointer; color: green" id="printFaktur"></i></span>';
+
 						$(element).appendTo(".list-faktur>.list-group");
 					});
 					
@@ -404,22 +463,28 @@ $id = $_GET['id'];
 		}
 
 		function removeOrder(orderNumber) {
-			getData("SalesOrder/remove_order/" + orderNumber, { }, function (data) {
+			getData("SalesOrder/remove_order/" + orderNumber, { customerId: customerId, outlet: outlet }, function (data) {
 				if (data.readyState == 0) {
-					$(document).find(".data-pesanan .data-body>.list-order").html('<div id="load" align="center"><span></span></div>');
-					$(document).find(".data-pesanan .data-body>.list-order>.list-group").remove();
+					$(".data-pesanan .data-body").html('<div id="load" align="center"><span></span></div>');
+
+					localStorage.removeItem("dataOrder");
+					$(document).find("#orderCount").data('value', 0);
+					$(document).find("#orderCount").text('0 | '+ rupiah(0));
 				}
 				else {
-					if (data > 0) {
-						listOrders();
-					}
+					localStorage.setItem("dataOrder", JSON.stringify(data));
+					getDataOrder();
 				}
 			});
 		}
 
 		$("#listOrder").on("click", function () {
 			listOrders();
-		})
+		});
+
+		$("#reloadListPayments").on("click", function () {
+			paymentHistory();
+		});
 
 		$(document).on("click", "#removeOrder", function () {
 			let id = $(this).closest("li").data('id');
@@ -526,7 +591,84 @@ $id = $_GET['id'];
 		});		
 
 		$(document).on("click", "#printFaktur", function () {
-			alert("Maaf, fungsi belum bisa digunakan..");
+			let invoiceNumber = $(this).closest(".invoice-number").data('value');
+			// let url = urlView + "print-faktur.php?id=" + invoiceNumber;
+			let url = "SalesInvoice/print_faktur/" + invoiceNumber;
+
+			apiData(url, {}, function (data) {
+				if (data.readyState == 0) {
+					// $("#areaPrintOrder").html('');
+					$(".areaPrintFaktur").addClass('active').append('<div id="load" align="center"><span style="margin-top: -100px"></span></div>');
+					$(".areaPrintFaktur>.content").removeClass("show");
+				}
+				else {
+					console.log(data);
+					$(".areaPrintFaktur").find("#load").remove();
+					// $(".areaPrintFaktur").removeClass("active");
+					$(".areaPrintFaktur>.content").addClass("show");
+					let createdDate = '<?= date('D, d M y H:i A'); ?>';
+					let dataOutlet = JSON.parse(localStorage.getItem("dataOutlet")).data;
+					let dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
+					let dataFaktur = JSON.parse(localStorage.getItem("dataFaktur")).data;
+						dataFaktur = dataFaktur.filter(item => item.faktur == invoiceNumber)[0];
+						fakturType = dataFaktur.type;
+						totalFaktur = dataFaktur.total;
+
+					let divContent = '<div style="font-size: 9pt; font-family: Tahoma;" class="content-nota"></div>';
+					let divOutlet = `<div class="nota-outlet" align="center"><p style="line-height: 0.5;">Outlet: ${dataOutlet.outlet}<b></b></p><p style="line-height: 0.5;">${dataOutlet.address}</p><p style="line-height: 0.5;">Cabang: ${dataOutlet.branch}</p><p style="line-height: 0.5;">Call Center: ${dataOutlet.telpon}</p></div>`;
+					let divTitle = '<div align="center" class="nota-title"><strong><span class="style3" style="font-family: arial;font-size:10pt;">NOTA PEMBAYARAN</span></strong></div>';
+					let divIdNumber = `<div class="nota-number" align="center" style="margin-top: 5px"><strong>${invoiceNumber}</strong></div><br>`;
+
+					let divCreated = '<table style="border-top: 1px dotted #000;width:100%;" id="nota-created">';
+						divCreated += `<tr><td><span style="float:left;font-size: 9pt;">${createdDate}</span></td><td><span style="float:right;font-size: 9pt;" id="user">${userId}</span></td></tr>`;
+						divCreated += `<tr><td style="float:left;font-size: 9pt;">Ket : &nbsp;</td><td style="float:left;font-size: 9pt;" id="fakturType">${fakturType}</td></tr>`;
+						divCreated += '</table>';
+
+					let divCustomer = '<table style="font-size:9pt;border-top: 1px dotted #000;width:100%;" id="info-customer">';
+						divCustomer += `<tr><td>Nama</td><td>:</td><td>${dataCustomer.name}</td></tr><tr><td>No Telepon</td><td>:</td><td>${dataCustomer.telp}</td></tr>`;
+						divCustomer += '</table>';
+
+					let tableItem = '<table width="100%" class="table-item" style="font-size:9pt;border-top: 1px dotted #000;width:100%;">';
+					if (dataFaktur.type = "ritel") {
+						$.each(data.order, function (i, val) {
+							tableItem += `<tr><td>&nbsp; &nbsp;</td><td>${val.order_number}</td><td>${rupiah(val.total)}</td></tr>`;
+						});
+					} else {
+						tableItem += `<tr><td>&nbsp; &nbsp;</td><td>${dataFaktur.item_package}</td><td align="right">${rupiah(dataFaktur.total)}</td></tr>`;
+					}
+					tableItem += '</table>';
+
+					let tableTotal = '<table style="font-size:9pt;border-top: 1px dotted #000; border-bottom: 1px dashed #000; width:100%;" id="info-total">';
+						tableTotal += `<tr><td>&nbsp; &nbsp;</td><td align="right">Total</td><td>:</td><td align="right">${rupiah(totalFaktur)}</td></tr>`;
+						tableTotal += `<tr><td>&nbsp; &nbsp;</td><td colspan="4" align="left" style="margin-top: 1.5em"><em>Cara Pembayaran</em></td></tr>`;
+					if (dataFaktur.type = "ritel") {
+						$.each(data.method, function (i, val) {  
+							tableTotal += `<tr><td>&nbsp; &nbsp;</td><td align="right">${val.method}</td><td>:</td><td align="right">${rupiah(val.amount)}</td>`;
+						});
+					} else {
+						tableTotal += `<tr><td>&nbsp; &nbsp;</td><td align="right">${dataFaktur.payMethod}</td><td>:</td><td align="right">${rupiah(dataFaktur.total)}</td>`;
+					}
+						tableTotal +='</table';
+
+					let tableFinish = '<table style="font-size:8pt; width:100%; border-bottom: 1px solid; margin-top: 3px"><tr><td align="center">-- Terima Kasih Telah Mencuci di QnC Laundry --</td></tr></table>';
+					
+					$(".areaPrintFaktur>.content").append(divContent);
+					$('.content-nota').append(divOutlet);
+					$('.content-nota').append(divTitle);
+					$('.content-nota').append(divIdNumber);
+					$('.content-nota').append(divCreated);
+					$('.content-nota').append(divCustomer);
+					$('.content-nota').append(tableItem);
+					$('.content-nota').append(tableTotal);
+					$('.content-nota').append(tableFinish);
+					
+					let el = $(".areaPrintFaktur").html();
+					document.body.innerHTML = el;
+					window.print();
+					$(".areaPrintFaktur").removeClass("active");
+					location.reload();
+				}
+			});
 		});
 
         function printArea(elprintArea){

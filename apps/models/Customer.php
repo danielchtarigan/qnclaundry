@@ -55,7 +55,7 @@ class Customer {
 
     public function show($id)
     {
-        $query = "SELECT nama_customer AS name, no_telp AS telp, alamat AS address, 
+        $query = "SELECT id AS customer_id, nama_customer AS name, no_telp AS telp, alamat AS address, 
                     IF(lgn = 1, 'Langganan', '') AS langganan,
                     IF(member = 1, 'Membership', '') AS membership
                     FROM $this->table WHERE id = :id";
@@ -91,6 +91,17 @@ class Customer {
         $this->conn->query($query);
         $this->conn->bind('lgn', 1);
         $this->conn->bind('customer_id', $customerId);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+    
+    public function updateMembership($data)
+    {
+        $query = "UPDATE $this->table SET member = :status, poin = poin + :poin WHERE id = :customer_id";
+        $this->conn->query($query);
+        $this->conn->bind('status', 1);
+        $this->conn->bind('poin', $data['poin']);
+        $this->conn->bind('customer_id', $data['customer_id']);
         $this->conn->execute();
         return $this->conn->rowCount();
     }

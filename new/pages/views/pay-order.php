@@ -196,7 +196,7 @@
         getInvoiceNumber();
 
         function getInvoiceNumber() {
-            getData("SalesInvoice/set_invoice_number/" + outlet, { }, function (data) {
+            getData("SalesInvoice/get_invoice_number/" + outlet, { }, function (data) {
                 if (data.readyState == 0) {
                     $(".list-group-item-body .info-heading table").hide();
                     $(".payment-method").hide();
@@ -227,7 +227,18 @@
         function savePayment(finalPay) {
             getData("SalesInvoice/save_payment/" + customerId, { jsonData: JSON.stringify(finalPay) }, function (data) {
                 dialog.dialog("close");                   
-                $(document).find("#listOrder").trigger("click");
+                if (data.readyState == 0) {
+					$(".data-pesanan .data-body").html('<div id="load" align="center"><span></span></div>');
+
+					localStorage.removeItem("dataOrder");
+					$(document).find("#orderCount").data('value', 0);
+					$(document).find("#orderCount").text('0 | '+ rupiah(0));
+				}
+				else {
+                    localStorage.setItem("dataOrder", JSON.stringify({data: []}));
+                    getDataOrder();
+                    $(document).find("#reloadListPayments").trigger("click");
+				}
             });
         }
 
@@ -335,6 +346,7 @@
             finalPay.user = userId;
             finalPay.outlet = outlet;
             finalPay.type = "ritel";
+            finalPay.item_package = "Retail";
             finalPay.data = dataPay;
             finalPay.data_order = dataOrder;
             finalPay.data_kuota = dataLangganan;
