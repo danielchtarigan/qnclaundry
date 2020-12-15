@@ -16,7 +16,7 @@ date_default_timezone_set('Asia/Makassar');
 
 <div class="area-nota">
     <div style="max-width:80mm;margin:3mm;">
-        <div align="center"><img width="80%" src="../../new/logo 2017.bmp" /></div>
+        <div align="center"><img width="80%" src="https://new.qnclaundry.com/logo 2017.bmp" /></div>
         <div style="font-size: 9pt; font-family: Tahoma;">
             <div class="struk-body nota-customer">
 

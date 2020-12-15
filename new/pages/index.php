@@ -139,12 +139,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
             	include 'pesan_reject.php';
             }
 		?>
-		<!-- area nota -->
-		<div class="areaPrintFaktur" id="areaPrintFaktur">			
-			<div class="content" style="margin: 3mm">
-				<div align="center" class="nota-logo"><img width="80%" src="../../new/logo 2017.bmp" /></div>
-			</div>
-		</div>	
+			
 		<div id="navbar" class="navbar navbar-primary ace-save-state" style="background-color: #28a745">
 			<div class="navbar-container ace-save-state" id="navbar-container">
 				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
@@ -243,7 +238,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					<?php 
 					if($_SESSION['level']!="mitra"){
 					   
-						if ($_SESSION['cabang'] == "Emy Saelan" || $_SESSION['cabang'] == "Bulukumba") {
+						if ($_SESSION['cabang'] == "Makassar 2" || $_SESSION['cabang'] == "Bulukumba") {
 							?>
 							<li class="">
 								<a href="?menu=customer">

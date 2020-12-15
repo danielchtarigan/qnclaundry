@@ -199,6 +199,7 @@ $id = $_GET['id'];
 	}
 </style>
 
+
 <div class="content-main">
 	<div class="row panel-260">
 		<div class="col-lg-4 col-md-6 panel-y-auto">
@@ -593,11 +594,12 @@ $id = $_GET['id'];
 		$(document).on("click", "#printFaktur", function () {
 			let invoiceNumber = $(this).closest(".invoice-number").data('value');
 			// let url = urlView + "print-faktur.php?id=" + invoiceNumber;
-			let url = "SalesInvoice/print_faktur/" + invoiceNumber;
+			let url = "SalesInvoice/print_faktur/" + invoiceNumber;		
 
 			apiData(url, {}, function (data) {
+
 				if (data.readyState == 0) {
-					// $("#areaPrintOrder").html('');
+					$("body").append('<div class="areaPrintFaktur" id="areaPrintFaktur"><div class="content" style="margin: 3mm"><div align="center" class="nota-logo"><img width="80%" src="https://new.qnclaundry.com/logo 2017.bmp" /></div></div></div>');
 					$(".areaPrintFaktur").addClass('active').append('<div id="load" align="center"><span style="margin-top: -100px"></span></div>');
 					$(".areaPrintFaktur>.content").removeClass("show");
 				}
@@ -666,6 +668,7 @@ $id = $_GET['id'];
 					document.body.innerHTML = el;
 					window.print();
 					$(".areaPrintFaktur").removeClass("active");
+					$("body").find(".areaPrintFaktur").remove();
 					location.reload();
 				}
 			});
