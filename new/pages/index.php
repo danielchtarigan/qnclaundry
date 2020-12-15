@@ -238,7 +238,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					<?php 
 					if($_SESSION['level']!="mitra"){
 					   
-						if ($_SESSION['cabang'] == "Makassar 2" || $_SESSION['cabang'] == "Bulukumba") {
+						if ($_SESSION['cabang'] == "Emmy Saelan" || $_SESSION['cabang'] == "Bulukumba") {
 							?>
 							<li class="">
 								<a href="?menu=customer">
