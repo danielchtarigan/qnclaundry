@@ -33,6 +33,10 @@ class CustomerController extends Controller {
         if($data['langganan'] == "Langganan") {
             $data['kuota'] = $this->model('Langganan')->getKuota($customerId);
         }
+        if($data['membership'] == "Membership") {
+            $data['info_member'] = $this->model('Membership')->show($customerId);
+        }
+
 
         echo json_encode($data);
     }

@@ -253,9 +253,9 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
                       <option value="0">--Pilih Outlet--</option>
                       <?php 
                       
-                      $outlets = mysqli_query($con, "SELECT nama_outlet FROM outlet WHERE Kota='$cabang'");
+                      $outlets = mysqli_query($con, "SELECT id_outlet, nama_outlet FROM outlet WHERE Kota='$cabang'");
                       while($outlet = mysqli_fetch_row($outlets)) {
-                        echo '<option>'.$outlet[0].'</option>';
+                        echo '<option value="'.$outlet[0].'-'.$outlet[1].'">'.$outlet[1].'</option>';
                       }
                       ?>
                     </select>   
@@ -281,13 +281,13 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
                 <option value="0">--Pilih Kota Cabang--</option>
                 <?php 
                 $cabangs = mysqli_query($con, "SELECT * FROM cabang WHERE id<>'1' ORDER BY cabang ASC ");
-                while($rcab = mysqli_fetch_assoc($cabangs)) {
-                	echo "<option value=".$rcab['id'].">".$rcab['cabang']."</option>";
+                while($rcab = mysqli_fetch_row($cabangs)) {
+                	echo '<option value="'.$rcab[0].'-'.$rcab[1].'">'.$rcab[1].'</option>';
                 }
 
                 ?>
               </select>
-              <input class="itpw" type="text" name="username" placeholder="Username or Email"><br>
+              <input class="itpw" type="text" name="username" placeholder="Username" autocomplete="off"><br>
               <input class="itpw" type="password" name="password" placeholder="Password"><br>
               <input class="its" type="submit" name="login" value="LOGIN">
             </form>
@@ -316,16 +316,17 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
 
     <script type="text/javascript">
       $(document).on('click', '#logine', function(){
-        var cabang = $('#cabang').val();
+        var branch = $('#cabang').val();
         var username = $('#username').val();
         var outlet = $('#outlet').val();
+
         if(outlet!=0){
           $.ajax({
             url     : 'pages/session.php',
             type    : 'POST',
-            data    : 'cabang='+cabang+'&username='+username+'&outlet='+outlet,
+            data    : 'branch='+branch+'&username='+username+'&outlet='+outlet,
             success : function(data){
-              window.location=""+data+"";
+              window.location=""+data+"";              
             }
           })
         }
@@ -353,6 +354,8 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
           alert("Anda belum memilih SA jaga!");
         }
       });
+
+      localStorage.clear();
         
     </script>
 

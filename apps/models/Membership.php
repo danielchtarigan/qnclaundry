@@ -23,7 +23,7 @@ class Membership {
 
     public function show($id)
     {
-        $query = "SELECT * FROM $this->table WHERE id = :id";
+        $query = "SELECT * FROM $this->table WHERE customer_id = :id";
         $this->conn->query($query);
         $this->conn->bind('id', $id);
         return $this->conn->single();

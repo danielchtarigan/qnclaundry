@@ -4,52 +4,36 @@ class ItemsController extends Controller {
 
     public function index()
     {        
-        $branch = $this->model('Branch')->getBranchId($_POST['branch'])['id'];
-        $outlet = $this->model('Outlet')->getOutletId($_POST['outlet'])['id'];
-
-        // Ambil harga cabang dan outlet
-        $priceByOutlet = $this->model('Items')->getItemPriceByOutlet($branch, $outlet);
-
-        // Ambil harga cabang
-        $priceByBranch = $this->model('Items')->getItemPriceByBranch($branch);
-
-        // Ambil harga default        
-        $priceDefault = $this->model('Items')->getItemPriceDefault();
-
-        if (count($priceByOutlet) > 0) {
-            $data['data'] = $priceByOutlet;
-        } else if (count($priceByBranch) > 0) {
-            $data['data'] = $priceByBranch;
+        if ($this->checkItemInOutlet() > 0) {
+            $data['data'] = $this->get_price_outlet();
+        } else if ($this->checkItemInBranch() > 0) {
+            $data['data'] = $this->get_price_branch();
         } else {
-            $data['data'] = $priceDefault;
-        }
-
-        echo json_encode($data);
+            $data['data'] = $this->get_price_default();
+        }        
     }
 
-    public function item_price_outlet()
+    public function checkItemInOutlet()
     {
-        $branchId = $this->model('Branch')->getBranchId($_POST['branch'])['id'];
-        $outletId = $this->model('Outlet')->getOutletId($_POST['outlet'])['id'];
+        $check = $this->model('Items')->checkOutletInItem($_POST['outlet_id']);
+        return $check;
+    }
 
-        $data['check_outlet'] = $this->model('Items')->checkOutletInItem($outletId);
-        $data['check_branch'] = $this->model('Items')->checkBranchInItem($branchId);
-
-        echo json_encode($data);
+    public function checkItemInBranch()
+    {
+        $check = $this->model('Items')->checkBranchInItem($_POST['branch_id']);
+        return $check;
     }
 
     public function get_price_outlet()
     {
-        $branchId = $this->model('Branch')->getBranchId($_POST['branch'])['id'];
-        $outletId = $this->model('Outlet')->getOutletId($_POST['outlet'])['id'];
-        $data['data'] = $this->model('Items')->getItemPriceByOutlet($branchId, $outletId);
+        $data['data'] = $this->model('Items')->getItemPriceByOutlet($_POST['branch_id'], $_POST['outlet_id']);
         echo json_encode($data);
     }
 
     public function get_price_branch()
     {
-        $branchId = $this->model('Branch')->getBranchId($_POST['branch'])['id'];
-        $data['data'] = $this->model('Items')->getItemPriceByBranch($branchId);
+        $data['data'] = $this->model('Items')->getItemPriceByBranch($_POST['branch_id']);
         echo json_encode($data);
     }
 

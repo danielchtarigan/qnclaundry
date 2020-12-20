@@ -51,6 +51,12 @@ class SalesInvoiceController extends Controller {
             $data->success_pay_off = $this->model('SalesOrder')->updateOrderPayOff($data);
         }
 
+        if($data->poin > 0) {
+            $datamember['poin'] = $data->poin;
+            $datamember['customer_id'] = $data->customer_id;
+            $data->success_member = $this->model('Customer')->updateMembership($datamember);
+        }
+
         if (count($data->data_kuota) > 0 && $data->success_pay_off) {
             $data->success_kuota = $this->model('Langganan')->updateQuota($data);
         }
@@ -80,12 +86,6 @@ class SalesInvoiceController extends Controller {
     public function get_payments_history($customerId)
     {
         $data['data'] = $this->model('SalesInvoice')->getPaymentsByCustomer($customerId);
-
-        // foreach ($data['data'] as $key => $value) {
-        //     $data['data'][$key]['order'] = $this->model('SalesOrder')->getOrderByInvoice($value['faktur']);
-        //     $data['data'][$key]['method'] = $this->model('SalesInvoice')->getPaymentMethodByInvoiceNumber($value['faktur']);
-        // }
-
         echo json_encode($data);
     }
 

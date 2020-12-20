@@ -7,20 +7,20 @@
                 <form action="#" id="form_main_item">
                     <div class="form-group select-custom-a" id="select_category_main_item">
                         <label for="main_item_category">Kategori Barang</label>
-                        <input type="text" class="form-control" id="main_item_category" name="category" placeholder="Ketik kategori barang" autocomplete="off">
+                        <input type="text" class="form-control" id="main_item_category" name="category" placeholder="Klik atau ketik untuk memilih" autocomplete="off">
                         <div class="select-option" id="select-option">
                         </div>
                     </div>
                     <div class="form-group select-custom-a" id="select_main_item">
                         <label for="main_item">Nama Barang</label>
-                        <input type="text" class="form-control" id="main_item" name="item" placeholder="Ketik nama barang" autocomplete="off">
+                        <input type="text" class="form-control" id="main_item" name="item" placeholder="Klik atau ketik untuk memilih" autocomplete="off">
                         <div class="select-option" id="select-option">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="price">Harga</label>
+                                <label for="price">Harga Satuan</label>
                                 <input type="text" class="form-control" id="price" value="0" autocomplete="off">
                             </div>
                         </div>
@@ -54,13 +54,13 @@
                 <form action="#" id="form_service_item">
                     <div class="form-group select-custom-a" id="select_service_item_category">
                         <label for="service_item_category">Kategori Layanan</label>
-                        <input type="text" class="form-control" id="service_item_category" name="category" placeholder="Ketik kategori layanan" autocomplete="off">
+                        <input type="text" class="form-control" id="service_item_category" name="category" placeholder="Klik atau ketik untuk memilih" autocomplete="off">
                         <div class="select-option" id="select-option">
                         </div>
                     </div>
                     <div class="form-group select-custom-a" id="select_service_item">
                         <label for="service_item">Nama Layanan</label>
-                        <input type="text" class="form-control" id="service_item" name="item" placeholder="Ketik nama layanan" autocomplete="off">
+                        <input type="text" class="form-control" id="service_item" name="item" placeholder="Klik atau ketik untuk memilih" autocomplete="off">
                         <div class="select-option" id="select-option">
                         </div>
                     </div>
@@ -170,11 +170,17 @@
                 </div>
                 <div class="form-group">
                     <label for="voucher">Kode Voucher</label>
-                    <input type="text" class="form-control" placeholder="Nomor kode voucher" autocomplete="off">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="promoCode" placeholder="Nomor kode voucher">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default btn-sm" type="button" id="cekVoucherCode">Cek!</button>
+                        </span>
+                    </div>
+                    <span id="helpBlock2" class="help-block info-error" style="display: none">Error!</span>
                 </div>
                 <div class="form-group">
                     <label for="discount">Diskon</label>
-                    <input type="text" class="form-control" id="discount" readonly value="0" data-value="0" autocomplete="off" value="0">
+                    <input type="text" class="form-control" id="discount" readonly value="0" data-value="0" autocomplete="off">
                 </div>
             </form>
         </div>
@@ -219,11 +225,7 @@ jQuery(function ($) {
         serviceItemPrice = formServiceItem.find("#price");
 
 
-    // Set Url item price
-    let dataI = JSON.parse(localStorage.getItem("setItemPrice"));
-    let urlItemPrice = (dataI.branch && dataI.outlet) ? "Items/get_price_outlet" : (dataI.branch && !dataI.outlet ? "Items/get_price_branch" : "Items/get_price_default"); 
-    
-    apiData(urlItemPrice, { branch: branch, outlet: outlet }, function (data) {
+    apiData("Items/", { branch_id: branchId, outlet_id: outletId }, function (data) {
         if (data.readyState == 0) {
             formMainItem.hide();
             formMainItem.closest(".choose-item").find(".overlay-content").append($('<div id="load"><span></span></div>'));
@@ -317,7 +319,7 @@ jQuery(function ($) {
                 $("#select_service_item>#select-option>input, #select_service_item>#select-option>label").remove();
                 serviceItemPrice.val(0);
                 let item = serviceItem.val();
-                $("#select_service_item").removeClass("has-error");     
+                $("#select_service_item").removeClass("has-error");
                 option_items("select_service_item", item, null, data);
             });
         }
@@ -350,6 +352,13 @@ jQuery(function ($) {
             
             if (value != null) {
                 categories = categories.filter(item => item.toLowerCase().indexOf(value) > -1);
+
+                if (categories.length === 0) {
+                    value = value.slice(0,-1);
+                    mainItemCategory.val(value);
+                    categories = Object.keys(map).filter(item => item.toLowerCase().indexOf(value) > -1);
+                }
+
             }
     
             $.each(categories, function (i, val) {
@@ -367,6 +376,12 @@ jQuery(function ($) {
 
             if (value != null) {
                 items = items.filter(item => item.item.toLowerCase().indexOf(value) > -1);
+
+                if (items.length === 0) {
+                    value = value.slice(0,-1);
+                    mainItem.val(value);
+                    items = $.grep(getDataItems, val => val.category === parentId);
+                }
             }
             
             $.each(items, function(i, val) {
@@ -400,6 +415,12 @@ jQuery(function ($) {
 
             if (value != null) {
                 categories = categories.filter(item => item.toLowerCase().indexOf(value) > -1);
+
+                if (categories.length === 0) {
+                    value = value.slice(0,-1);
+                    serviceItemCategory.val(value);
+                    categories = Object.keys(map).filter(item => item.toLowerCase().indexOf(value) > -1);
+                }
             }
 
             $.each(categories, function (i, val) {
@@ -416,6 +437,12 @@ jQuery(function ($) {
 
             if (value != null) {
                 items = items.filter(item => item.item.toLowerCase().indexOf(value) > -1);
+
+                if (items.length === 0) {
+                    value = value.slice(0,-1);
+                    serviceItem.val(value);
+                    items = $.grep(getDataService, val => val.category === parentId);
+                }
             }
             
             $.each(items, function(i, val) {
@@ -433,9 +460,12 @@ jQuery(function ($) {
     }
 
     $(document).on("keyup", "#price, #quantity, #weight", function (event) {  
-        mainItemTotalData.price = mainItemPrice.val();
+        mainItemTotalData.price = mainItem.val() == "Cuci Kering" ? (mainItemWeight.val() > 3 ? 15000 : 10000) : mainItemPrice.val();
         mainItemTotalData.qty = mainItemQuantity.val();
-        mainItemTotalData.weight = mainItemWeight.val();
+        mainItemTotalData.weight = mainItem.val() == "Cuci Kering" ? 1 : mainItemWeight.val();
+
+        mainItemPrice.val(mainItemTotalData.price);
+
         mainItemTotalPrice.val(rupiah(calculation_input(mainItemTotalData)));
         mainItemTotalPrice.attr('data-value', calculation_input(mainItemTotalData));
     });
@@ -604,7 +634,7 @@ jQuery(function ($) {
             items.price = mainItemPrice.val();
             items.qty = mainItemQuantity.val();
             items.weight = mainItemCategory.val() == "Kiloan" ? mainItemWeight.val() : 0;
-            items.amount = mainItemPrice.val() * mainItemQuantity.val() * mainItemWeight.val();
+            items.amount = mainItem.val() == "Cuci Kering" ? mainItemPrice.val() : mainItemPrice.val() * mainItemQuantity.val() * mainItemWeight.val();
             items.type = "mainItem";
             orderItem.push(items);
 
@@ -697,10 +727,100 @@ jQuery(function ($) {
         return valid;
     });
 
-    // // Add Diskon Order
-    // $(document).on("click", ".discount-order #saveDiscount", function () {
-    //     alert("diskon");
-    // });
+    let promoCode = $(".discount-order #promoCode"), discountValue = $(".discount-order #discount"), subTotal = $(".discount-order #subTotal");
+    function discountPromo(code, subTotal) {
+        apiData("PromoCode/get_code/"+ code, { }, function (data) {
+            if (data.readyState === 0) {
+                $(".info-error").css('color', 'red');
+                $(".info-error").text("Sedang diproses...!").show();
+            }
+            else {
+                let valid = true;
+
+                let getData = data.data;
+
+                if (getData) {
+
+                    if (getData.kota != "All" && getData.kota != branch) {
+                        valid = false;                        
+                        $(".info-error").text("Kode promo tidak berlaku di cabang ini!").show();
+                    }
+                    if (getData.outlet != "All" && getData.outlet != outlet) {
+                        valid = false;
+                        $(".info-error").text("Kode promo tidak berlaku di outlet ini!").show();
+                    }
+                    orderCategory = orderItem[0].category == "Kiloan" ? "k" : "p";
+                    if (getData.kategori_item != "All" && getData.kategori_item != orderCategory) {
+                        valid = false;
+                        $(".info-error").text("Kode promo tidak berlaku untuk item "+orderItem[0].category).show();
+                    }
+                    if (getData.min_order > subTotal) {
+                        valid = false;
+                        $(".info-error").text("Kode promo berlaku jika minimal pesanan "+rupiah(getData.min_order)).show();
+                    }
+
+                    if (valid == true) {
+                        $(".info-error").hide();
+                        
+                        if (getData.diskon > 0) {
+                            disc = subTotal * (getData.diskon/100);
+
+                            discountValue.val(rupiah(disc));
+                            discountValue.data('value', disc);
+                        }                        
+                    }
+
+                } 
+                else {
+                    $(".info-error").text("Kode promo sudah expire!").show();
+                }
+            }
+        })
+    }
+
+    // Add Diskon Order 
+    $(document).on("click", "#addDiscount", function () {
+        if (dataItemReady) {
+            $(this).closest(".extra-services, .choose-item, .preview-order").removeClass("show");
+            $(".discount-order").addClass("show");
+        }
+    }); 
+
+    $(document).on("click", "#cekVoucherCode", function () {
+        discountPromo(promoCode.val(), subTotal.data('value'));
+        discountValue.val(rupiah(0));
+        discountValue.data('value', 0);
+    });
+
+    $(document).on("click", ".discount-order #saveDiscount", function () {
+        if (discountValue.data('value') > 0) {
+            let dataId = "Diskon Promo";
+            dataDiscount = orderItem.filter(item => item.item.includes(dataId));
+
+            if (dataDiscount.length > 0) {
+                id = orderItem.map(e  => e.item).indexOf(dataId);
+                orderItem.splice(id, 1);
+            }
+            
+            let discounts = {};
+            discounts.id = "discountpromo" + orderItem.length;
+            discounts.category = "Discount";
+            discounts.item = "Diskon Promo "+promoCode.val();
+            discounts.price = discountValue.data('value') * -1;
+            discounts.qty = 1;
+            discounts.amount = discountValue.data('value') * -1;
+            discounts.weight = 0;
+            discounts.type = "discount";
+            orderItem.push(discounts);
+
+            detailOrder(orderItem);
+
+            $(".preview-order #discount").text("("+rupiah(discountValue.data('value'))+")");
+            $(this).closest(".extra-services, .choose-item, .discount-order").removeClass("show");
+            $(".preview-order").addClass("show");            
+        }
+
+    });
 
     $(document).on("click", "#removeItem", function(e) {
         let dataId = $(this).data("id");
@@ -731,11 +851,6 @@ jQuery(function ($) {
             }
         }
     });
-
-    // $(document).on("click", "#addDiscount", function () {
-    //     $(this).closest(".extra-services, .choose-item, .preview-order").removeClass("show");
-    //     $(".discount-order").addClass("show");
-    // });  
 
     $(document).on("click", "#extraService", function () {
         if (dataItemReady) {

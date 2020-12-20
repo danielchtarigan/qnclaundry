@@ -106,7 +106,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 			let apiURL = 'https://qnclaundry.com/apps/';
 			// const apiURL = 'https://localhost/qnclaundry/apps/';
 			const branch = '<?= $_SESSION['cabang']; ?>';
+			const branchId = '<?= $_SESSION['branch_id']; ?>';
 			const outlet = '<?= $_SESSION['outlet']; ?>';
+			const outletId = '<?= $_SESSION['outlet_id']; ?>';
 			const userId = '<?= $_SESSION['user_id']; ?>';			
 		</script>
 
@@ -915,6 +917,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.16/b-1.5.0/b-html5-1.5.0/b-print-1.5.0/datatables.min.js"></script>
 		
 		<script src="assets/js/get-database.js"></script>
+		<script src="assets/js/jsBarcode.all.min.js"></script>
 
 		<script type="text/javascript">
 			jQuery(function($) {

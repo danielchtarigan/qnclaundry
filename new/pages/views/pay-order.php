@@ -35,7 +35,7 @@
                                 <div class="select-item-h">
                                     <input type="checkbox" name="pay_method" id="cash"><label for="cash">Cash</label>
                                 </div>
-                                <input type="text" class="form-control" name="pay_value" id="value_cash" disabled="true" autocomplete="off">
+                                <input type="text" class="form-control" name="pay_value" id="value_cash" disabled="true" value="0" autocomplete="off">
                             </div>
                         </div>
                         <div class="list-choose-method">
@@ -44,19 +44,19 @@
                                 <div class="select-item-h">
                                     <input type="checkbox" name="pay_method" id="edcbca"><label for="edcbca"> EDC BCA</label>
                                 </div>
-                                <input type="text" class="form-control" name="pay_value" id="value_edcbca" disabled="true" autocomplete="off">
+                                <input type="text" class="form-control" name="pay_value" id="value_edcbca" disabled="true" value="0" autocomplete="off">
                             </div>
                             <div class="select-input-item">
                                 <div class="select-item-h">
                                     <input type="checkbox" name="pay_method" id="edcbri"><label for="edcbri"> EDC BRI</label>
                                 </div>
-                                <input type="text" class="form-control" name="pay_value" id="value_edcbri" disabled="true" autocomplete="off">
+                                <input type="text" class="form-control" name="pay_value" id="value_edcbri" disabled="true" value="0" autocomplete="off">
                             </div>
                             <div class="select-input-item">
                                 <div class="select-item-h">
                                     <input type="checkbox" name="pay_method" id="edcbni"><label for="edcbni"> EDC BNI</label>
                                 </div>
-                                <input type="text" class="form-control" name="pay_value" id="value_edcbni" disabled="true" autocomplete="off">
+                                <input type="text" class="form-control" name="pay_value" id="value_edcbni" disabled="true" value="0" autocomplete="off">
                             </div>
                         </div>
                         <div class="list-choose-method" id="paymentLangganan">
@@ -65,7 +65,7 @@
                                 <div class="select-item-h">
                                     <input type="checkbox" name="pay_method" id="kuota_kiloan"><label for="kuota_kiloan"> Kiloan</label>
                                 </div>
-                                <input type="text" class="form-control" name="pay_value" id="value_kuota_kiloan" disabled="true" readonly autocomplete="off">
+                                <input type="text" class="form-control" name="pay_value" id="value_kuota_kiloan" disabled="true" value="0" readonly autocomplete="off">
                             </div>
                             <div class="select-input-item" style="display: none;">
                                 <div class="select-item-h">
@@ -150,6 +150,7 @@
         let invoice = $(document).find("#orderCount").data('value');
         let customerId = '<?= $_GET['id'] ?>';        
         let langganan = $(document).find(".data-customer #langganan").text() == "Berlangganan" ? true : false;
+        let membership = $(document).find(".data-customer #membership").text() == "Membership" ? true : false;
         $("#paymentLangganan").hide();
 
         let valueKiloan = 0;
@@ -161,26 +162,42 @@
             let qkilos = $(document).find("#kuotaKiloan").data('value');            
             let qpieces = $(document).find("#kuotaPotongan").data('value');     
 
-            // Get Kilos Invoice
-            let el = $(document).find(".item-kiloan");
-            let dataOrderItems = [];
-            el.each(function (i, obj) {
-                let items = {};
-                items.item = $(obj).find("#item").text();
-                items.weight = $(obj).find("#weight").text();
-                items.vWeight = $(obj).find("#item").text() == "Cuci Kering" ? parseFloat($(obj).find("#weight").text() * 0.56).toFixed(2) : ($(obj).find("#item").text() == "Setrika" ? parseFloat($(obj).find("#weight").text() * 0.44).toFixed(2) : parseFloat($(obj).find("#weight").text() * 0.22).toFixed(2));
-                items.value = $(obj).find("#total").text();
-                dataOrderItems.push(items);
+            getDataOrder = JSON.parse(localStorage.getItem("dataOrder")).data;
+            dataOrderItem = [];
+            $.each(getDataOrder, function (i, val) {
+                $.each(val.items, function (i, val) {  
+                    dataOrderItem.push(val);
+                });
             });
 
-            kilosInvoice = dataOrderItems.reduce( function (a, b) { 
-                return parseFloat(a) + parseFloat(b.vWeight);
-            }, 0);
+            let orderKiloan = dataOrderItem.filter(item => item.category == "Kiloan");
+            console.log(orderKiloan.length);
 
-            qKilosNow = parseFloat(qkilos - kilosInvoice).toFixed(2);            
-            kuotas.kilo = qKilosNow;
-
-            valueKiloan = calculatePayment(dataOrderItems);
+            if(orderKiloan.length > 0) {
+                let totalKiloan = orderKiloan.reduce( function (a, b) { 
+                    return parseInt(a) + parseInt(b.total);
+                }, 0);
+    
+                let orderDiscount = dataOrderItem.filter(item => item.category == "Discount");
+                let totalDiscount = orderDiscount.reduce( function (a, b) { 
+                    return parseInt(a) + parseInt(b.total);
+                }, 0);
+    
+                valueKiloan = totalDiscount + totalKiloan;
+    
+                let weightCounted = [];
+                $.each(orderKiloan, function (i, val) {
+                    let weight = val.item == "Cuci Kering" ? parseFloat(val.isweight * 0.56).toFixed(2) : (val.item == "Setrika" ? parseFloat(val.isweight * 0.44).toFixed(2) : parseFloat(val.isweight * 0.22).toFixed(2));
+                    weightCounted.push(weight);
+                });
+    
+                let kilosInvoice = weightCounted.reduce(function (a, b) {
+                    return parseFloat(a) + parseFloat (b);
+                });
+    
+                qKilosNow = parseFloat(qkilos - kilosInvoice).toFixed(2); 
+                kuotas.kilo = qKilosNow;
+            }
         }
 
         // Get OrderNumber
@@ -236,8 +253,9 @@
 				}
 				else {
                     localStorage.setItem("dataOrder", JSON.stringify({data: []}));
-                    getDataOrder();
-                    $(document).find("#reloadListPayments").trigger("click");
+                    // getDataOrder();
+                    // $(document).find("#reloadListPayments").trigger("click");
+                    window.location.href = "";
 				}
             });
         }
@@ -257,12 +275,15 @@
             
             if ($("#value_"+id).attr("disabled") === "disabled") {
                 $("#value_"+id).val(0);
+                $("#value_"+id).data('value', 0);
                 
-                payValue = $("#value_"+id).val();                
+                payValue = $("#value_"+id).val();      
 
-                dataMethod = dataPay.filter(e => e.method == id);
+                idMethod = id == "kuota_kiloan" ? "Kuota" : id;          
+
+                dataMethod = dataPay.filter(e => e.method == idMethod);
                 if (dataMethod.length > 0) {
-                    idx = dataPay.map(e  => e.method).indexOf(id);
+                    idx = dataPay.map(e  => e.method).indexOf(idMethod);
                     dataPay.splice(idx, 1);
                 }
 
@@ -270,22 +291,25 @@
             
                 $("#totalPay").text(rupiah(totalPay));
 
-                $("#differentPayment").text(rupiah(invoice - totalPay));
+                $("#differentPayment").text(rupiah(invoice - totalPay));                
             }
             else {
                 if (id == "kuota_kiloan") {
+                    
                     $("#value_"+id).val(rupiah(valueKiloan));
-                    $("#value_"+id).attr('data-value', valueKiloan);
+                    $("#value_"+id).data('value', valueKiloan);
                     let payValueId = $(this).closest(".select-input-item").find("input[name=pay_value]").attr('id');
                     let payValue = $("#value_"+id).data('value');
                     let payMethod = "Kuota";
-                            
+
                     let pays = {};
                     pays.value_id = payValueId;
                     pays.method = payMethod;
                     pays.value = payValue;
                     
                     dataPay.push(pays);
+
+                    console.log(dataPay);
 
                     totalPay = calculatePayment(dataPay);
 
@@ -305,7 +329,7 @@
             }
         });
 
-        $(document).on("keyup", "input[name=pay_value]", function (event) {  
+        $(document).on("click keyup", "input[name=pay_value]", function (event) {  
             let payValueId = $(this).attr('id');
             let payValue = $(this).val();
             let payMethod = $(this).closest(".select-input-item").find("input[name=pay_method]").attr('id');
@@ -329,8 +353,10 @@
 
             $("#differentPayment").text(rupiah(invoice - totalPay));
 
+            console.log(dataPay);
+            
             $(this).focus(function () {
-                $(this).val(payValue);
+                $(this).val(0);
             });
 
             $(this).blur(function () {
@@ -350,11 +376,17 @@
             finalPay.data = dataPay;
             finalPay.data_order = dataOrder;
             finalPay.data_kuota = dataLangganan;
+            finalPay.poin = 0; 
+
+            if (membership) {
+                finalPay.poin = parseInt(totalPay/25000);
+            }
 
             payMethod = dataPay.map(e => e.method).join(", ");
 
             finalPay.method = payMethod;
 
+            console.log(finalPay);
             if (invoice === totalPay) {
                 savePayment(finalPay);
                 dialog.dialog("close");

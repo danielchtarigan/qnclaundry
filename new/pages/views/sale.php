@@ -387,7 +387,7 @@ $id = $_GET['id'];
 	
 					let elLangganan = "";
 					if (data.langganan == "Langganan") {
-						elLangganan = "<table style='margin-bottom: 8px'><tr><td style='font-weight: bold;' width='100%' id='langganan'>Berlangganan</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border' id='offlgn'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td id='kuotaKiloan' data-value='"+ data.kuota.kiloan +"'>"+ data.kuota.kiloan +" Kg (Cuci Kering Setrika)</td><td></td></tr><tr><td id='kuotaPotongan' data-value='"+ data.kuota.potongan +"'>"+ rupiah(data.kuota.potongan) +" (Potongan)</td><td></td></tr><tr><td>Aktif Sampai "+ data.kuota.expire +"</td></tr></table>";
+						elLangganan = "<table style='margin-bottom: 8px'><tr><td style='font-weight: bold;' width='100%' id='langganan'>Berlangganan</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border' id='offlgn'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td id='kuotaKiloan' data-value='"+ data.kuota.kiloan +"'>"+ data.kuota.kiloan +" Kg (Cuci Kering Setrika)</td><td></td></tr><tr><td id='kuotaPotongan' data-value='"+ data.kuota.potongan +"'>"+ rupiah(data.kuota.potongan) +" (Potongan)</td><td></td></tr><tr><td>Aktif Sampai "+ data.kuota.expire +" (Masa aktif ini belum berlaku!)</td></tr></table>";
 					} 
 					else {
 						elLangganan += '<div style="margin-bottom: 20px"><em>Belum Berlangganan</em></div>'; 
@@ -396,7 +396,7 @@ $id = $_GET['id'];
 	
 					elMembership = "";
 					if (data.membership == "Membership") {
-						elMembership += "<table style='margin-bottom: 15px'><tr><td style='font-weight: bold;' width='100%' id='membership'>Membership</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td style='font-style: oblique;color: #6878CC; font-weight: bolder'>Blue6Bulan</td><td></td></tr><tr><td style='font-size: 12pt; font-style: oblique; font-weight: bolder; color: #6878CC'><a href=''>12 Poin Rewards</a></td><td></td></tr><tr><td>Aktif Sampai xx/xx/xxxx</td></tr></table>"
+						elMembership += "<table style='margin-bottom: 15px'><tr><td style='font-weight: bold;' width='100%' id='membership'>Membership</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td style='font-style: oblique;color: #6878CC; font-weight: bolder'>"+ data.info_member.level +"</td><td></td></tr><tr><td style='font-size: 12pt; font-style: oblique; font-weight: bolder; color: #6878CC'><a href=''>"+ data.poin +" Poin Rewards</a></td><td></td></tr><tr><td>Aktif Sampai "+ data.info_member.expire_date +"</td></tr></table>"
 					}
 					else {
 						elMembership += '<div style="margin-bottom: 20px"><em>Belum menjadi membership</em></div>'; 
@@ -631,7 +631,7 @@ $id = $_GET['id'];
 						divCustomer += '</table>';
 
 					let tableItem = '<table width="100%" class="table-item" style="font-size:9pt;border-top: 1px dotted #000;width:100%;">';
-					if (dataFaktur.type = "ritel") {
+					if (dataFaktur.type == "ritel") {
 						$.each(data.order, function (i, val) {
 							tableItem += `<tr><td>&nbsp; &nbsp;</td><td>${val.order_number}</td><td>${rupiah(val.total)}</td></tr>`;
 						});

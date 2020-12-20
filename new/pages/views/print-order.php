@@ -1,8 +1,5 @@
 <?php  
-include "../../../reception/bar128.php";
-
 date_default_timezone_set('Asia/Makassar');
-
 ?>
 
 <style>
@@ -23,8 +20,7 @@ date_default_timezone_set('Asia/Makassar');
                 <div class="info-outlet" align="center"></div>
             
                 <div align="center" class="style1 style4"><strong><span class="style3" style="font-family: arial;font-size:10pt;">NOTA ORDER</span></strong></div>
-                <div align="center"><?php echo bar128(stripslashes($_GET['id'])); ?>
-                </div>
+                <svg class="barcode"></svg>
                 <br>
                 <table style="border-top: 1px dotted #000;width:100%;" id="info-user">
                     <tr>
@@ -86,8 +82,7 @@ date_default_timezone_set('Asia/Makassar');
                 <table style="font-size:9pt;border-top: 1px dotted #000;width:100%;" id="info-total"></table>	
                 <div style="width:100%;border-top: 1px dotted #000;font-size: 9pt;font-family: Tahoma;padding: 5px 0px;border-bottom: 1px dashed #000;margin-bottom:1px;" id="info-estimasi"></div>	
                 <br>
-                <div align="center"><?php echo bar128(stripslashes($_GET['id'])); ?>
-                </div>
+                <svg class="barcode"></svg>
             </div>
 
             <div style="page-break-before:always;" class="struk-body">
@@ -109,12 +104,12 @@ date_default_timezone_set('Asia/Makassar');
                 <table style="font-size:9pt;border-top: 1px dotted #000;width:100%;" id="info-total"></table>	
                 <div style="width:100%;border-top: 1px dotted #000;font-size: 9pt;font-family: Tahoma;padding: 5px 0px;border-bottom: 1px dashed #000;margin-bottom:1px;" id="info-estimasi"></div>	
                 <br>
-                <div align="center"><?php echo bar128(stripslashes($_GET['id'])); ?>
-                </div>
+                <svg class="barcode"></svg>
             </div>
         </div>
     </div>
 </div>	
+
 
 <script>
     let orderNumber = '<?= $_GET['id'] ?>';
@@ -123,6 +118,10 @@ date_default_timezone_set('Asia/Makassar');
     let dataOrder = JSON.parse(localStorage.getItem("dataOrder")).data;
         dataOrder = dataOrder.filter(item => item.orderNumber == orderNumber)[0];
     let dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
+
+    JsBarcode(".barcode", orderNumber, {
+        height: 60,
+    });
 
     $("#outlet").text("Outlet: "+ dataOutlet.outlet);
     $("#branch").text("Cabang: "+ dataOutlet.branch);

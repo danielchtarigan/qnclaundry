@@ -55,7 +55,7 @@ class Customer {
 
     public function show($id)
     {
-        $query = "SELECT id AS customer_id, nama_customer AS name, no_telp AS telp, alamat AS address, 
+        $query = "SELECT id AS customer_id, nama_customer AS name, no_telp AS telp, alamat AS address, poin AS poin,
                     IF(lgn = 1, 'Langganan', '') AS langganan,
                     IF(member = 1, 'Membership', '') AS membership
                     FROM $this->table WHERE id = :id";

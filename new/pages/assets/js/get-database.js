@@ -46,20 +46,6 @@ function apiData(url, data, result) {
     });
 };
 
-
-function itemPriceOutlet() {
-    apiData("Items/item_price_outlet/", { branch: branch, outlet: outlet }, function (data) {
-        if (data.readyState == 0) {
-            localStorage.removeItem("setItemPrice");
-        } else {
-            let newData = {};
-            newData.outlet = data.check_outlet > 0 ? true : false;
-            newData.branch = data.check_branch > 0 ? true : false;
-            localStorage.setItem("setItemPrice", JSON.stringify(newData));
-        }
-    });
-}
-
 function getDataOrder() {
     let data = localStorage.getItem("dataOrder");
     let getData = JSON.parse(data)['data'];
