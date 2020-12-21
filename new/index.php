@@ -228,9 +228,9 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
                       <option value="0">--Pilih Workshop--</option>
                       <?php 
                       
-                      $outlets = mysqli_query($con, "SELECT workshop FROM workshop WHERE id_cabang='$idCabang' ORDER BY id_workshop ASC");
+                      $outlets = mysqli_query($con, "SELECT id_workshop, workshop FROM workshop WHERE id_cabang='$idCabang' ORDER BY id_workshop ASC");
                       while($outlet = mysqli_fetch_row($outlets)) {
-                        echo '<option>'.$outlet[0].'</option>';
+                        echo '<option value="'.$outlet[0].'-'.$outlet[1].'">'.$outlet[0].'</option>';
                       }
                       ?>
                     </select>                  

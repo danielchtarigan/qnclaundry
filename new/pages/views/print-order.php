@@ -144,7 +144,7 @@ date_default_timezone_set('Asia/Makassar');
     });
 
     $.each(orderDiscount, function (i, val) {
-        let content = `<tr><td>&nbsp; &nbsp; &nbsp;</td><td><td>${val.item}</td><td align="right">(${rupiah(val.total*1)})</td></tr>`;
+        let content = `<tr><td>&nbsp; &nbsp; &nbsp;</td><td><td>${val.item}</td><td align="right">(${rupiah(val.total*-1)})</td></tr>`;
         $(".struk-body #info-extra").append(content);
     });
 
