@@ -11,7 +11,7 @@ class PromoCode {
 
     public function getCode($code)
     {
-        $query = "SELECT * FROM $this->table WHERE kode_promo = :code AND berlaku_sampai <= CURDATE()";
+        $query = "SELECT * FROM $this->table WHERE kode_promo = :code AND berlaku_sampai >= CURDATE()";
         $this->conn->query($query);
         $this->conn->bind('code', $code);
         return $this->conn->single();
