@@ -194,14 +194,14 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
             {
                 $dataAllow = mysqli_fetch_array($allow);
 
-                $dataCab = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM cabang WHERE id='$idCabang'"))[1];
+                $dataCab = mysqli_fetch_array(mysqli_query($con, "SELECT a.id AS branchId, a.cabang AS branch, b.id_outlet AS outletId, b.nama_outlet AS outlet FROM cabang a JOIN outlet b ON a.cabang = b.Kota WHERE a.id='$idCabang' AND b.nama_outlet = '$dataAllow[outlet]' "));
 
-                if($dataCab == $dataAllow['cabang']) {
+                if($dataCab['branch'] == $dataAllow['cabang']) {
                   echo "<br>";
-                  echo '<legend style="color: green; text-align: center" id="id-company-text">Outlet '.$dataAllow['outlet'].', Kota '.$dataCab.'</legend>';
+                  echo '<legend style="color: green; text-align: center" id="id-company-text">Outlet '.$dataAllow['outlet'].', Kota '.$dataCab['branch'].'</legend>';
                   echo '
-                    <input class="hidden" type="text" name="cabang" id="cabang" value="'.$idCabang.'">
-                    <input class="hidden" type="text" name="cabang" id="outlet" value="'.$dataAllow['outlet'].'">
+                    <input class="hidden" type="text" name="cabang" id="cabang" value="'.$idCabang.'-'.$dataCab['branch'].'">
+                    <input class="hidden" type="text" name="cabang" id="outlet" value="'.$dataCab['outletId'].'-'.$dataCab['outlet'].'">
                     <input class="hidden" type="text" name="username" id="username" value="'.$username.'">';
                   echo '<input class="its" type="submit" name="login" id="logine" value="Lanjutkan">';                 
 
@@ -230,7 +230,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
                       
                       $outlets = mysqli_query($con, "SELECT id_workshop, workshop FROM workshop WHERE id_cabang='$idCabang' ORDER BY id_workshop ASC");
                       while($outlet = mysqli_fetch_row($outlets)) {
-                        echo '<option value="'.$outlet[0].'-'.$outlet[1].'">'.$outlet[0].'</option>';
+                        echo '<option value="'.$outlet[0].'-'.$outlet[1].'">'.$outlet[1].'</option>';
                       }
                       ?>
                     </select>                  
