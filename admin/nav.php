@@ -93,6 +93,9 @@
                             <a href="#"><i class="fa fa-table fa-fw"></i> Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
+                                    <a href="?menu=outlet">Daftar Outlet</a>
+                                </li>
+                                <li>
                                     <a href="cari_rincian.php">Pencarian Data</a>
                                 </li>
                                 <li>
@@ -136,9 +139,6 @@
                         <li>
                             <a href="#"><i class="fa fa-files-o fa-fw"></i> Halaman<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="../apps">Apps</a>
-                                </li>
                                 <li>
                                     <a href="../reception/">Receptionist</a>
                                 </li>

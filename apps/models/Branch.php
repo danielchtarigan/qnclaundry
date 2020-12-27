@@ -15,4 +15,11 @@ class Branch {
         $this->conn->bind('branch', $branch);
         return $this->conn->single();
     }
+
+    public function getBranches()
+    {
+        $query = "SELECT id, cabang AS branch FROM $this->table";
+        $this->conn->query($query);
+        return $this->conn->all();
+    }
 }

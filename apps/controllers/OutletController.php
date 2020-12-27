@@ -8,4 +8,25 @@ class OutletController extends Controller {
 
         echo json_encode($data);
     }
+
+    public function lists()
+    {
+        $data['data'] = $this->model('Outlet')->getOutlets();
+
+        echo json_encode($data);
+    }
+
+    public function store()
+    {
+        $data = json_decode(json_encode($_POST));
+        $success = $this->model('Outlet')->insertOutlet($data);
+        echo json_encode($success);
+    }
+
+    public function update($outletId)
+    {
+        $data = json_decode(json_encode($_POST));
+        $success = $this->model('Outlet')->updateOutlet($data, $outletId);
+        echo json_encode($success);
+    }
 }

@@ -19,7 +19,7 @@ $cabang = "Makassar";
 
 $dateNow = date('Y-m-d');
 
-
+$token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 ?>
 <!DOCTYPE html>
@@ -30,6 +30,7 @@ $dateNow = date('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="branch_token" content="<?= $token ?>">
     <link rel="icon" href="../Logo bulat 2017.png">
     <title>Halaman Admin</title>
     <link href="../accounting/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -54,6 +55,12 @@ $dateNow = date('Y-m-d');
     
     <script type="text/javascript" src="https://www.google.com/jsapi"></script> 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+			let apiURL = 'https://qnclaundry.com/apps/';
+			// const apiURL = 'https://localhost/qnclaundry/apps/';
+			const userId = '<?= $_SESSION['user_id']; ?>';
+		</script>
 
 </head>
 <body>
@@ -191,6 +198,9 @@ $dateNow = date('Y-m-d');
                             }
                             else if ($menu=="laporan penjualan") {
                                 include "include/penjualan_laundry.php";
+                            }
+                            else if ($menu=="outlet") {
+                                include "include/list_outlet.php";
                             }
                             
             }

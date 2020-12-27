@@ -32,4 +32,41 @@ class Outlet {
         $this->conn->bind('outlet', $outlet);
         return $this->conn->single();
     }
+
+    public function getOutlets()
+    {
+        $query = "SELECT id_outlet, nama_outlet, alamat, Kota As cabang, no_telp AS telpon, active AS status FROM outlet";
+        $this->conn->query($query);
+        return $this->conn->all();
+    }
+
+    public function insertOutlet($data)
+    {
+        $query = "INSERT INTO $this->table (nama_outlet, alamat, Kota, no_telp, active) 
+                    VALUES (:name, :address, :branch, :telp, :active)";
+        $this->conn->query($query);
+        $this->conn->bind('name', $data->name);
+        $this->conn->bind('address', $data->address);
+        $this->conn->bind('branch', $data->branch);
+        $this->conn->bind('telp', $data->telp);
+        $this->conn->bind('active', $data->active);
+
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function updateOutlet($data, $outletId)
+    {
+        $query = "UPDATE $this->table SET nama_outlet = :name, alamat = :address, Kota = :branch, no_telp = :telp, active = :active WHERE id_outlet = :outletId";
+        $this->conn->query($query);
+        $this->conn->bind('name', $data->name);
+        $this->conn->bind('address', $data->address);
+        $this->conn->bind('branch', $data->branch);
+        $this->conn->bind('telp', $data->telp);
+        $this->conn->bind('active', $data->active);
+        $this->conn->bind('outletId', $outletId);
+
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
 }
