@@ -54,7 +54,7 @@
 			let table = $('#table_workshop').DataTable({
 				"processing": true,
 				"ajax": {
-					url: apiURL + "workshop/lists",
+					url: apiURL + "Workshop/lists",
 					type: "POST",
 					data: data,
 					beforeSend: function (xhr) {
