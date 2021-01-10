@@ -137,7 +137,7 @@
             let workshopId = $(".modal .modal-title").attr("data-workshop");
 
             if (valid) {
-                let url = workshopId != "" ? "workshop/update/"+workshopId : "workshop/store";
+                let url = workshopId != "" ? "Workshop/update/"+workshopId : "Workshop/store";
                 saveForm(data, url);
                 $(".modal").modal("hide");
             }

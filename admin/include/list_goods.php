@@ -375,7 +375,7 @@
             let goodsId = $(".modal .modal-title").attr("data-goods");
 
             if (valid) {
-                let url = goodsId != "" ? "Items/update/"+goodsId : "items/store";
+                let url = goodsId != "" ? "Items/update/"+goodsId : "Items/store";
                 saveForm(data, url);
                 $(".modal").modal("hide");
             }
