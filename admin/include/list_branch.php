@@ -2,17 +2,17 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div style="display: flex; justify-content: space-between; align-item: center">
-                <strong style="padding: 6px 0">Daftar Outlet</strong>
-                <button class="btn btn-active btn-primary" id="addOutlet" align="right">Tambah</button>
+                <strong style="padding: 6px 0">Daftar Cabang</strong>
+                <button class="btn btn-active btn-primary" id="addBranch" align="right">Tambah</button>
             </div>
         </div> 
         <div class="panel-body">
-            <table class="table" id="table_outlet">
+            <table class="table" id="table_branch">
                 <thead>
                     <tr>
-                        <th width="10%">Id Outlet</th>
-                        <th>Nama Outlet</th>
-                        <th>Cabang Outlet</th>
+                        <th width="10%">Id Cabang</th>
+                        <th>Nama Cabang</th>
+                        <th>Kota Cabang</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -34,7 +34,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveOutlet">Save changes</button>
+        <button type="button" class="btn btn-primary" id="saveBranch">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -51,10 +51,10 @@
 
         function dataTable(data) {
             let token = $('meta[name=branch_token]').attr('content');
-			let table = $('#table_outlet').DataTable({
+			let table = $('#table_branch').DataTable({
 				"processing": true,
 				"ajax": {
-					url: apiURL + "Outlet/lists",
+					url: apiURL + "Branch/lists",
 					type: "POST",
 					data: data,
 					beforeSend: function (xhr) {
@@ -62,9 +62,9 @@
 					}
 				},
 				"columns": [
-                    { "data": "id_outlet" },
-                    { "data": "nama_outlet" },
-                    { "data": "cabang" },
+                    { "data": "id" },
+                    { "data": "branch" },
+                    { "data": "city" },
                     { "data": "status", render: function (data, type, row) {
                         if (data == true) {
                             act = "Active";
@@ -77,7 +77,7 @@
                         return '<span class="label '+label+'">'+ act +'</span>';
                     }, },
                     { "data": null, render: function (data, type, row) {
-                        return "<button class='btn btn-info btn-xs' align='center' id='editOutlet' data-id='"+ row.id_outlet +"'>Edit</button>";
+                        return "<button class='btn btn-info btn-xs' align='center' id='editBranch' data-id='"+ row.id +"'>Edit</button>";
                     }, },
                 ],
             });
@@ -85,62 +85,56 @@
 
         dataTable({});
 
-        $(document).on("click", "#addOutlet", function () {  
+        $(document).on("click", "#addBranch", function () {  
             $(".modal .modal-title").attr("data-outlet", "").attr("data-branch", "");
-            $(".modal .modal-body").load("include/add_outlet.php", function () {  
+            $(".modal .modal-body").load("include/add_branch.php", function () {  
                 $(".modal .modal-dialog").addClass("modal-sm");
-                $(".modal .modal-title").text("Tambah Outlet");
-                $(".modal .modal-footer #saveOutlet").text("Simpan");
+                $(".modal .modal-title").text("Tambah Cabang");
+                $(".modal .modal-footer #saveBranch").text("Simpan");
                 $(".modal").modal("show");
             });
         });
 
-        $(document).on("click", "#editOutlet", function () {  
-            let table = $(document).find("#table_outlet").DataTable();
+        $(document).on("click", "#editBranch", function () {  
+            let table = $(document).find("#table_branch").DataTable();
             let row = $(this).closest('tr');
             let tr = table.row(row).data();
 
             let id = $(this).data('id');
-            $(".modal .modal-title").attr("data-outlet", id).attr("data-branch", tr.cabang);
-            $(".modal .modal-body").load("include/add_outlet.php", function () {  
+            $(".modal .modal-title").attr("data-branch", id);
+            $(".modal .modal-body").load("include/add_branch.php", function () {  
                 $(".modal .modal-dialog").addClass("modal-sm");
-                $(".modal .modal-title").text("Update Outlet");
-                $(".modal .modal-footer #saveOutlet").text("Update");
+                $(".modal .modal-title").text("Update Cabang");
+                $(".modal .modal-footer #saveBranch").text("Update");
                 $(".modal").modal("show");
 
-                let form = $(document).find("form#add_outlet"),
-                    branch = form.find("#branch").append('<option value="'+tr.cabang+'" selected>'+ tr.cabang +'</option>');
-                    name = form.find("#name").val(tr.nama_outlet),
-                    telp = form.find("#telp").val(tr.telpon),
-                    address = form.find("#address").val(tr.alamat),
+                let form = $(document).find("form#add_branch"),
+                    name = form.find("#name").val(tr.branch),
+                    city = form.find("#city").val(tr.city),
                     active = tr.status == 1 ? form.find("#active").prop('checked', true) : form.find("#active").prop('checked', false);
             });
         });
 
-        $(".modal .modal-footer #saveOutlet").on("click", function () {            
-            let form = $(document).find("form#add_outlet"),
-                branch = form.find("#branch").val(),
+        $(".modal .modal-footer #saveBranch").on("click", function () {            
+            let form = $(document).find("form#add_branch"),
                 name = form.find("#name").val(),
-                telp = form.find("#telp").val(),
-                address = form.find("#address").val(),
+                city = form.find("#city").val(),
                 active = form.find("#active").is(":checked") == true ? 1 : 0;
             let data = {
-                branch: branch,
                 name: name,
-                telp: telp,
-                address: address,
+                city: city,
                 active: active
             };
 
             let valid = true;
-            if (branch == null || name == "" || telp == "") {
+            if (name == null || city == "") {
                 valid = false;
             }
 
-            let outletId = $(".modal .modal-title").attr("data-outlet");
+            let outletId = $(".modal .modal-title").attr("data-branch");
 
             if (valid) {
-                let url = outletId != "" ? "Outlet/update/"+outletId : "Outlet/store";
+                let url = outletId != "" ? "Branch/update/"+outletId : "Branch/store";
                 saveForm(data, url);
                 $(".modal").modal("hide");
             }
@@ -156,7 +150,7 @@
                     xhr.setRequestHeader("Authorization", token);
                 },
                 success: function (response) {
-                    $(document).find("#table_outlet").DataTable().ajax.reload();
+                    $(document).find("#table_branch").DataTable().ajax.reload();
                 }
             })
         }

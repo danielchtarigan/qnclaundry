@@ -11,8 +11,73 @@ class Items {
 
     public function get_items($data)
     {
-        $this->conn->query("SELECT a.name AS name, a.price AS price, b.name AS category FROM $this->table a LEFT JOIN bs_item_categories b ON a.item_category_id = b.id");
+        $this->conn->query("SELECT a.name AS name, a.price AS price, b.name AS category FROM $this->table a LEFT JOIN bs_item_categories b ON a.bs_item_category_id = b.id");
         return $this->conn->all();
+    }
+
+    public function getItems()
+    {
+        $this->conn->query("SELECT a.name AS name, a.price AS price, b.id AS category_id, b.name AS category, b.type AS type FROM $this->table a LEFT JOIN bs_item_categories b ON a.bs_item_category_id = b.id");
+        return $this->conn->all();
+    }
+
+    public function insert($data)
+    {
+        $query = "INSERT INTO $this->table (name, price, bs_item_category_id, created_by, updated_by) VALUES (:name, :price, :category_id, :created_by, :updated_by)";
+        $this->conn->query($query);
+        $this->conn->bind('name', $data->name);
+        $this->conn->bind('price', $data->price);
+        $this->conn->bind('category_id', $data->category_id);
+        $this->conn->bind('created_by', $data->user_id);
+        $this->conn->bind('updated_by', $data->user_id);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
+    }
+
+    public function insertAdjustmentPrice($data)
+    {
+        if ($this->insert($data) > 0) {
+            $bs_item_id = $this->conn->lastId();
+            $query = "INSERT INTO bs_adjustment_prices (price, bs_item_id, outlet_id, branch_id, created_by, updated_by) VALUES (:price, :bs_item_id, :outlet_id, :branch_id, :created_by, :updated_by)";
+            $this->conn->query($query);
+            $this->conn->bind('price', $data->price);
+            $this->conn->bind('bs_item_id', $bs_item_id);
+            $this->conn->bind('outlet_id', $data->outlet_id);
+            $this->conn->bind('branch_id', $data->branch_id);
+            $this->conn->bind('created_by', $data->user_id);
+            $this->conn->bind('updated_by', $data->user_id);
+            $this->conn->execute();
+    
+            return $this->conn->rowCount();
+        }
+    }
+
+    public function update($data, $id)
+    {
+        $query = "UPDATE $this->table SET name = :name, price = :price, updated_by = :updated_by WHERE id = :id";
+        $this->conn->query($query);
+        $this->conn->bind('name', $data->name);
+        $this->conn->bind('price', $data->price);
+        $this->conn->bind('updated_by', $data->user_id);
+        $this->conn->bind('id', $id);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
+    }
+
+    public function updateAdjustmentPrice($data, $id)
+    {
+        if ($this->update($data, $id) > 0) {
+            $query = "UPDATE bs_adjustment_prices SET price = :price, updated_by = :updated_by WHERE bs_item_id = :bs_item_id";
+            $this->conn->query($query);
+            $this->conn->bind('price', $data->price);
+            $this->conn->bind('bs_item_id', $id);
+            $this->conn->bind('updated_by', $data->user_id);
+            $this->conn->execute();
+    
+            return $this->conn->rowCount();
+        }
     }
 
     public function checkOutletInItem($outletId)

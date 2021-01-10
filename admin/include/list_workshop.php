@@ -1,18 +1,18 @@
 <div class="my-panel">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div style="display: flex; justify-content: space-between; align-item: center">
-                <strong style="padding: 6px 0">Daftar Outlet</strong>
-                <button class="btn btn-active btn-primary" id="addOutlet" align="right">Tambah</button>
+            <div style="display: flex; justify-content: space-between; align-items: center">
+                <strong style="padding: 6px 0">Daftar Workshop</strong>
+                <button class="btn btn-active btn-primary" id="addworkshop" align="right">Tambah</button>
             </div>
         </div> 
         <div class="panel-body">
-            <table class="table" id="table_outlet">
+            <table class="table" id="table_workshop">
                 <thead>
                     <tr>
-                        <th width="10%">Id Outlet</th>
-                        <th>Nama Outlet</th>
-                        <th>Cabang Outlet</th>
+                        <th width="10%">Id</th>
+                        <th>Nama Workshop</th>
+                        <th>Cabang Workshop</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -34,7 +34,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveOutlet">Save changes</button>
+        <button type="button" class="btn btn-primary" id="saveworkshop">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -51,10 +51,10 @@
 
         function dataTable(data) {
             let token = $('meta[name=branch_token]').attr('content');
-			let table = $('#table_outlet').DataTable({
+			let table = $('#table_workshop').DataTable({
 				"processing": true,
 				"ajax": {
-					url: apiURL + "Outlet/lists",
+					url: apiURL + "workshop/lists",
 					type: "POST",
 					data: data,
 					beforeSend: function (xhr) {
@@ -62,9 +62,9 @@
 					}
 				},
 				"columns": [
-                    { "data": "id_outlet" },
-                    { "data": "nama_outlet" },
-                    { "data": "cabang" },
+                    { "data": "id" },
+                    { "data": "workshop" },
+                    { "data": "branch" },
                     { "data": "status", render: function (data, type, row) {
                         if (data == true) {
                             act = "Active";
@@ -77,7 +77,7 @@
                         return '<span class="label '+label+'">'+ act +'</span>';
                     }, },
                     { "data": null, render: function (data, type, row) {
-                        return "<button class='btn btn-info btn-xs' align='center' id='editOutlet' data-id='"+ row.id_outlet +"'>Edit</button>";
+                        return "<button class='btn btn-info btn-xs' align='center' id='editworkshop' data-id='"+ row.id +"'>Edit</button>";
                     }, },
                 ],
             });
@@ -85,62 +85,59 @@
 
         dataTable({});
 
-        $(document).on("click", "#addOutlet", function () {  
-            $(".modal .modal-title").attr("data-outlet", "").attr("data-branch", "");
-            $(".modal .modal-body").load("include/add_outlet.php", function () {  
+        $(document).on("click", "#addworkshop", function () {  
+            $(".modal .modal-title").attr("data-workshop", "").attr("data-branch", "");
+            $(".modal .modal-body").load("include/add_workshop.php", function () {  
                 $(".modal .modal-dialog").addClass("modal-sm");
-                $(".modal .modal-title").text("Tambah Outlet");
-                $(".modal .modal-footer #saveOutlet").text("Simpan");
+                $(".modal .modal-title").text("Tambah Workshop");
+                $(".modal .modal-footer #saveworkshop").text("Simpan");
                 $(".modal").modal("show");
             });
         });
 
-        $(document).on("click", "#editOutlet", function () {  
-            let table = $(document).find("#table_outlet").DataTable();
+        $(document).on("click", "#editworkshop", function () {  
+            let table = $(document).find("#table_workshop").DataTable();
             let row = $(this).closest('tr');
             let tr = table.row(row).data();
 
             let id = $(this).data('id');
-            $(".modal .modal-title").attr("data-outlet", id).attr("data-branch", tr.cabang);
-            $(".modal .modal-body").load("include/add_outlet.php", function () {  
+            $(".modal .modal-title").attr("data-workshop", id).attr("data-branch", tr.branch_id);
+            $(".modal .modal-body").load("include/add_workshop.php", function () {  
                 $(".modal .modal-dialog").addClass("modal-sm");
-                $(".modal .modal-title").text("Update Outlet");
-                $(".modal .modal-footer #saveOutlet").text("Update");
+                $(".modal .modal-title").text("Update Workshop");
+                $(".modal .modal-footer #saveworkshop").text("Update");
                 $(".modal").modal("show");
 
-                let form = $(document).find("form#add_outlet"),
-                    branch = form.find("#branch").append('<option value="'+tr.cabang+'" selected>'+ tr.cabang +'</option>');
-                    name = form.find("#name").val(tr.nama_outlet),
-                    telp = form.find("#telp").val(tr.telpon),
-                    address = form.find("#address").val(tr.alamat),
+                let form = $(document).find("form#add_workshop"),
+                    branch_id = form.find("#branch").append('<option value="'+tr.branch_id+'" selected>'+ tr.branch +'</option>');
+                    name = form.find("#name").val(tr.workshop),
+                    address = form.find("#address").val(tr.address),
                     active = tr.status == 1 ? form.find("#active").prop('checked', true) : form.find("#active").prop('checked', false);
             });
         });
 
-        $(".modal .modal-footer #saveOutlet").on("click", function () {            
-            let form = $(document).find("form#add_outlet"),
+        $(".modal .modal-footer #saveworkshop").on("click", function () {            
+            let form = $(document).find("form#add_workshop"),
                 branch = form.find("#branch").val(),
                 name = form.find("#name").val(),
-                telp = form.find("#telp").val(),
                 address = form.find("#address").val(),
                 active = form.find("#active").is(":checked") == true ? 1 : 0;
             let data = {
-                branch: branch,
+                branch_id: branch,
                 name: name,
-                telp: telp,
                 address: address,
                 active: active
             };
 
             let valid = true;
-            if (branch == null || name == "" || telp == "") {
+            if (branch == null || name == "") {
                 valid = false;
             }
 
-            let outletId = $(".modal .modal-title").attr("data-outlet");
+            let workshopId = $(".modal .modal-title").attr("data-workshop");
 
             if (valid) {
-                let url = outletId != "" ? "Outlet/update/"+outletId : "Outlet/store";
+                let url = workshopId != "" ? "workshop/update/"+workshopId : "workshop/store";
                 saveForm(data, url);
                 $(".modal").modal("hide");
             }
@@ -156,7 +153,7 @@
                     xhr.setRequestHeader("Authorization", token);
                 },
                 success: function (response) {
-                    $(document).find("#table_outlet").DataTable().ajax.reload();
+                    $(document).find("#table_workshop").DataTable().ajax.reload();
                 }
             })
         }

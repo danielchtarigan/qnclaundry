@@ -40,6 +40,14 @@ class Outlet {
         return $this->conn->all();
     }
 
+    public function getOutletsByBranch($branch)
+    {
+        $query = "SELECT id_outlet, nama_outlet, alamat, Kota As cabang, no_telp AS telpon, active AS status FROM $this->table WHERE Kota = :branch ";
+        $this->conn->query($query);
+        $this->conn->bind('branch', $branch);
+        return $this->conn->all();
+    }
+
     public function insertOutlet($data)
     {
         $query = "INSERT INTO $this->table (nama_outlet, alamat, Kota, no_telp, active) 
@@ -68,5 +76,21 @@ class Outlet {
 
         $this->conn->execute();
         return $this->conn->rowCount();
+    }
+
+    public function updateOutletCode($data)
+    {
+        if ($this->insertOutlet($data) > 0) {
+            $id = $this->conn->lastId();
+            $code = sprintf('%03s', $id);
+
+            $query = "UPDATE $this->table SET kode = :codeWHERE id_outlet = :outletId";
+            $this->conn->query($query);
+            $this->conn->bind('code', $code);
+            $this->conn->bind('outletId', $id);
+
+            $this->conn->execute();
+            return $this->conn->rowCount();
+        }
     }
 }

@@ -9,6 +9,14 @@ class OutletController extends Controller {
         echo json_encode($data);
     }
 
+    public function listsByBranch($branch)
+    {
+        // $branch = $_POST['branch'];
+        $data['data'] = $this->model('Outlet')->getOutletsByBranch($branch);
+
+        echo json_encode($data);
+    }
+
     public function lists()
     {
         $data['data'] = $this->model('Outlet')->getOutlets();
@@ -19,7 +27,7 @@ class OutletController extends Controller {
     public function store()
     {
         $data = json_decode(json_encode($_POST));
-        $success = $this->model('Outlet')->insertOutlet($data);
+        $success = $this->model('Outlet')->updateOutletCode($data);
         echo json_encode($success);
     }
 
