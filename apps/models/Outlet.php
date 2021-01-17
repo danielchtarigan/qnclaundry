@@ -84,13 +84,25 @@ class Outlet {
             $id = $this->conn->lastId();
             $code = sprintf('%03s', $id);
 
-            $query = "UPDATE $this->table SET kode = :codeWHERE id_outlet = :outletId";
+            $query = "UPDATE $this->table SET kode = :code WHERE id_outlet = :outletId";
             $this->conn->query($query);
             $this->conn->bind('code', $code);
             $this->conn->bind('outletId', $id);
 
             $this->conn->execute();
-            return $this->conn->rowCount();
+            return $id;
         }
+    }
+
+    public function insertOldRulePrice($id)
+    {
+        $query = "INSERT INTO outlet_harga (id_outlet, ket_harga, level_harga) VALUES (:id, :desc, :level)";
+        $this->conn->query($query);
+        $this->conn->bind('id', $id);
+        $this->conn->bind('desc', 1);
+        $this->conn->bind('level', 1);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
     }
 }

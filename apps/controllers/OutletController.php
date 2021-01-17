@@ -28,6 +28,11 @@ class OutletController extends Controller {
     {
         $data = json_decode(json_encode($_POST));
         $success = $this->model('Outlet')->updateOutletCode($data);
+
+        if ($data->branch == "Makassar") {
+            $this->model('Outlet')->insertOldRulePrice($success);
+        }
+
         echo json_encode($success);
     }
 

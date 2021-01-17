@@ -76,7 +76,7 @@
                         }
                         return '<span class="label '+label+'">'+ act +'</span>';
                     }, },
-                    { "data": null, render: function (data, type, row) {
+                    { "data": null, "orderable": false, "searchable": false, render: function (data, type, row) {
                         return "<button class='btn btn-info btn-xs' align='center' id='editOutlet' data-id='"+ row.id_outlet +"'>Edit</button>";
                     }, },
                 ],
@@ -140,6 +140,7 @@
             let outletId = $(".modal .modal-title").attr("data-outlet");
 
             if (valid) {
+                $(document).find("#table_outlet").DataTable().ajax.reload();
                 let url = outletId != "" ? "Outlet/update/"+outletId : "Outlet/store";
                 saveForm(data, url);
                 $(".modal").modal("hide");
