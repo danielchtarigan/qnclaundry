@@ -11,6 +11,7 @@
                 <div class="col-lg-6 col-md-6">
                     <button class="btn btn-success btn-md" id="info_list"><i class="fa fa-info"></i></button>
                     <button class="btn btn-success btn-md" id="copy_goods" style="display: none"><i class="fa fa-copy"></i> Salin Barang Ke</button>
+                    <button class="btn btn-danger btn-md" id="remove_items" style="display: none"><i class="fa fa-trash-o"></i> Delete</button>
                 </div>    
                 <div class="col-lg-6 col-md-6">
                     <form action="" id="filter_select">
@@ -28,6 +29,7 @@
             <table class="table" id="table_goods">
                 <thead>
                     <tr>
+                        <th><input name="select_all" value="1" type="checkbox"></th>
                         <th>ID</th>
                         <th>Type Barang</th>
                         <th>Kategori Barang</th>
@@ -73,15 +75,25 @@
     form#filter_select>.form-group {
         margin-right: 10px;
     }
+
+    table#table_goods>tbody td, table#table_goods>tbody th {
+        text-align: center;
+    }
+
+    table#table_goods>tbody td:nth-child(n+3) {
+        text-align: left;
+    }
 </style>
 
 <script>
     jQuery(function ($) {
         let user = '<?= $_SESSION['id'] ?>';
-        
+        let rows_selected = [];
+
         function dataTable(data) {
             let token = $('meta[name=branch_token]').attr('content');
 			let table = $('#table_goods').DataTable({
+                "order": [[ 1, 'asc' ]],
 				"processing": true,
 				"ajax": {
 					url: apiURL + "ItemAdjustmentPrice/lists",
@@ -92,15 +104,31 @@
 					}
 				},
 				"columns": [
+                    { 
+                        "data": null, "width": "1%", "orderable": false, "searchable": false, "className": "dt-body-center",
+                        "render": function (data, type, row) {
+                            return '<input type="checkbox" data-id="'+ row.price_id +'">';
+                        }, 
+                    },
                     { "data": "id" },
                     { "data": "type" },
                     { "data": "category" },
                     { "data": "item" },
                     { "data": "price" },
-                    { "data": null, render: function (data, type, row) {
+                    { "data": null, "orderable": false, "searchable": false, render: function (data, type, row) {
                         return "<button class='btn btn-info btn-xs' align='center' id='editgoods' data-id='"+ row.id +"'>Edit</button>";
                     }, },
                 ],
+                "rowCallback": function(row, data){
+                    // Get row ID
+                    var rowId = data.price_id;
+
+                    // If row ID is in the list of selected row IDs
+                    if($.inArray(rowId, rows_selected) !== -1){
+                        $(row).find('input[type="checkbox"]').prop('checked', true);
+                        $(row).addClass('selected');
+                    }
+                },
                 fnDrawCallback: function () {
                     len = this.api().page.info().recordsTotal;
                     if (len > 0) {
@@ -112,11 +140,64 @@
             });
         }
 
+        $(document).on('click', '#table_goods tbody input[type="checkbox"]', function(e){
+            let row = $(this).closest('tr');
+            let rowId = $(this).data('id');
+            let index = $.inArray(rowId, rows_selected);
+
+            if(this.checked && index === -1){
+                rows_selected.push(rowId);
+            } else if (!this.checked && index !== -1){
+                rows_selected.splice(index, 1);
+            }
+            
+            if(this.checked){
+                row.addClass('selected');
+            } else {
+                row.removeClass('selected');
+            }
+            
+            if(rows_selected.length > 0) {
+                $("#remove_items").show();
+            } else  {
+                $("#remove_items").hide();
+            }            
+
+            e.stopPropagation();
+        });
+
+        $(document).on('click', 'thead input[name="select_all"]', function(e){
+            if(this.checked){
+                $('#table_goods tbody input[type="checkbox"]:not(:checked)').trigger('click');
+            } else {
+                $('#table_goods tbody input[type="checkbox"]:checked').trigger('click');
+            }
+
+            e.stopPropagation();
+        });
+
         let branch, outlet;
         branch = $('#select_branch');
         outlet = $('#select_outlet');
 
-        // get detail branch outlet
+        $(document).on("click", "#remove_items", function (e) {  
+            let data = { "id": rows_selected };
+
+            let url = "ItemAdjustmentPrice/delete";
+            getData(data, url, function (res) {
+                $(document).find("#table_goods").DataTable().ajax.reload();
+                if(res > 0) {
+                    $(document).find("#table_goods").DataTable().destroy();
+                    dataTable({ branch: branch.val(), outlet: outlet.val() });
+                    $("#remove_items").hide();
+                    rows_selected = [];
+                }
+            });
+
+            e.stopPropagation();
+        });
+
+       // get detail branch outlet
         getData({ }, "Branch/details", function (response) {
             if (response.readyState !== 0) {
                 let data = response.data;
@@ -130,7 +211,7 @@
                 });
 
                 $(document).on("change", "#select_outlet", function () {
-                    $('#table_goods').DataTable().destroy();
+                    $('#table_goods').DataTable().destroy();   
                     table = dataTable({ branch: branch.val(), outlet: outlet.val() });
                 });
 
@@ -382,6 +463,7 @@
         });
 
         function saveForm(data, url) {
+            $(document).find("#table_goods").DataTable().ajax.reload();
             let token = $('meta[name=branch_token]').attr('content');
             $.ajax({
                 url: apiURL + url,

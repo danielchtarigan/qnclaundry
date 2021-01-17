@@ -12,7 +12,7 @@ class ItemAdjustmentPrices {
 
     public function lists($data)
     {
-        $query = "SELECT b.id AS id, a.price AS price, b.name AS item, c.name AS category, c.type AS type FROM $this->table a LEFT JOIN bs_items b ON a.bs_item_id = b.id 
+        $query = "SELECT a.id AS price_id, b.id AS id, a.price AS price, b.name AS item, c.name AS category, c.type AS type FROM $this->table a LEFT JOIN bs_items b ON a.bs_item_id = b.id 
                     LEFT JOIN bs_item_categories c ON b.bs_item_category_id = c.id WHERE branch_id = :branch_id AND outlet_id = :outlet_id ORDER BY a.id ASC";
         $this->conn->query($query);
         $this->conn->bind('branch_id', $data->branch);
@@ -34,6 +34,19 @@ class ItemAdjustmentPrices {
             $this->conn->execute();
             $this->count += $this->conn->rowCount(); 
         }
+        return $this->count;
+    }
+
+    public function delete($data)
+    {
+        $query = "DELETE FROM $this->table WHERE id = :id";
+        $this->conn->query($query);
+        foreach ($data->id as $val) {
+            $this->conn->bind('id', $val);
+            $this->conn->execute();
+            $this->count += $this->conn->rowCount();
+        }
+
         return $this->count;
     }
 }

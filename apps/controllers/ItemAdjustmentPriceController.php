@@ -17,4 +17,13 @@ class ItemAdjustmentPriceController extends Controller {
 
         echo json_encode($success);
     }
+
+    public function delete()
+    {
+        $data = json_decode(json_encode($_POST));
+
+        $success = $this->model('ItemAdjustmentPrices')->delete($data);
+
+        echo json_encode($success);
+    }
 }
