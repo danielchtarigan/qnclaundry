@@ -14,7 +14,7 @@
                     <button class="btn btn-danger btn-md" id="remove_items" style="display: none"><i class="fa fa-trash-o"></i> Delete</button>
                 </div>    
                 <div class="col-lg-6 col-md-6">
-                    <form action="" id="filter_select">
+                    <form action="" class="filter-select" id="filter_select">
                         <div class="form-group">
                             <select name="select_branch" id="select_branch" class="form-control">
                             </select>
@@ -177,8 +177,8 @@
         });
 
         let branch, outlet;
-        branch = $('#select_branch');
-        outlet = $('#select_outlet');
+        branch = $('.filter-select #select_branch');
+        outlet = $('.filter-select #select_outlet');
 
         $(document).on("click", "#remove_items", function (e) {  
             let data = { "id": rows_selected };

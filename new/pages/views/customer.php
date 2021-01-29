@@ -112,7 +112,7 @@
             var valid = true;
             allFields.removeClass( "ui-state-error" );
 
-            valid = valid && checkLength( telp, "telp", 11, 12 );
+            valid = valid && checkLength( telp, "telp", 11, 13 );
             valid = valid && checkRegexp( telp, /^[0-9]*$/, "contoh. 081245454545" );
             valid = valid && checkLength( name, "nama", 3, 22 );
             valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Kolom nama belum diisi" );

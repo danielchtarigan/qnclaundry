@@ -394,6 +394,7 @@ jQuery(function ($) {
             let prices = $.grep(getDataItems, val => val.item === parentId)
             if (prices.length > 0) {
                 mainItemPrice.val(prices[0].price);   
+                mainItemPrice.attr('data-value', prices[0].price);
 
                 mainItemTotalData.price = mainItemPrice.val();
                 mainItemTotalData.qty = mainItemQuantity.val();
@@ -460,7 +461,7 @@ jQuery(function ($) {
     }
 
     $(document).on("keyup", "#price, #quantity, #weight", function (event) {  
-        mainItemTotalData.price = mainItem.val() == "Cuci Kering" ? (mainItemWeight.val() > 3 ? 15000 : 10000) : mainItemPrice.val();
+        mainItemTotalData.price = mainItem.val() == "Cuci Kering" ? (mainItemWeight.val() > 3 ? mainItemPrice.data('value')*1.5 : mainItemPrice.data('value')) : mainItemPrice.val();
         mainItemTotalData.qty = mainItemQuantity.val();
         mainItemTotalData.weight = mainItem.val() == "Cuci Kering" ? 1 : mainItemWeight.val();
 

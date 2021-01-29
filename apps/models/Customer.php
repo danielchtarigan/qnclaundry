@@ -16,9 +16,10 @@ class Customer {
                         WHEN member = 1 THEN 'Membership'
                         ELSE 'Reguler'
                     END AS status
-                    FROM $this->table WHERE kota = :branch ORDER BY nama_customer ASC";
+                    FROM $this->table WHERE kota = :branch OR (kota <> :branch AND lgn = :lgn AND no_telp LIKE '08%' AND LENGTH(no_telp) > 10) ORDER BY nama_customer ASC";
         $this->conn->query($query);
         $this->conn->bind('branch', $data['branch']);
+        $this->conn->bind('lgn', 0);
         return $this->conn->all();
     }
 
