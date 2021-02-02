@@ -1,15 +1,13 @@
 <?php 
 include 'config.php';
 include 'encrypt-url.php';
-// include 'send_sms.php';
-// include 'wassenger_send.php';
+include 'send_sms.php';
+include 'wassenger_send.php';
 
 date_default_timezone_set('Asia/Makassar');
 $date = date('Y-m-d');
 
-// MTBRYL000634
-// $kodeBersih = $kode_terima3; 
-$kodeBersih = 'MTOBLV001309'; 
+$kodeBersih = $kode_terima3; 
 
 $qman = $con->query("SELECT DISTINCT no_faktur, id_customer FROM reception c, (SELECT a.no_nota FROM manifest a, man_terima b WHERE a.kd_terima3=b.kode_terima AND b.kode_terima='$kodeBersih') d WHERE c.no_nota=d.no_nota ORDER BY no_faktur ASC");
 
