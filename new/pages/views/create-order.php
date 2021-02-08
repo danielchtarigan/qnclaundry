@@ -1,6 +1,6 @@
 <div id="myform" class="create-order">   
 
-    <div class="choose-item show">
+    <div class="choose-item main-item show">
         <div class="overlay">
             <h2 class="title">Pilihan Barang</h2>
             <div class="overlay-content">
@@ -234,63 +234,68 @@ jQuery(function ($) {
             formMainItem.show();
             formMainItem.closest(".choose-item").find(".overlay-content>#load").remove();
 
-            option_items("select_category_main_item", null, null, data);
-            option_items("select_service_item_category", null, null, data);
-
-            $(document).on("click", "#select_category_main_item>#main_item_category", function () {
-                let value = $(this).data('value');
-                if (value != undefined) {
-                    $("#select_category_main_item>#select-option>input, #select_category_main_item>#select-option>label").remove();
-                    $(this).attr('readonly', true);
-                    value = value.toLowerCase();
-                    option_items("select_category_main_item", null, value, data);
-                }
-            });
-
-            $(document).on("keyup keypress", "#select_category_main_item>#main_item_category", function () {
-                $("#select_category_main_item>#select-option>input, #select_category_main_item>#select-option>label").remove();
-                value = $(this).val();
-                option_items("select_category_main_item", null, value, data);
-            });
-
-            $(document).on("keyup keypress", "#select_main_item>#main_item", function () {
-                value = $(this).val();
-                category = mainItemCategory.val();
-                option_items("select_main_item", category, value, data);
-            });
-
-            $(document).on("click", "#select_category_main_item input[name=categories]", function () {
-                mainItem.val("");
-                mainItemPrice.val(0);
-                mainItemTotalPrice.val(0);
-                category = mainItemCategory.val();
-
-                // Jika kategory barang adalah kiloan maka hanya kolom berat yang bisa diisi, sebaliknya
-                if (category == "Kiloan") {
-                    mainItemQuantity.attr('readonly', true).val(1);
-                    mainItemWeight.attr('readonly', false);
-                } else {
-                    mainItemQuantity.attr('readonly', false);
-                    mainItemWeight.attr('readonly', true).val(1);
-                }
-
-                // Ikuti berat yang sudah dibuat pada item pertama, jangan diaktifkan kolomnya
-                if (orderItem.length > 0) {
-                    if (category == "Kiloan") {
-                        mainItemWeight.attr('readonly', true);
+            if (data.data.length > 0) {
+                option_items("select_category_main_item", null, null, data);
+                option_items("select_service_item_category", null, null, data);
+    
+                $(document).on("click", "#select_category_main_item>#main_item_category", function () {
+                    let value = $(this).data('value');
+                    if (value != undefined) {
+                        $("#select_category_main_item>#select-option>input, #select_category_main_item>#select-option>label").remove();
+                        $(this).attr('readonly', true);
+                        value = value.toLowerCase();
+                        option_items("select_category_main_item", null, value, data);
                     }
-                }
-
-                $("#select_category_main_item").removeClass("has-error");
-                option_items("select_main_item", category, null, data);
-            });
-
-            $(document).on("click", "#select_main_item input[type=radio][name=items]", function () {
-                mainItemPrice.val(0);
-                let item = mainItem.val();
-                $("#select_main_item").removeClass("has-error");      
-                option_items("select_main_item", item, null, data);
-            });
+                });
+    
+                $(document).on("keyup keypress", "#select_category_main_item>#main_item_category", function () {
+                    $("#select_category_main_item>#select-option>input, #select_category_main_item>#select-option>label").remove();
+                    value = $(this).val();
+                    option_items("select_category_main_item", null, value, data);
+                });
+    
+                $(document).on("keyup keypress", "#select_main_item>#main_item", function () {
+                    value = $(this).val();
+                    category = mainItemCategory.val();
+                    option_items("select_main_item", category, value, data);
+                });
+    
+                $(document).on("click", "#select_category_main_item input[name=categories]", function () {
+                    mainItem.val("");
+                    mainItemPrice.val(0);
+                    mainItemTotalPrice.val(0);
+                    category = mainItemCategory.val();
+    
+                    // Jika kategory barang adalah kiloan maka hanya kolom berat yang bisa diisi, sebaliknya
+                    if (category == "Kiloan") {
+                        mainItemQuantity.attr('readonly', true).val(1);
+                        mainItemWeight.attr('readonly', false);
+                    } else {
+                        mainItemQuantity.attr('readonly', false);
+                        mainItemWeight.attr('readonly', true).val(1);
+                    }
+    
+                    // Ikuti berat yang sudah dibuat pada item pertama, jangan diaktifkan kolomnya
+                    if (orderItem.length > 0) {
+                        if (category == "Kiloan") {
+                            mainItemWeight.attr('readonly', true);
+                        }
+                    }
+    
+                    $("#select_category_main_item").removeClass("has-error");
+                    option_items("select_main_item", category, null, data);
+                });
+    
+                $(document).on("click", "#select_main_item input[type=radio][name=items]", function () {
+                    mainItemPrice.val(0);
+                    let item = mainItem.val();
+                    $("#select_main_item").removeClass("has-error");      
+                    option_items("select_main_item", item, null, data);
+                });
+            } 
+            else {
+                $(".main-item h2.title").next().html("<ul style='color: red'><li>Daftar barang belum tersedia di outlet ini, mungkin ini adalah outlet baru</li><li>Hubungi admin qnclaundry untuk menambahkan daftar barang ke outlet ini</li></ul>");
+            }
 
             // Untuk form extra service
             $(document).on("keyup keypress", "#select_service_item_category>#service_item_category", function () {

@@ -1,16 +1,19 @@
 <?php 
+include_once 'models/ItemAdjustmentPrices.php';
 
 class ItemsController extends Controller {
 
     public function index()
     {        
-        if ($this->checkItemInOutlet() > 0) {
-            $data['data'] = $this->get_price_outlet();
-        } else if ($this->checkItemInBranch() > 0) {
-            $data['data'] = $this->get_price_branch();
-        } else {
-            $data['data'] = $this->get_price_default();
-        }        
+        $data['data'] = $this->get_price_outlet();
+        // if ($this->checkItemInOutlet() > 0) {
+        //     $data['data'] = $this->get_price_outlet();
+        // } else if ($this->checkItemInBranch() > 0) {
+        //     $data['data'] = $this->get_price_branch();
+        // } 
+        // else {
+        //     $data['data'] = $this->get_price_default();
+        // }        
     }
 
     public function details()
@@ -33,7 +36,9 @@ class ItemsController extends Controller {
     {
         $data = json_decode(json_encode($_POST));
 
-        $success = $this->model('Items')->updateAdjustmentPrice($data, $id);
+        $adjustPrice = new ItemAdjustmentPrices();
+        $adjustPrice->update($data, $id);
+        $success = $this->model('Items')->update($data);        
 
         echo json_encode($success);
     }

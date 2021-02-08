@@ -12,7 +12,7 @@ class ItemAdjustmentPrices {
 
     public function lists($data)
     {
-        $query = "SELECT a.id AS price_id, b.id AS id, a.price AS price, b.name AS item, c.name AS category, c.type AS type FROM $this->table a LEFT JOIN bs_items b ON a.bs_item_id = b.id 
+        $query = "SELECT a.id AS price_id, b.id AS id, a.price AS price, b.unit AS unit, b.name AS item, c.name AS category, c.type AS type FROM $this->table a LEFT JOIN bs_items b ON a.bs_item_id = b.id 
                     LEFT JOIN bs_item_categories c ON b.bs_item_category_id = c.id WHERE branch_id = :branch_id AND outlet_id = :outlet_id ORDER BY a.id ASC";
         $this->conn->query($query);
         $this->conn->bind('branch_id', $data->branch);
@@ -35,6 +35,18 @@ class ItemAdjustmentPrices {
             $this->count += $this->conn->rowCount(); 
         }
         return $this->count;
+    }
+
+    public function update($data, $id)
+    {
+        $query = "UPDATE bs_adjustment_prices SET price = :price, updated_by = :updated_by WHERE id = :id";
+        $this->conn->query($query);
+        $this->conn->bind('price', $data->price);
+        $this->conn->bind('id', $id);
+        $this->conn->bind('updated_by', $data->user_id);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
     }
 
     public function delete($data)

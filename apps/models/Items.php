@@ -23,10 +23,11 @@ class Items {
 
     public function insert($data)
     {
-        $query = "INSERT INTO $this->table (name, price, bs_item_category_id, created_by, updated_by) VALUES (:name, :price, :category_id, :created_by, :updated_by)";
+        $query = "INSERT INTO $this->table (name, price, unit, bs_item_category_id, created_by, updated_by) VALUES (:name, :price, :unit, :category_id, :created_by, :updated_by)";
         $this->conn->query($query);
         $this->conn->bind('name', $data->name);
         $this->conn->bind('price', $data->price);
+        $this->conn->bind('unit', $data->unit);
         $this->conn->bind('category_id', $data->category_id);
         $this->conn->bind('created_by', $data->user_id);
         $this->conn->bind('updated_by', $data->user_id);
@@ -53,31 +54,17 @@ class Items {
         }
     }
 
-    public function update($data, $id)
+    public function update($data)
     {
-        $query = "UPDATE $this->table SET name = :name, price = :price, updated_by = :updated_by WHERE id = :id";
+        $query = "UPDATE $this->table SET name = :name, unit = :unit, updated_by = :updated_by WHERE id = :id";
         $this->conn->query($query);
         $this->conn->bind('name', $data->name);
-        $this->conn->bind('price', $data->price);
+        $this->conn->bind('unit', $data->unit);
         $this->conn->bind('updated_by', $data->user_id);
-        $this->conn->bind('id', $id);
+        $this->conn->bind('id', $data->goods_id);
         $this->conn->execute();
 
         return $this->conn->rowCount();
-    }
-
-    public function updateAdjustmentPrice($data, $id)
-    {
-        if ($this->update($data, $id) > 0) {
-            $query = "UPDATE bs_adjustment_prices SET price = :price, updated_by = :updated_by WHERE bs_item_id = :bs_item_id";
-            $this->conn->query($query);
-            $this->conn->bind('price', $data->price);
-            $this->conn->bind('bs_item_id', $id);
-            $this->conn->bind('updated_by', $data->user_id);
-            $this->conn->execute();
-    
-            return $this->conn->rowCount();
-        }
     }
 
     public function checkOutletInItem($outletId)

@@ -18,6 +18,11 @@ class ItemAdjustmentPriceController extends Controller {
         echo json_encode($success);
     }
 
+    public function update($data, $id)
+    {
+        $this->model('ItemAdjustmentPrices')->update($data, $id);
+    }
+
     public function delete()
     {
         $data = json_decode(json_encode($_POST));

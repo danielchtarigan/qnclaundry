@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div style="display: flex; justify-content: space-between; align-items: center">
-                <strong style="padding: 6px 0">Daftar Barang & Jasa</strong>
+                <strong style="padding: 6px 0">Custom Harga Barang</strong>
                 <button class="btn btn-active btn-primary" id="addgoods" align="right"><i class="fa fa-plus"></i> Tambah</button>
             </div>
         </div> 
@@ -31,11 +31,10 @@
                     <tr>
                         <th><input name="select_all" value="1" type="checkbox"></th>
                         <th>ID</th>
-                        <th>Type Barang</th>
-                        <th>Kategori Barang</th>
                         <th>Nama Barang</th>
+                        <th>Satuan</th>
+                        <th>Minimal</th>
                         <th>Harga</th>
-                        <th>Unit</th>
                         <th width="15%"></th>
                     </tr>
                 </thead>
@@ -97,7 +96,7 @@
                 "order": [[ 1, 'asc' ]],
 				"processing": true,
 				"ajax": {
-					url: apiURL + "ItemAdjustmentPrice/lists",
+					url: apiURL + "CustomePrice/lists",
 					type: "POST",
 					data: data,
 					beforeSend: function (xhr) {
@@ -116,7 +115,6 @@
                     { "data": "category" },
                     { "data": "item" },
                     { "data": "price" },
-                    { "data": "unit" },
                     { "data": null, "orderable": false, "searchable": false, render: function (data, type, row) {
                         if (row.category == "Kiloan") {
                             return "<button class='btn btn-warning btn-xs' align='center' id='customPrice' data-id='"+ row.price_id +"'>Custom</button> | <button class='btn btn-info btn-xs' align='center' id='editgoods' data-id='"+ row.price_id +"'>Edit</button>";
@@ -225,7 +223,7 @@
                 $(document).on("click", "#addgoods", function () {  
                     $(".modal .modal-title").attr("data-goods", "").attr("data-branch", "");
                     $(".modal .modal-body").load("include/add_goods.php", function () {  
-                        $(".modal .modal-dialog").removeClass("modal-xs").addClass("modal-sm");
+                        $(".modal .modal-dialog").addClass("modal-sm");
                         $(".modal .modal-title").text("Tambah Barang");
 
                         button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button><button type="button" class="btn btn-primary" id="savegoods">Simpan</button>');
@@ -418,7 +416,7 @@
             $(".modal .modal-title").attr("data-goods", id);
 
             $(".modal .modal-body").load("include/add_goods.php", function () {  
-                $(".modal .modal-dialog").removeClass("modal-xs").addClass("modal-sm");
+                $(".modal .modal-dialog").addClass("modal-sm");
                 $(".modal .modal-title").text("Update Barang");
 
                 button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button><button type="button" class="btn btn-primary" id="savegoods">Update</button>');
@@ -438,60 +436,39 @@
                     category = form.find("#category").append('<option value="'+ tr.category +'" selected>'+ tr.category +'</option>').attr("disabled", true);
                     goods_id = form.find("#goods_id").val(tr.id),
                     name = form.find("#name").val(tr.item),
-                    price = form.find("#price").val(tr.price),
-                    unit = form.find("#unit option[value="+tr.unit+"]").attr("selected", true);
+                    price = form.find("#price").val(tr.price);
             });
         });
 
-        let customPrice = true, customId = [];
         $(document).on("click", "#customPrice", function () {  
             let table = $(document).find("#table_goods").DataTable();
             let row = $(this).closest('tr');
             let tr = table.row(row).data();
 
             let id = $(this).data('id');
-            let priceId = {id: id};
-            
             $(".modal .modal-title").attr("data-goods", id);
             $(".modal .modal-body").load("include/add_custom_price.php", function () {  
-                $(".modal .modal-dialog").removeClass("modal-sm").addClass("modal-xs");
+                $(".modal .modal-dialog").addClass("modal-xs");
                 $(".modal .modal-title").text("Custom Harga");
 
                 button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button><button type="button" class="btn btn-primary" id="savegoods">Update</button>');
                 $(".modal .modal-footer").html(button);
 
+                $(".modal .modal-footer #savegoods").text("Simpan").show();
                 $(".modal").modal("show");
 
-                priceId = priceId.id;
-                let form = $(document).find("form#custom_price"),
-                    id = form.find("#id").val(priceId),
-                    name = form.find("#name").val(tr.item);
-
+                let priceId = $("#customPrice").data('id');
                 getData({ }, "CustomPrice/getDataByPriceId/"+priceId, function (response) {
-                    if (response.readyState == 0) {
-                        customId = [];
-                        form.find('input[name^="price"]').attr('readonly', true);
-                        form.find('input[name^="min"]').attr('readonly', true);
-                        $(".modal .modal-footer #savegoods").text("Simpan").hide();
-                    }
-                    else {
-                        $(".modal .modal-footer #savegoods").text("Simpan").show();
-                        prices = form.find('input[name^="price"]').removeAttr('readonly');
-                        minqties = form.find('input[name^="min"]').removeAttr('readonly');
-                        
-                        $.each(response.data, function (i, val) {
-                            prices.eq(i).val(val.price);
-                            customId.push({ id: val.custom_id });
-                        });
-
-                        if (response.data.length == 0) {
-                            customPrice = false;
-                        } else {
-                            customPrice = true;
-                        }
-                    }
+                    // if (response > 0) {
+                    //     console.log(response.data);
+                    // }
+                    console.log(response);
                 });
 
+                let form = $(document).find("form#custom_price"),
+                    id = form.find("#id").val(priceId),
+                    name = form.find("#name").val(tr.item),
+                    price = form.find("#price").val(tr.price);
             });
         });
 
@@ -503,29 +480,24 @@
                 let form = $(document).find("form#custom_price"),     
                     active = form.find("#active").is(":checked") == true ? 1 : 0;               
                     id = form.find("#id").val(),
-                    name = form.find("#name").val();
+                    name = form.find("#name").val(),
+                    unit = form.find("#unit").val();
 
                     prices = form.find('input[name^="price"]');
                     minqties = form.find('input[name^="min"]');
 
                     for(i = 0; i < prices.length; i++) {
                         data.push({
-                            id: customId[i].id,
                             price: prices[i].value,
                             minqty: minqties[i].value
                         });
                     }
 
                     data = {
-                        active : active, id : id, name : name, data : data
+                        active : active, id : id, name : name, unit : unit, data : data
                     }
 
-                    if (customPrice) {
-                        saveForm(data, "CustomPrice/update");
-                    } else {
-                        saveForm(data, "CustomPrice/store");
-                    }
-
+                    saveForm(data, "CustomPrice/store");
                     $(".modal").modal("hide");
             }
             else {
@@ -535,7 +507,6 @@
                     category = form.find("#category").val(),
                     name = form.find("#name").val();
                     price = form.find("#price").val();
-                    unit = form.find("#unit").val();
                     goods_id = form.find("#goods_id").val();
     
                 let data = {
@@ -545,7 +516,6 @@
                     goods_id: goods_id,
                     name: name,
                     price: price,
-                    unit: unit,
                     user_id: user,
                 };
     

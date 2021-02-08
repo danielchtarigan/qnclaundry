@@ -11,7 +11,7 @@ $kodeBersih = $kode_terima3;
 
 $qman = $con->query("SELECT DISTINCT no_faktur, id_customer FROM reception c, (SELECT a.no_nota FROM manifest a, man_terima b WHERE a.kd_terima3=b.kode_terima AND b.kode_terima='$kodeBersih') d WHERE c.no_nota=d.no_nota ORDER BY no_faktur ASC");
 
-function FakturAlready($noFaktur) {
+function fakturAlready($noFaktur) {
 	global $con;
 	$query = "SELECT COUNT(no_faktur) AS countFaktur FROM reception WHERE no_faktur = '$noFaktur' AND lunas = true AND kembali = false";
 	$sql = mysqli_query($con, $query);
@@ -23,7 +23,7 @@ while($data = $qman->fetch_array()){
 	$id_cs = $data['id_customer']; 
 	$noFaktur = $data['no_faktur'];
 
-	if (FakturAlready($noFaktur) == 0) {
+	if (fakturAlready($noFaktur) == 0) {
 
 		$customers = mysqli_query($con, "SELECT * FROM customer WHERE id='$id_cs'");
 		$cus = mysqli_fetch_assoc($customers);
