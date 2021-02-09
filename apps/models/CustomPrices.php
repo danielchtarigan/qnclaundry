@@ -9,15 +9,7 @@ class CustomPrices {
     {
         $this->conn = new Database;
     }
-
-    public function lists($priceId)
-    {
-        $query = "SELECT minimal_quantity AS minqty, price AS price FROM $this->table WHERE active = true AND bs_adjustment_price_id = :price_id";
-        $this->conn->query($query);
-        $this->conn->bind('price_id', $priceId);
-        $this->conn->all();
-    }
-
+    
     public function getDataByPriceId($priceId)
     {
         $query = "SELECT id AS custom_id, bs_adjustment_price_id AS id, price, minimal_quantity AS minqty FROM $this->table WHERE bs_adjustment_price_id = :price_id";
