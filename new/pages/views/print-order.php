@@ -138,8 +138,8 @@ date_default_timezone_set('Asia/Makassar');
     let orderDelivery = dataOrder.items.filter(item => item.category == "Delivery");
 
     $.each(orderMainItem, function (i, val) {  
-        let weight = val.isweight > 0 ? parseFloat(val.isweight)+" Kg" : "";
-        let content = `<tr>${val.quantity}</td><td>${val.item} ${weight}</td><td align="right">${rupiah(val.total)}</td></tr>`;
+        let qty = val.category == "Kiloan" ? parseFloat(val.isweight)+" kg" : parseFloat(val.quantity);
+        let content = `<tr>${val.quantity}</td><td>${val.item} ${qty}</td><td align="right">${rupiah(val.total)}</td></tr>`;
         $(".struk-body #info-order").append(content);
     });
 
