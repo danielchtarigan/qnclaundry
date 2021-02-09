@@ -32,8 +32,12 @@
                         </div>
                         <div class="col-xs-3">
                             <div class="form-group">
-                                <label for="weight">Berat</label>
-                                <input type="text" class="form-control" id="weight" value="1" min="1" autocomplete="off">
+                                <label for="unit">Unit</label>
+                                <select name="unit" id="unit" class="form-control">
+                                    <option value="kg">kg</option>
+                                    <option value="pcs">pcs</option>
+                                    <option value="m">m</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -214,9 +218,10 @@ jQuery(function ($) {
         mainItem = formMainItem.find("#main_item"),
         mainItemPrice = formMainItem.find("#price"),
         mainItemQuantity = formMainItem.find("#quantity"),
-        mainItemWeight = formMainItem.find("#weight"),
+        // mainItemWeight = formMainItem.find("#weight"),
+        mainItemUnit = formMainItem.find("#unit"),
         mainItemTotalPrice = formMainItem.find("#amount"),
-        mainItemFields = $( [] ).add( mainItemCategory ).add( mainItem ).add( mainItemPrice ).add( mainItemQuantity ).add( mainItemWeight ).add( mainItemTotalPrice );
+        mainItemFields = $( [] ).add( mainItemCategory ).add( mainItem ).add( mainItemPrice ).add( mainItemQuantity ).add( mainItemTotalPrice );
 
     // Form isian extra service
     let formServiceItem = $("#form_service_item"),
@@ -266,19 +271,10 @@ jQuery(function ($) {
                     mainItemTotalPrice.val(0);
                     category = mainItemCategory.val();
     
-                    // Jika kategory barang adalah kiloan maka hanya kolom berat yang bisa diisi, sebaliknya
-                    if (category == "Kiloan") {
-                        mainItemQuantity.attr('readonly', true).val(1);
-                        mainItemWeight.attr('readonly', false);
-                    } else {
-                        mainItemQuantity.attr('readonly', false);
-                        mainItemWeight.attr('readonly', true).val(1);
-                    }
-    
                     // Ikuti berat yang sudah dibuat pada item pertama, jangan diaktifkan kolomnya
                     if (orderItem.length > 0) {
                         if (category == "Kiloan") {
-                            mainItemWeight.attr('readonly', true);
+                            mainItemQuantity.attr('readonly', true);
                         }
                     }
     
@@ -334,13 +330,12 @@ jQuery(function ($) {
     let mainItemTotalData = {};
     mainItemTotalData.price = mainItemPrice.val();
     mainItemTotalData.qty = mainItemQuantity.val();
-    mainItemTotalData.weight = mainItemWeight.val();
+    mainItemTotalData.unit = mainItemUnit.val();
     
     // Dekalarasikan variable untuk dapatkan nilai total harga extra service
     let serviceItemTotalData = {};
     serviceItemTotalData.price = mainItemPrice.val();
     serviceItemTotalData.qty = mainItemQuantity.val();
-    serviceItemTotalData.weight = mainItemWeight.val();
 
     function option_items(id, parentId, value, data) {
         let getDataItems = data['data'].filter(item => item.type != "Extra Service");
@@ -388,7 +383,7 @@ jQuery(function ($) {
                     items = $.grep(getDataItems, val => val.category === parentId);
                 }
             }
-            
+
             $.each(items, function(i, val) {
                 let content = $('<input type="radio" id="" name="items"><label for=""></label>');
                 $(content[0]).attr("value", val.item).attr("id", "item"+(i+1));
@@ -396,16 +391,16 @@ jQuery(function ($) {
                 $(document).find("#" + id + ">#select-option").append(content);
             });
 
-            let prices = $.grep(getDataItems, val => val.item === parentId)
+            // let customs = $.grep(getDataItems, val => val.item === parentId);
+            let prices = $.grep(getDataItems, val => val.item === parentId);
+            
             if (prices.length > 0) {
-                mainItemPrice.val(prices[0].price);   
-                mainItemPrice.attr('data-value', prices[0].price);
 
-                mainItemTotalData.price = mainItemPrice.val();
-                mainItemTotalData.qty = mainItemQuantity.val();
-                mainItemTotalData.weight = mainItemWeight.val();
-                mainItemTotalPrice.val(rupiah(calculation_input(mainItemTotalData)));
-                mainItemTotalPrice.attr('data-value', calculation_input(mainItemTotalData));      
+                set_price(prices);
+
+                $(document).on("keyup", "#price, #quantity", function (event) {  
+                    set_price(prices);
+                });                
             }
         }
 
@@ -465,19 +460,8 @@ jQuery(function ($) {
         }
     }
 
-    $(document).on("keyup", "#price, #quantity, #weight", function (event) {  
-        mainItemTotalData.price = mainItem.val() == "Cuci Kering" ? (mainItemWeight.val() > 3 ? mainItemPrice.data('value')*1.5 : mainItemPrice.data('value')) : mainItemPrice.val();
-        mainItemTotalData.qty = mainItemQuantity.val();
-        mainItemTotalData.weight = mainItem.val() == "Cuci Kering" ? 1 : mainItemWeight.val();
-
-        mainItemPrice.val(mainItemTotalData.price);
-
-        mainItemTotalPrice.val(rupiah(calculation_input(mainItemTotalData)));
-        mainItemTotalPrice.attr('data-value', calculation_input(mainItemTotalData));
-    });
-
     // Kolom ini hanya diizinkan input angka dan titik
-    $(document).on("keyup keypress blur", "#price, #quantity, #weight, #priceService", function (event) {                
+    $(document).on("keyup keypress blur", "#price, #quantity, #priceService", function (event) {                
         $(this).val($(this).val().replace(/[^0-9\.]/g,''));
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
             event.preventDefault();
@@ -515,16 +499,30 @@ jQuery(function ($) {
         return true;
     }
 
+    function set_price(prices) {        
+        if (prices[0].custom.length > 0) {
+            let p = $.grep(prices[0].custom, val => val.minqty >= mainItemQuantity.val());
+            defPrice = p[0].price;
+            def = 1;
+        } else {
+            defPrice = prices[0].price;
+            def = 0;
+        }
+
+        mainItemPrice.val(defPrice).attr('data-value', defPrice);
+        mainItemUnit.find("option[value="+ prices[0].unit +"]").attr("selected", true);
+        mainItemTotalData.price = mainItemPrice.val();
+        mainItemTotalData.qty = mainItemQuantity.val();
+
+        defTotal = def == 0 ? calculation_input(mainItemTotalData) : defPrice;
+        mainItemTotalPrice.val(rupiah(defTotal)).attr('data-value', defTotal);
+    }
+
     function calculation_input(data) {
         price = (data.price == "") ? 0 : parseFloat(data.price.toString().replace(/\,/g, '.'));
         qty = (data.qty == "") ? 0 : parseFloat(data.qty.toString().replace(/\,/g, '.'));
-        weight = (data.weight == "") ? 0 : parseFloat(data.weight.toString().replace(/\,/g, '.'));
-        subtotal = price*qty*weight;
+        subtotal = price*qty;
         return subtotal;
-    }
-
-    function save_order(data) {
-        //
     }
 
     function detailOrder(orderItem, type) {
@@ -562,18 +560,19 @@ jQuery(function ($) {
             discounts.item = "Diskon Membership";
             discounts.price = member * -1;
             discounts.qty = 1;
-            discounts.amount = member * -1;
             discounts.weight = 0;
+            discounts.unit = '';
+            discounts.amount = member * -1;
             discounts.type = "discount";
             orderItem.push(discounts);
         }
 
         if (type == "mainItem") {
-            $(".detail-body>.table-detail-item").find("tr").remove();            
-
+            $(".detail-body>.table-detail-item").find("tr").remove();          
+            
             $.each(dataItem, function (i, val) {
-                let weight = val.category == "Kiloan" ? val.weight + ' Kg' : '';
-                let tableBody = '<tr><td><a href="#" id="removeItem" data-id="'+ val.id +'"><i class="ace-icon fa fa-times"></i></a></td><td>'+ val.qty +'</td><td>'+ val.item + ' ' + weight +'</td><td align="right">'+ rupiah(val.amount) +'</td></tr>';
+                qty = (val.category == "Kiloan") ? val.weight : val.qty;
+                let tableBody = '<tr><td><a href="#" id="removeItem" data-id="'+ val.id +'"><i class="ace-icon fa fa-times"></i></a></td><td>'+ val.item + ' ' + qty +' '+ val.unit +'</td><td align="right">'+ rupiah(val.amount) +'</td></tr>';
                 $(".detail-body>.table-detail-item").append(tableBody);
             });
 
@@ -627,7 +626,6 @@ jQuery(function ($) {
         valid = valid && validate(mainItem, "Barang belum dipilih");
         valid = valid && validate(mainItemPrice, "Kolom harga masih kosong");
         valid = valid && validate(mainItemQuantity, "Kolom quantity masih kosong");
-        valid = valid && validate(mainItemWeight, "Kolom berat masih kosong");
 
         if (valid) {
             $(this).closest(".extra-services, .choose-item, .discount-order").removeClass("show");
@@ -638,9 +636,10 @@ jQuery(function ($) {
             items.category = mainItemCategory.val();
             items.item = mainItem.val();
             items.price = mainItemPrice.val();
-            items.qty = mainItemQuantity.val();
-            items.weight = mainItemCategory.val() == "Kiloan" ? mainItemWeight.val() : 0;
-            items.amount = mainItem.val() == "Cuci Kering" ? mainItemPrice.val() : mainItemPrice.val() * mainItemQuantity.val() * mainItemWeight.val();
+            items.qty = (mainItemCategory.val() == "Kiloan") ? 1 : mainItemQuantity.val();
+            items.weight = (mainItemCategory.val() == "Kiloan") ? mainItemQuantity.val() : 1;
+            items.unit = mainItemUnit.val();
+            items.amount = mainItemTotalPrice.attr('data-value');
             items.type = "mainItem";
             orderItem.push(items);
 
@@ -682,7 +681,6 @@ jQuery(function ($) {
             mainItem.val("");
             mainItemPrice.val(0);
             mainItemQuantity.val(1);
-            mainItemWeight.val(1);
             mainItemTotalPrice.val(0);
             mainItemTotalPrice.data('value', 0);
             serviceItemCategory.val("");
@@ -713,6 +711,7 @@ jQuery(function ($) {
             services.qty = 1;
             services.amount = serviceItemPrice.val()*1;
             services.weight = 0;
+            services.unit = "";
             services.type = "serviceItem";
             orderItem.push(services);
 
@@ -722,7 +721,6 @@ jQuery(function ($) {
             mainItem.val("");
             mainItemPrice.val(0);
             mainItemQuantity.val(1);
-            mainItemWeight.val(1);
             mainItemTotalPrice.val(0);
             mainItemTotalPrice.data('value', 0);
             serviceItemCategory.val("");
@@ -814,8 +812,9 @@ jQuery(function ($) {
             discounts.item = "Diskon Promo "+promoCode.val();
             discounts.price = discountValue.data('value') * -1;
             discounts.qty = 1;
-            discounts.amount = discountValue.data('value') * -1;
             discounts.weight = 0;
+            discounts.amount = discountValue.data('value') * -1;
+            discounts.unit = "";
             discounts.type = "discount";
             orderItem.push(discounts);
 
@@ -848,10 +847,11 @@ jQuery(function ($) {
         if (dataItemReady) {
             $(this).closest(".extra-services, .preview-order, .discount-order").removeClass("show");
             $(".choose-item").addClass("show");
+
             if(orderItem.length > 0) {
                 if (orderItem[0].category == "Kiloan") {
-                    mainItemWeight.val(orderItem[0].weight);
-                    mainItemWeight.attr('readonly', true);
+                    mainItemQuantity.val(orderItem[0].weight);
+                    mainItemQuantity.attr('readonly', true);
                 }
                 $(document).find("#select_category_main_item>input#main_item_category").attr("data-value", orderItem[0].category);
             }

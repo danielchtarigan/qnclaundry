@@ -11,7 +11,7 @@ class Items {
 
     public function get_items($data)
     {
-        $this->conn->query("SELECT a.name AS name, a.price AS price, b.name AS category FROM $this->table a LEFT JOIN bs_item_categories b ON a.bs_item_category_id = b.id");
+        $this->conn->query("SELECT a.name AS name, a.price AS price, a.unit AS unit, b.name AS category FROM $this->table a LEFT JOIN bs_item_categories b ON a.bs_item_category_id = b.id");
         return $this->conn->all();
     }
 
@@ -105,7 +105,7 @@ class Items {
 
     public function getItemPriceByOutlet($branch, $outlet)
     {
-        $this->conn->query("SELECT c.type AS type, c.name AS category, b.name AS item, a.price 
+        $this->conn->query("SELECT a.id AS price_id, c.type AS type, c.name AS category, b.name AS item, a.price, b.unit AS unit 
             FROM bs_adjustment_prices AS a 
             LEFT JOIN $this->table AS b ON a.bs_item_id = b.id 
             LEFT JOIN bs_item_categories AS c ON b.bs_item_category_id = c.id 

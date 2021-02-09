@@ -509,8 +509,9 @@
                     minqties = form.find('input[name^="min"]');
 
                     for(i = 0; i < prices.length; i++) {
+                        cid = customId.length > 0 ? customId[i].id : 0;
                         data.push({
-                            id: customId[i].id,
+                            id: cid,
                             price: prices[i].value,
                             minqty: minqties[i].value
                         });

@@ -1,5 +1,6 @@
 <?php 
 include_once 'models/ItemAdjustmentPrices.php';
+include_once 'models/CustomPrices.php';
 
 class ItemsController extends Controller {
 
@@ -58,6 +59,13 @@ class ItemsController extends Controller {
     public function get_price_outlet()
     {
         $data['data'] = $this->model('Items')->getItemPriceByOutlet($_POST['branch_id'], $_POST['outlet_id']);
+
+        $custom = new CustomPrices;
+        foreach($data['data'] as $key => $val) {
+            $priceId = $val['price_id'];
+            $data['data'][$key]['custom'] = $custom->getDataByPriceId($priceId);
+        }
+        
         echo json_encode($data);
     }
 
