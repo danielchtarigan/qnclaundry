@@ -23,9 +23,9 @@
         <div class="col-md-6">
             <input type="text" class="form-control" name="price[1]" id="price1" placeholder="0" value="" autocomplete="off">
         </div>
-        <label for="min1" class="col-md-2 control-label">Min Qty</label>
+        <label for="max1" class="col-md-2 control-label">Max Qty</label>
         <div class="col-md-2">
-            <input type="text" class="form-control" name="min[1]" id="min1" placeholder="1" value="3" autocomplete="off">
+            <input type="text" class="form-control" name="max[1]" id="max1" placeholder="1" value="3" autocomplete="off">
         </div>
     </div>
     <div class="form-group">
@@ -33,9 +33,9 @@
         <div class="col-md-6">
             <input type="text" class="form-control" name="price[2]" id="price2" placeholder="0" value="" autocomplete="off">
         </div>
-        <label for="min2" class="col-md-2 control-label">Min Qty</label>
+        <label for="max2" class="col-md-2 control-label">Max Qty</label>
         <div class="col-md-2">
-            <input type="text" class="form-control" name="min[2]" id="min2" placeholder="1" value="5" autocomplete="off">
+            <input type="text" class="form-control" name="max[2]" id="max2" placeholder="1" value="6" autocomplete="off">
         </div>
     </div>
 </form>

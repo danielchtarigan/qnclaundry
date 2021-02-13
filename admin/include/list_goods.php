@@ -477,10 +477,11 @@
                     else {
                         $(".modal .modal-footer #savegoods").text("Simpan").show();
                         prices = form.find('input[name^="price"]').removeAttr('readonly');
-                        minqties = form.find('input[name^="min"]').removeAttr('readonly');
+                        maxqties = form.find('input[name^="max"]').removeAttr('readonly');
                         
                         $.each(response.data, function (i, val) {
                             prices.eq(i).val(val.price);
+                            maxqties.eq(i).val(val.maxqty);
                             customId.push({ id: val.custom_id });
                         });
 
@@ -506,14 +507,14 @@
                     name = form.find("#name").val();
 
                     prices = form.find('input[name^="price"]');
-                    minqties = form.find('input[name^="min"]');
+                    maxqties = form.find('input[name^="max"]');
 
                     for(i = 0; i < prices.length; i++) {
                         cid = customId.length > 0 ? customId[i].id : 0;
                         data.push({
                             id: cid,
                             price: prices[i].value,
-                            minqty: minqties[i].value
+                            maxqty: maxqties[i].value
                         });
                     }
 
