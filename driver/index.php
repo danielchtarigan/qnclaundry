@@ -23,6 +23,17 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
         display: none;
       }
 
+      
+      @media only screen and (max-width: 764px) {
+        .login-content {
+          background-color: #fff !important;
+        }
+        
+        .login-content .login-box {
+          border: none !important;
+          box-shadow: none;
+        }
+      }
     </style>
 
     <script src="js/jquery-3.2.1.min.js"></script>
@@ -73,6 +84,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
                 <option value="Daya">Antang</option>
             </select>
           </div>
+          <label>Jemput/Kirim</label>
           <div class="form-group row">
             <div class="animated-radio-button col-lg-6">
               <label class="control-label">
@@ -127,11 +139,20 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
             data    : {nama:nama, password:password, login:login},
             method  : 'POST',
             success : function(data){
-              if(data==1) {
-                $('#login').css('display', 'none');
+              object = JSON.parse(data);
+
+              if (object.success) {
+                $('#login').hide();
+
+                getData(object.data);
+
+                $('input[name=formlokasi]').click(function(){
+                  getData(object.data);
+                });
+
                 $('#drop').slideToggle(100);
               } else {
-                $('#pesan_error').html(data).css('color', 'red');
+                $('#pesan_error').html(object.message).css('color', 'red');
                 setInterval(function(){return_page()},1000);
               }
             }
@@ -139,31 +160,32 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
 
         });
 
-        function lokasi(){
+        function getData(data) {          
 
-          var lokasi = $('input[name=formlokasi]:checked').val();   
+          let lokasi = $('input[name=formlokasi]:checked').val();   
           if(lokasi=="outlet") {
             $('input[value=bersih]').removeAttr('checked');
             $('input[value=kotor]').prop('checked', 'checked');
           } else {
             $('input[value=kotor]').removeAttr('checked');
             $('input[value=bersih]').prop('checked', 'checked');
-          }    
+          }   
 
-          $.ajax({
-            url     : 'pilih_lokasi.php',
-            data    : {lokasi : lokasi},
-            method  : 'POST',
-            success : function(data){
-               $('select[name=lokasi]').html(data);
-            }
-          })                   
-          
+          if (lokasi == "outlet") {
+            $("select[name='lokasi']").find('option').remove();
+            $.map(data.outlet, function (val) {
+              let option = $('<option></option>').attr('value', val.outlet).text(val.outlet);
+              $("select[name='lokasi']").append(option);
+            });
+          } else {
+              $("select[name='lokasi']").find('option').remove();
+              $.map(data.workshop, function (val) {
+                  let option = $('<option></option>').attr('value', val.workshop).text(val.workshop);
+                  $("select[name='lokasi']").append(option);
+              });
+          }
+
         }
-
-        $('input[name=formlokasi]').click(function(){
-          lokasi();
-        });
 
 
         $('#drop').on('submit', function(e){
@@ -185,12 +207,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
               $('p[id=name]').text(nama);
             }
           })
-
-              
-
         })
-        
-
       });
 
     </script>
