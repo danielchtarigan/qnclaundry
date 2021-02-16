@@ -501,7 +501,7 @@ jQuery(function ($) {
 
     function set_price(prices) {        
         if (prices[0].custom.length > 0) {
-            let p = $.grep(prices[0].custom, val => val.minqty >= mainItemQuantity.val());
+            let p = $.grep(prices[0].custom, val => val.maxqty >= mainItemQuantity.val());
             defPrice = p[0].price;
             def = 1;
         } else {
