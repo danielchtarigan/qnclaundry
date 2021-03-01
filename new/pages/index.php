@@ -12,6 +12,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
 
 $outlet = $_SESSION['outlet'];
 $cabang = $_SESSION['cabang'];
+$branchId = $_SESSION['branch_id'];
 
 function rupiah($angka){
 	$jadi = number_format($angka,0,'.','.');
@@ -95,6 +96,20 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				font-size: 12px;
 			}
 
+			.check_driver {
+				background-color: rgba(0,0,0,.4);
+				position: absolute;
+				display: none;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				z-index: 0;
+				transition: all .5s;
+			}
+
 
 		</style>
 		
@@ -110,6 +125,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 			const outlet = '<?= $_SESSION['outlet']; ?>';
 			const outletId = '<?= $_SESSION['outlet_id']; ?>';
 			const userId = '<?= $_SESSION['user_id']; ?>';			
+			const user_id = '<?= $_SESSION['id']; ?>';		
+			const userLevel = '<?= $_SESSION['level'] ?>';	
 		</script>
 
 		<!-- inline styles related to this page -->
@@ -587,7 +604,19 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Reject Operator</small>';
 				                        } else if($menu=="data_tracking"){
 				                        	echo "Data ";
-				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Data Tracking</small>';
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Tracking</small>';
+				                        } else if($menu=="checkout_outlet"){
+				                        	echo "Data ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Checkout Outlet</small>';
+				                        } else if($menu=="checkin_workshop"){
+				                        	echo "Data ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Checkin Workshop</small>';
+				                        } else if($menu=="checkout_workshop"){
+				                        	echo "Data ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Checkout Workshop</small>';
+				                        } else if($menu=="checkin_outlet"){
+				                        	echo "Data ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> Checkin Outlet</small>';
 				                        } 
 				                    }
 
@@ -760,7 +789,15 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 										include 'include/get_items.php';
 		                        	} else if($menu=="sale"){
 										include 'views/sale.php';
-									}	                        
+									} else if($menu=="checkout_outlet"){
+										include 'views/list_checkout_outlet.php';
+									} else if($menu=="checkin_workshop"){
+										include 'views/list_checkin_workshop.php';
+									} else if($menu=="checkout_workshop"){
+										include 'views/list_checkout_workshop.php';
+									} else if($menu=="checkin_outlet"){
+										include 'views/list_checkin_outlet.php';
+									}	                       
 			                    }
 
 			                    else if(isset($_GET['transaksi'])) {
@@ -863,13 +900,13 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 									}    
 						         }
 								?>
-								
 
 								<!-- PAGE CONTENT ENDS -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
 					</div><!-- /.page-content -->
 				</div>
+				<!-- <div class="check_driver"></div> -->
 			</div><!-- /.main-content -->
 
 			<!-- <div class="footer">
@@ -935,6 +972,72 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					$(this).parent().slideUp(800);
 					return false;
 				});
+
+				
+				// Check_login_delivery
+				let startCheckDelivery = setInterval(checkDelivery, 8000);
+
+				function checkDelivery() {
+					getData("Driver/getDriver/"+branchId, { }, function (data) {
+						if (data.readyState === 0) {
+							// window.sessionStorage.removeItem("log_driver");
+						} else {
+							if (data.data.length > 0) {
+
+								userLocate = userLevel == "reception" ? "outlet" : (userLevel == "admin2" ? "administrasi" : "workshop");
+								driver = $.grep(data.data, item => item.lokasiform === userLocate && item.lokasi === outlet);
+
+								lokasi = (driver[0].lokasiform).toUpperCase();
+
+								if (driver.length > 0) {
+									clearInterval(startCheckDelivery);
+									chk = $("body").find(".check_driver");
+									if (chk.length === 0) {
+										$("body").append($('<div class="check_driver"></div>'));
+									}
+
+									$(".check_driver").html($('<div style="background: #fff; padding: 15px"><p style="font-color: green; font-weight: bolder; font-size: 2rem;">Driver telah login ke '+lokasi+' ini</p></div>'));
+									$(".check_driver").css({
+										"display": "flex",
+										"z-index": "99"
+									});
+
+									let logDriver = {};
+									logDriver = {
+										'id' : driver[0].id,
+										'name' : driver[0].name,
+										'locate' : driver[0].lokasiform,
+										'check' : driver[0].keterangan
+									};
+
+									window.sessionStorage.setItem("log_driver", JSON.stringify(logDriver));
+								}
+
+							}
+						}
+					});
+				}
+
+				$("body").one('mouseenter', ".check_driver", function (e) {	
+					let getlogDriver = window.sessionStorage.getItem("log_driver");
+
+					if (getlogDriver === null) {
+						startCheckDelivery;
+					} else {
+						getDriver = JSON.parse(getlogDriver);
+
+						loadForm = getDriver.locate == "outlet" ? "include/check_outlet_driver.php" : "include/check_workshop_driver.php";
+	
+						$(".check_driver")
+							.attr("id-delivery", getDriver.id)
+							.attr("name-delivery", getDriver.name)
+							.attr("check", getDriver.check)
+							.load(loadForm);		
+					}
+
+				});
+
+
 			});
 
 			$('.btn-ombulanan').click(function(){

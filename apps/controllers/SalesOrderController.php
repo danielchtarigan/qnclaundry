@@ -129,4 +129,15 @@ class SalesOrderController extends Controller {
 
         echo json_encode($data);
     }
+
+    public function getOrderToCheckOutlet($outlet)
+    {
+        if ($_POST['keterangan'] == "kotor") {
+            $data['data'] = $this->model('SalesOrder')->getOrderToCheckOutOutlet($outlet);
+        } else {
+            $data['data'] = $this->model('SalesOrder')->getOrderToCheckInOutlet($outlet);
+        }
+
+        echo json_encode($data);
+    }
 }
