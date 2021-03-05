@@ -1,5 +1,6 @@
 <?php
 include_once 'models/LaundryTracker.php';
+include_once 'models/SalesOrder.php';
 
 class CheckWorkshopDeliveryDetail {
     private $table = 'bs_check_workshop_delivery_details';
@@ -27,6 +28,8 @@ class CheckWorkshopDeliveryDetail {
         if ($countInsert > 0) {
             $tracker = new LaundryTracker;
             $tracker->update($data->field_tracker, $data->list);
+            $salesOrder = new SalesOrder;
+            $salesOrder->updateWorkshop($data);
         }
 
         return $countInsert;

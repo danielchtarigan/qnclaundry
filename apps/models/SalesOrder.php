@@ -190,5 +190,25 @@ class SalesOrder {
         $this->conn->bind('create_order', '2021-02-01');
         return $this->conn->all();
     }
+
+    public function updateWorkshop($data)
+    {
+        $query = "UPDATE $this->table SET workshop = :workshop, tgl_workshop = :date, op_workshop = :op_workshop WHERE id = :id";
+        $this->conn->query($query);
+
+        $count = 0;
+        foreach ($data->list as $val) {
+            $this->conn->bind('workshop', $data->workshop_name);
+            $this->conn->bind('date', $data->today);
+            $this->conn->bind('op_workshop', $data->user_name);
+            $this->conn->bind('id', $val->sales_id);
+
+            $this->conn->execute();
+            
+            $count += $this->conn->rowCount();
+        }
+        
+        return $count;
+    }
     
 }

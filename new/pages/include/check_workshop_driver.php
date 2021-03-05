@@ -39,6 +39,14 @@
         let form = $("#form_driver_check"),
             list = form.find("#list_order");     
             count = form.find("#count_check");
+
+            let d = new Date();
+            let year = d.getFullYear();
+            let month = ("0" + (d.getMonth() + 1)).slice(-2);
+            let date = ("0" + d.getDate()).slice(-2);
+            let hour = d.getHours();
+            let minute = d.getMinutes();
+            let second = ("0" + d.getSeconds()).slice(-2);
         
         let deliveryId = $(".check_driver").attr("id-delivery");
         let deliveryName = $(".check_driver").attr("name-delivery");
@@ -127,11 +135,16 @@
 
                 $("#form_driver_check #submit").on('click', function (e) {
                     e.preventDefault();
+                    today = `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+
                     data = {};
                     data.workshop_id = outletId;
+                    data.workshop_name = outlet;
                     data.delivery_id = deliveryId;
                     data.user_id = user_id;
+                    data.user_name = userId;
                     data.timezone = timezone;
+                    data.today = today;
                     data.list = listOrder;
                     data.check_type = checkType;
                     data.count = listOrder.length;
