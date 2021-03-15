@@ -2,17 +2,29 @@
 include '../../config.php';
 include '../zonawaktu.php';
 
+function checkInWorkshop($nota, $field) {
+	global $con;
+	$query = "SELECT id FROM reception WHERE no_nota = '$nota'";
+	$data = mysqli_query($con, $query);
+	$row = mysqli_fetch_array($data);
+	$id = $row[0];
+
+	mysqli_query($con, "INSERT INTO bs_laundry_trackers (sales_order_id, $field) VALUES ('$id', '1') ON DUPLICATE KEY UPDATE $field = '1'");
+}
+
 
 if(isset($_GET['cuci'])){
 	mysqli_query($con, "UPDATE reception SET cuci='1', op_cuci='$_SESSION[user_id]', tgl_cuci='$nowDate' WHERE no_nota='$_GET[nota]' ");
 
 	mysqli_query($con, "INSERT INTO cuci (no_nota,tgl_cuci,op_cuci,jumlah,no_mesin,ket) VALUES ('$_GET[nota]','$nowDate','$_SESSION[user_id]','$_GET[jumlah]','$_GET[mesin]','$_GET[ket]') ");
 
+	checkInWorkshop($_GET['nota'], 'cuci');
+
 } else if(isset($_GET['kering'])){
 	mysqli_query($con, "UPDATE reception SET pengering='1', op_pengering='$_SESSION[user_id]', tgl_pengering='$nowDate' WHERE no_nota='$_GET[nota]' ");
 
 	mysqli_query($con, "INSERT INTO pengering (no_nota,tgl_pengering,op_pengering,jumlah,no_mesin,ket) VALUES ('$_GET[nota]','$nowDate','$_SESSION[user_id]','$_GET[jumlah]','$_GET[mesin]','$_GET[ket]') ");
-	
+	checkInWorkshop($_GET['nota'], 'kering');
 
 } else if(isset($_GET['setrika'])){
     mysqli_query($con, "INSERT INTO setrika_sementara (no_nota,tgl_setrika,user_setrika,berat,status,workshop) VALUES ('$_GET[nota]','$nowDate','$_GET[user_setrika]','$_GET[berat]','0','') ");
@@ -50,6 +62,7 @@ if(isset($_GET['cuci'])){
 	mysqli_query($con, "INSERT INTO setrika (no_nota,tgl_setrika,user_setrika,berat) VALUES ('$_GET[nota]','$nowDate','$_GET[user_setrika]','$_GET[berat]') ");
 	mysqli_query($con, "UPDATE setrika_sementara SET status='1' WHERE no_nota='$_GET[nota]'");
 	mysqli_query($con, "UPDATE reception SET setrika='1', user_setrika='$_GET[user_setrika]', tgl_setrika='$nowDate' WHERE no_nota='$_GET[nota]' ");
+	checkInWorkshop($_GET['nota'], 'setrika');
 
 } else if(isset($_GET['packing'])){
 	mysqli_query($con, "INSERT INTO packing (no_nota,tgl_packing,user_packing,jumlah,harga,ket,jenis) VALUES ('$_GET[nota]','$nowDate','$_SESSION[user_id]','$_GET[jumlah]','$_GET[harga]','$_GET[ket]','$_GET[jenis]') ");
@@ -62,7 +75,7 @@ if(isset($_GET['cuci'])){
 	$semuanota = mysqli_query($con, "SELECT COUNT(no_nota) AS jumlah FROM reception WHERE no_faktur='$faktur' AND packing=false AND tgl_packing='0000-00-00 00:00:00' AND kembali=false AND tgl_kembali='0000-00-00 00:00:00'");
 	$jumnota = mysqli_fetch_row($semuanota)[0];
 
-
+	checkInWorkshop($_GET['nota'], 'packing');
 
 }
 ?>

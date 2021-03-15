@@ -69,7 +69,9 @@
 				},
 				"columns": [
 					{ "data": "date" },
-					{ "data": "code" },
+					{ "data": "code", render: function (data, type, row) {
+						return '<a href=\"document/checkin.php?wk&d='+data+'\" target=\"_blank\">'+data+'</a>';
+					}},
 					{ "data": "driver" },
 					{ "data": "kasir" },
 					{ "data": "count" }

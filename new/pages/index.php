@@ -439,6 +439,36 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 								</li>							
 							</ul>
 						</li>
+						<li class="">
+							<a href="#" class="dropdown-toggle">
+								<i class="menu-icon fa fa-barcode"></i>
+								<span class="menu-text"> Label & Checkout </span>
+
+								<b class="arrow fa fa-angle-down"></b>
+							</a>
+
+							<b class="arrow"></b>
+
+							<ul class="submenu">
+								<li class="">
+									<a href="?menu=checkin_workshop">
+										<i class="menu-icon fa fa-caret-right"></i>
+										Data Checkin
+									</a>
+
+									<b class="arrow"></b>
+								</li>	
+								<li class="">
+									<a href="?menu=checkout_workshop">
+										<i class="menu-icon fa fa-caret-right"></i>
+										Data Checkout
+									</a>
+
+									<b class="arrow"></b>
+								</li>													
+							</ul>
+						</li>
+						
 
 						<?php
 					} 
@@ -534,6 +564,22 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 								<b class="arrow"></b>
 							</li>
 							
+							<li class="">
+								<a href="?menu=checkout_outlet">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Data Checkout
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+							<li class="">
+								<a href="?menu=checkin_outlet">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Data Checkin
+								</a>
+
+								<b class="arrow"></b>
+							</li>
 							<li class="">
 								<a href="?menu=marketing_summary">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -836,68 +882,21 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 											<small>(v2)</small>
 										</strong>
 									</div> -->
-
-									<div class="row extra-omset hidden">
-										<?php 
-										if($_SESSION['level']!="mitra"){
-											// include 'dash/omset_bulanan.php';
-										} else {
-
-										}
-
-										?>
-									</div>
-
-									
-									<div class="row">
-										 <?php 
-											if($_SESSION['level']=="reception" && $_SESSION['cabang']=="Mojokerto"){
-												 include 'dash/saldo_kasir.php'; 
-											}
-
-											?>  
-								    </div>
-
 									<div class="panel panel-default">
 						                <div class="panel-body">
-											<div class="row">  
-												<?php 
+											<div class="row"> 
+											<?php 
 												if($_SESSION['level']!="mitra"){
-													 include 'dash/omset.php'; 
-
-												} else {													
-													include 'dash/checkin.php';
-												}
-
-												?>                   
-								            </div>    
-								        </div>
-								    </div>   
-
-								    <?php 
-									if($_SESSION['level']!="mitra"){
-											
-										?>									
-										
-							            <div class="panel panel-default">
-							                <div class="panel-body">
-							                <b style="font-size:18px">Data Checkin Workshop</b>
-							                <?php
-							                if($_SESSION['outlet']=="Cinere"){
-							                   echo '<p>Catatan :  Tolong dicek terus bahwa semua nota masuk ke dalam sini ketika berada di krisna laundry, dan pastikan semua proses terlaksana dengan baik!</p><b style="color:red">Proses Cuci, Kering, Setrika, dan Packing harus terinput Realtime!</b>';
-							                }
-							                ?>
-							                
-							                            	<?php 
-															include 'dash/chekin_workshop.php';
-															?>   
-							                </div>
-							            </div>
-
-										<?php
-									}  else {								
-										include 'dash/chekin_workshop.php';
-									}    
+													include "dash/omset.php";
+												}  else {	
+													include 'dash/checkin.php';	
+												}   
+											?>
+											</div>
+										</div>
+									</div>
+									<?php
+									include 'dash/chekin_workshop.php';
 						         }
 								?>
 
