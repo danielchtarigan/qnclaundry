@@ -171,23 +171,21 @@ class SalesOrder {
     public function getOrderToCheckOutOutlet($outlet)
     {
         $tracker = 'bs_laundry_trackers';
-        $query = "SELECT a.id AS sales_order_id, a.no_nota AS sales_order, a.spk AS spk FROM $this->table AS a LEFT JOIN $tracker AS b ON a.id = b.sales_order_id WHERE b.sales_order_id IS NULL AND a.nama_outlet = :outlet AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') AND a.packing = :packing AND a.kembali = :kembali AND DATE(a.tgl_input) >= :create_order";
+        $query = "SELECT a.id AS sales_order_id, a.no_nota AS sales_order, a.spk AS spk FROM $this->table AS a LEFT JOIN $tracker AS b ON a.id = b.sales_order_id WHERE b.sales_order_id IS NULL AND a.nama_outlet = :outlet AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') AND a.packing = :packing AND a.kembali = :kembali AND DATE(a.tgl_input) >= DATE(NOW()) - INTERVAL 7 DAY";
         $this->conn->query($query);
         $this->conn->bind('outlet', $outlet);
         $this->conn->bind('packing', false);
         $this->conn->bind('kembali', false);
-        $this->conn->bind('create_order', '2021-01-01');
         return $this->conn->all();
     }
 
     public function getOrderToCheckInOutlet($outlet)
     {
-        $query = "SELECT id, no_nota AS sales_order, packing FROM $this->table WHERE nama_outlet = :outlet AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') AND cuci = :cuci AND kembali = :kembali AND DATE(tgl_input) >= :create_order";
+        $query = "SELECT id, no_nota AS sales_order, packing FROM $this->table WHERE nama_outlet = :outlet AND (cara_bayar <> 'Void' AND cara_bayar <> 'Reject') AND cuci = :cuci AND kembali = :kembali AND DATE(tgl_input) >= DATE(NOW()) - INTERVAL 7 DAY";
         $this->conn->query($query);
         $this->conn->bind('outlet', $outlet);
         $this->conn->bind('cuci', true);
         $this->conn->bind('kembali', false);
-        $this->conn->bind('create_order', '2021-02-01');
         return $this->conn->all();
     }
 

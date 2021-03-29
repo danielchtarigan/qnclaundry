@@ -89,16 +89,21 @@
                                         }); 
                                     }
                                 } else {
-                                    if (value.spk == true) {
-                                        cek = true;
-                                        listOrder.push({
-                                            'sales_id': value.sales_order_id,
-                                            'sales_order': value.sales_order
-                                        });                                      
-                                    } else {
-                                        cek = false;
-                                        error.message = "Nota belum dispk";
-                                    }
+                                    cek = true;
+                                    listOrder.push({
+                                        'sales_id': value.sales_order_id,
+                                        'sales_order': value.sales_order
+                                    });   
+                                    // if (value.spk == true) {
+                                    //     cek = true;
+                                    //     listOrder.push({
+                                    //         'sales_id': value.sales_order_id,
+                                    //         'sales_order': value.sales_order
+                                    //     });                                      
+                                    // } else {
+                                    //     cek = false;
+                                    //     error.message = "Nota belum dispk";
+                                    // }
                                 }
 
                             } 

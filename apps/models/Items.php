@@ -1,4 +1,5 @@
 <?php 
+include_once 'models/CustomPrices.php';
 
 class Items {
     private $table = "bs_items";
@@ -82,26 +83,6 @@ class Items {
         $this->conn->execute();
         return $this->conn->rowCount();
     }    
-
-    public function getItemPriceDefault()
-    {
-        $this->conn->query("SELECT b.type AS type, b.name AS category, a.name AS item, price
-                FROM $this->table AS a
-                LEFT JOIN bs_item_categories AS b ON a.bs_item_category_id = b.id");
-        return $this->conn->all();
-    }
-
-    public function getItemPriceByBranch($branch)
-    {
-        $this->conn->query("SELECT c.type AS type, c.name AS category, b.name AS item, a.price 
-            FROM bs_adjustment_prices AS a 
-            LEFT JOIN $this->table AS b ON a.bs_item_id = b.id 
-            LEFT JOIN bs_item_categories AS c ON b.bs_item_category_id = c.id 
-            WHERE a.branch_id = :branch");
-
-        $this->conn->bind('branch', $branch);
-        return $this->conn->all();
-    }
 
     public function getItemPriceByOutlet($branch, $outlet)
     {

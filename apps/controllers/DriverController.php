@@ -11,6 +11,8 @@ class DriverController extends Controller {
     {
         $data['data'] = $this->model('Driver')->getDriverLogin($branchId);
 
+        // $data['data'] = "Hai";
+
         echo json_encode($data);
     }
 

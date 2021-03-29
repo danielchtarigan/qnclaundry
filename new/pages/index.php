@@ -257,7 +257,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					<?php 
 					if($_SESSION['level']!="mitra"){
 					   
-						if ($_SESSION['cabang'] == "Emmy Saelan" || $_SESSION['cabang'] == "Bulukumba" || $_SESSION['cabang'] == "Belopa") {
+						if ($_SESSION['cabang'] != "Makassar") {
 							?>
 							<li class="">
 								<a href="?menu=customer">
@@ -974,67 +974,67 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 				
 				// Check_login_delivery
-				// let startCheckDelivery = setInterval(checkDelivery, 8000);
+				let startCheckDelivery = setInterval(checkDelivery, 10000);
 
-				// function checkDelivery() {
-				// 	getData("Driver/getDriver/"+branchId, { }, function (data) {
-				// 		if (data.readyState === 0) {
-				// 			// window.sessionStorage.removeItem("log_driver");
-				// 		} else {
-				// 			if (data.data.length > 0) {
+				function checkDelivery() {
+					getData("Driver/getDriver/"+branchId, { }, function (data) {
+						if (data.readyState === 0) {
+							// window.sessionStorage.removeItem("log_driver");
+						} else {
+							if (data.data.length > 0) {
 
-				// 				userLocate = userLevel == "reception" ? "outlet" : (userLevel == "admin2" ? "administrasi" : "workshop");
-				// 				driver = $.grep(data.data, item => item.lokasiform === userLocate && item.lokasi === outlet);
+								userLocate = userLevel == "reception" ? "outlet" : (userLevel == "admin2" ? "administrasi" : "workshop");
+								driver = $.grep(data.data, item => item.lokasiform === userLocate && item.lokasi === outlet);
 
-				// 				lokasi = (driver[0].lokasiform).toUpperCase();
+								lokasi = (driver[0].lokasiform).toUpperCase();
 
-				// 				if (driver.length > 0) {
-				// 					clearInterval(startCheckDelivery);
-				// 					chk = $("body").find(".check_driver");
-				// 					if (chk.length === 0) {
-				// 						$("body").append($('<div class="check_driver"></div>'));
-				// 					}
+								if (driver.length > 0) {
+									clearInterval(startCheckDelivery);
+									chk = $("body").find(".check_driver");
+									if (chk.length === 0) {
+										$("body").append($('<div class="check_driver"></div>'));
+									}
 
-				// 					$(".check_driver").html($('<div style="background: #fff; padding: 15px"><p style="font-color: green; font-weight: bolder; font-size: 2rem;">Driver telah login ke '+lokasi+' ini</p></div>'));
-				// 					$(".check_driver").css({
-				// 						"display": "flex",
-				// 						"z-index": "99"
-				// 					});
+									$(".check_driver").html($('<div style="background: #fff; padding: 15px"><p style="font-color: green; font-weight: bolder; font-size: 2rem;">Driver telah login ke '+lokasi+' ini</p></div>'));
+									$(".check_driver").css({
+										"display": "flex",
+										"z-index": "99"
+									});
 
-				// 					let logDriver = {};
-				// 					logDriver = {
-				// 						'id' : driver[0].id,
-				// 						'name' : driver[0].name,
-				// 						'locate' : driver[0].lokasiform,
-				// 						'check' : driver[0].keterangan
-				// 					};
+									let logDriver = {};
+									logDriver = {
+										'id' : driver[0].id,
+										'name' : driver[0].name,
+										'locate' : driver[0].lokasiform,
+										'check' : driver[0].keterangan
+									};
 
-				// 					window.sessionStorage.setItem("log_driver", JSON.stringify(logDriver));
-				// 				}
+									window.sessionStorage.setItem("log_driver", JSON.stringify(logDriver));
+								}
 
-				// 			}
-				// 		}
-				// 	});
-				// }
+							}
+						}
+					});
+				}
 
-				// $("body").one('mouseenter', ".check_driver", function (e) {	
-				// 	let getlogDriver = window.sessionStorage.getItem("log_driver");
+				$("body").one('mouseenter', ".check_driver", function (e) {	
+					let getlogDriver = window.sessionStorage.getItem("log_driver");
 
-				// 	if (getlogDriver === null) {
-				// 		startCheckDelivery;
-				// 	} else {
-				// 		getDriver = JSON.parse(getlogDriver);
+					if (getlogDriver === null) {
+						startCheckDelivery;
+					} else {
+						getDriver = JSON.parse(getlogDriver);
 
-				// 		loadForm = getDriver.locate == "outlet" ? "include/check_outlet_driver.php" : "include/check_workshop_driver.php";
+						loadForm = getDriver.locate == "outlet" ? "include/check_outlet_driver.php" : "include/check_workshop_driver.php";
 	
-				// 		$(".check_driver")
-				// 			.attr("id-delivery", getDriver.id)
-				// 			.attr("name-delivery", getDriver.name)
-				// 			.attr("check", getDriver.check)
-				// 			.load(loadForm);		
-				// 	}
+						$(".check_driver")
+							.attr("id-delivery", getDriver.id)
+							.attr("name-delivery", getDriver.name)
+							.attr("check", getDriver.check)
+							.load(loadForm);		
+					}
 
-				// });
+				});
 
 
 			});

@@ -40,11 +40,11 @@ class SalesOrderController extends Controller {
 
     public function save_order($customerId)
     {
-        $customer = $this->model('Customer')->getCustomerById($customerId)['name'];
-        date_default_timezone_set('Asia/Makassar');
+        $getData = json_decode($_POST['jsonData']);
+
+        date_default_timezone_set($getData->time_zone);
         $dateNow = date('Y-m-d H:i:s');
         
-        $getData = json_decode($_POST['jsonData']);
 
         $express = 0;
         foreach($getData->data as $data) {
@@ -68,7 +68,7 @@ class SalesOrderController extends Controller {
         $dataOrder = [
             'order_number' => $getData->order_number,
             'customer_id' => $customerId,
-            'customer' => $customer,
+            'customer' => $getData->customer,
             'outlet' => $getData->outlet,
             'branch' => $getData->branch,
             'datenow' => $dateNow,
@@ -81,6 +81,7 @@ class SalesOrderController extends Controller {
         ];
 
         $saveOrder = $this->model('SalesOrder')->saveOrder($dataOrder);
+
 
         if ($saveOrder > 0) {
             $saveOrderItem = $this->model('SalesOrder')->saveOrderItem($getData, $dateNow, $customerId);

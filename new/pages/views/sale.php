@@ -517,7 +517,6 @@ $id = $_GET['id'];
 			}
 		});
 
-		// let urlView = "https://new.qnclaundry/pages/views/";
 		let urlView = "views/";
 
 		$(document).on("click", "#regPackage", function () {

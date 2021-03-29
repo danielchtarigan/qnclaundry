@@ -210,7 +210,6 @@ jQuery(function ($) {
 
     // Dekalarasikan data variabel pesanan barang
     let orderItem = [], orderAllItem = {};
-    // let dataOrder = [], finalOrder = {}, orderNumber;
 
     // Form isian barang penjualan
     let formMainItem = $("#form_main_item"),
@@ -878,6 +877,8 @@ jQuery(function ($) {
             orderAllItem.user = userId;
             orderAllItem.type = "p";
             orderAllItem.weight = 0;
+            orderAllItem.time_zone = getTimeZone();
+            orderAllItem.customer = customer;
 
             if(orderItem[0].category == "Kiloan") {
                 orderAllItem.type = "k";
