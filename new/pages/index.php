@@ -932,7 +932,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 				
 				// Check_login_delivery
-				let startCheckDelivery = setInterval(checkDelivery, 10000);
+				if(branchId === 7) {
+					let startCheckDelivery = setInterval(checkDelivery, 10000);
+				}
 
 				function checkDelivery() {
 					getData("Driver/getDriver/"+branchId, { }, function (data) {
