@@ -932,7 +932,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 				
 				// Check_login_delivery
-				if(branchId === 7) {
+				if(branchId == 7 || branchId == 1) {
 					let startCheckDelivery = setInterval(checkDelivery, 10000);
 				}
 
