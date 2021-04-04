@@ -418,62 +418,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 								</li>							
 							</ul>
 						</li>
-						<li class="">
-							<a href="#" class="dropdown-toggle">
-								<i class="menu-icon fa fa-barcode"></i>
-								<span class="menu-text"> Label & Checkout </span>
-
-								<b class="arrow fa fa-angle-down"></b>
-							</a>
-
-							<b class="arrow"></b>
-
-							<ul class="submenu">
-								<li class="">
-									<a href="?menu=checkout-control">
-										<i class="menu-icon fa fa-caret-right"></i>
-										Checkout Control
-									</a>
-
-									<b class="arrow"></b>
-								</li>							
-							</ul>
-						</li>
-						<li class="">
-							<a href="#" class="dropdown-toggle">
-								<i class="menu-icon fa fa-barcode"></i>
-								<span class="menu-text"> Label & Checkout </span>
-
-								<b class="arrow fa fa-angle-down"></b>
-							</a>
-
-							<b class="arrow"></b>
-
-							<ul class="submenu">
-								<li class="">
-									<a href="?menu=checkin_workshop">
-										<i class="menu-icon fa fa-caret-right"></i>
-										Data Checkin
-									</a>
-
-									<b class="arrow"></b>
-								</li>	
-								<li class="">
-									<a href="?menu=checkout_workshop">
-										<i class="menu-icon fa fa-caret-right"></i>
-										Data Checkout
-									</a>
-
-									<b class="arrow"></b>
-								</li>													
-							</ul>
-						</li>
-						
 
 						<?php
-					} 
-
-					if($_SESSION['level']!="mitra"){	?>
+					} ?>
 
 					<li class="">
 						<a href="#" class="dropdown-toggle">
@@ -487,16 +434,27 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 						<ul class="submenu">
 							<li class="">
-								<a href="?menu=checkout-control">
+								<a href="?menu=checkin_workshop">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Checkout Control
+									Data Checkin
 								</a>
 
 								<b class="arrow"></b>
-							</li>							
+							</li>	
+							<li class="">
+								<a href="?menu=checkout_workshop">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Data Checkout
+								</a>
+
+								<b class="arrow"></b>
+							</li>													
 						</ul>
 					</li>
 
+					<?php
+
+					if($_SESSION['level']!="mitra"){	?>
 
 					<li class="">
 						<a href="#" class="dropdown-toggle">
