@@ -115,11 +115,10 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		
 		<!-- mystyle -->
 		<link rel="stylesheet" href="assets/css/order-style.css">
-
 			
 		<script type="text/javascript">
-			let apiURL = 'https://qnclaundry.com/apps/';
-			// const apiURL = 'https://localhost/qnclaundry/apps/';
+			// let apiURL = 'https://qnclaundry.com/apps/';
+			const apiURL = 'https://localhost/qnclaundry/apps/';
 			const branch = '<?= $_SESSION['cabang']; ?>';
 			const branchId = '<?= $_SESSION['branch_id']; ?>';
 			const outlet = '<?= $_SESSION['outlet']; ?>';

@@ -2,17 +2,12 @@ jQuery(function ($) {
 	let dataSales = {};
 	let salesCategory;
 
-	let customer = JSON.parse(window.localStorage.getItem("dataCustomer"));
 	let pItems = JSON.parse(window.localStorage.getItem("dataItem"));
 
-	if (customer !== null) {
-		dataSales.customer_name = customer.name;
-		dataSales.customer_id = customer.customer_id;
-		dataSales.timezone = getTimeZone();
-		dataSales.branch = branchId;
-		dataSales.outlet = outlet;
-		dataSales.user = userId;
-	}
+	dataSales.timezone = getTimeZone();
+	dataSales.branch = branchId;
+	dataSales.outlet = outlet;
+	dataSales.user = userId;
 
 	function sumPrice(data) {
 		if (data.name === "Cuci Kering") {
@@ -78,7 +73,7 @@ jQuery(function ($) {
 			total -= discount;
 		}
 
-		if (customer.membership === "Membership") {
+		if (data.membership === "Membership") {
 			let member;
 			member = sumTotal(data.items) * 0.2;
 			dataSales.membership = member;
@@ -513,7 +508,7 @@ jQuery(function ($) {
 
 			}).animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		})
 	
 	});
@@ -568,7 +563,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		});	
 	});
 
@@ -586,7 +581,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		});
 		
 	});
@@ -610,7 +605,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		});
 	
 	});
@@ -628,7 +623,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		});
 	
 	});
@@ -644,7 +639,7 @@ jQuery(function ($) {
 				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
 			}).animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		})
 	
 	});
@@ -661,7 +656,7 @@ jQuery(function ($) {
 				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
 			}).animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		});
 
 	});
@@ -678,6 +673,14 @@ jQuery(function ($) {
 				let date = new Date(),
 					nowDate = (date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear()).toString(),
 					nowHour = (date.getHours()+":"+("0" + date.getMinutes()).slice(-2)).toString();
+
+				let customer = JSON.parse(window.localStorage.getItem("dataCustomer"));
+				dataSales.customer_name = customer.name;
+				dataSales.customer_id = customer.customer_id;
+
+				if (customer.membership === "Membership") {
+					dataSales.membership = "Membership";
+				}
 				
 				let html = $(".choose-item.show").find(".detail-order");
 				let headingEl = $(`<table width="70%"><tr><td>Nama Pelanggan</td><td>: &nbsp;</td><td id="customer">${dataSales.customer_name}</td></tr><tr><td>Outlet</td><td>: &nbsp;</td><td id="outlet">${outlet}</td></tr><tr><td>Tanggal</td><td>: &nbsp;</td><td id="nowDate">${nowDate}</td></tr><tr><td>Jam</td><td>: &nbsp;</td><td id="nowHour">${nowHour}</td></tr></table>`);
@@ -689,7 +692,7 @@ jQuery(function ($) {
 
 			}).animate({
 				"left": "0",
-			}, 600);
+			}, 800);
 		});
 	});
 
