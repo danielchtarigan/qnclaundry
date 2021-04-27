@@ -8,7 +8,7 @@ function getTimeZone() {
     return timezoneName;
 }
 
-function toFirstWorlds(str) {
+function toFirstWords(str) {
     return str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
         return letter.toUpperCase();
     });

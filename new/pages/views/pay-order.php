@@ -1,5 +1,5 @@
 <div id="myform">
-    <div class="choose-item show">
+    <div class="laundry-package show">
         <div class="table-overlays">
             <ul class="list-group invoice-customer" style="width: 100%">
                 <li class="list-group-item">
@@ -386,7 +386,6 @@
 
             finalPay.method = payMethod;
 
-            console.log(finalPay);
             if (invoice === totalPay) {
                 savePayment(finalPay);
                 dialog.dialog("close");

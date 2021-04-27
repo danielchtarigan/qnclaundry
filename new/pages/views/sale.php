@@ -358,15 +358,20 @@ $id = $_GET['id'];
 
 <div id="areaPrintOrder" style="display: none"></div>	
 
+<script src="views/sales/script.js"></script>
+
 <script type="text/javascript">
     jQuery(function ($) {
         let customerId = '<?= $_GET['id'] ?>', dataCustomer = [];
 		customerId = customerId.toString();
 
 		getCustomer();
-		listOrders();
-		paymentHistory();
 		dataOutlet();
+		orderInvoice();
+		
+
+		// paymentHistory();
+
 
 		function getCustomer()
 		{
@@ -436,6 +441,22 @@ $id = $_GET['id'];
 				}
 			});
 		}		
+
+		function orderInvoice() {
+			getData("SalesOrder/order_invoice/" + customerId, { outlet: outlet }, function (data) {
+				if (data.readyState == 0) {
+					$(".data-pesanan .data-body").html('<div id="load" align="center"><span></span></div>');
+
+					localStorage.removeItem("dataOrder");
+					$(document).find("#orderCount").data('value', 0);
+					$(document).find("#orderCount").text('0 | '+ rupiah(0));
+				}
+				else {
+					localStorage.setItem("dataOrder", JSON.stringify(data));
+					getDataOrder();
+				}
+			});
+		}		
 		
 		// Dapatkan riwayat pembayaran
 		function paymentHistory()
@@ -454,7 +475,7 @@ $id = $_GET['id'];
 					let mapData = data['data'];
 					$.each(mapData, function (i, val) {
 						let type = val.type == "ritel" ? "Retail" : val.type;
-						let element = '<li class="list-group-item invoice-number" id="itemFaktur" data-value="'+val.faktur+'"><div style="display: flex; width: 100%; justify-content: space-between"><h4 class="list-group-item-heading">'+ val.faktur +'</h4><small>'+val.createDate+'</small></div><p class="list-group-item-text"><b>'+ toFirstWorlds(type) +'</b> | <b style="color: red">'+ rupiah(val.total) +'</b> | <span><i class="ace-icon fa fa-print" style="cursor: pointer; color: green" id="printFaktur"></i></span>';
+						let element = '<li class="list-group-item invoice-number" id="itemFaktur" data-value="'+val.faktur+'"><div style="display: flex; width: 100%; justify-content: space-between"><h4 class="list-group-item-heading">'+ val.faktur +'</h4><small>'+val.createDate+'</small></div><p class="list-group-item-text"><b>'+ toFirstWords(type) +'</b> | <b style="color: red">'+ rupiah(val.total) +'</b> | <span><i class="ace-icon fa fa-print" style="cursor: pointer; color: green" id="printFaktur"></i></span>';
 
 						$(element).appendTo(".list-faktur>.list-group");
 					});
@@ -480,7 +501,7 @@ $id = $_GET['id'];
 		}
 
 		$("#listOrder").on("click", function () {
-			listOrders();
+			orderInvoice();
 		});
 
 		$("#reloadListPayments").on("click", function () {
@@ -540,9 +561,10 @@ $id = $_GET['id'];
 		});
 
 		$('#createOrder').on("click", function () {
-			let url = urlView + "create-order.php?id=" + customerId;
+			let url = urlView + "sales/salesOrder.php?id=" + customerId;
+			let pItems = JSON.parse(localStorage.getItem("dataItem"));
 
-			if (dataCustomer.length > 0) {
+			if (dataCustomer.length > 0 && pItems) {
 				$("#dialog-form").load(url, function () {
 					let el = $(this).children().length;
 					dialog.dialog("option", "title", "Buat Pesanan");
@@ -603,7 +625,6 @@ $id = $_GET['id'];
 					$(".areaPrintFaktur>.content").removeClass("show");
 				}
 				else {
-					console.log(data);
 					$(".areaPrintFaktur").find("#load").remove();
 					// $(".areaPrintFaktur").removeClass("active");
 					$(".areaPrintFaktur>.content").addClass("show");
@@ -664,7 +685,7 @@ $id = $_GET['id'];
 					$('.content-nota').append(tableFinish);
 					
 					let el = $(".areaPrintFaktur").html();
-					document.body.innerHTML = el;
+					$(document.body).html(el);
 					window.print();
 					$(".areaPrintFaktur").removeClass("active");
 					$("body").find(".areaPrintFaktur").remove();

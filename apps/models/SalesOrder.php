@@ -1,4 +1,5 @@
 <?php 
+include_once 'models/SalesOrderDetail.php';
 
 class SalesOrder {
     private $table = 'reception';
@@ -64,6 +65,32 @@ class SalesOrder {
         return $this->conn->rowCount();
     }
 
+    public function insert($dataPost, $data)
+    {
+        $query = "INSERT INTO $this->table (nama_outlet, tgl_input, nama_reception, id_customer, nama_customer, no_nota, no_so, berat, jenis, express, total_bayar, diskon, cabang)
+                    VALUES (:outlet, :datenow, :userId, :customerId, :customer, :orderNumber, :orderNumber, :isWeight, :isType, :express, :total, :discount, :branch)";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $data['outlet']);
+        $this->conn->bind('datenow', $data['datenow']);
+        $this->conn->bind('userId', $data['user']);
+        $this->conn->bind('customerId', $data['customer_id']);
+        $this->conn->bind('customer', $data['customer']);
+        $this->conn->bind('orderNumber', $data['order_number']);
+        $this->conn->bind('isWeight', $data['is_weight']);
+        $this->conn->bind('isType', $data['is_type']);
+        $this->conn->bind('express', $data['express']);
+        $this->conn->bind('total', $data['total']);
+        $this->conn->bind('discount', $data['discount']);
+        $this->conn->bind('branch', $data['branch']);
+        $this->conn->execute();
+
+        if ($this->conn->rowCount() > 0) {
+
+            $detail = new SalesOrderDetail;
+            return $detail->insert($dataPost, $data['datenow'], $data['order_number']);
+        }
+    }
+
     public function saveOrderItem($data, $datenow, $customerId)
     {
         $query = "INSERT INTO detail_penjualan (tgl_transaksi, item, harga, jumlah, total, no_nota, id_customer, berat, keterangan)
@@ -85,6 +112,24 @@ class SalesOrder {
         }
 
         return $this->count;
+    }
+
+    public function getOrderInvoice($customerId, $outlet) 
+    {
+        $query = "SELECT no_nota AS orderNumber, total_bayar AS total FROM $this->table WHERE lunas = false AND nama_outlet = :outlet AND id_customer = :customerId";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $outlet);
+        $this->conn->bind('customerId', $customerId);
+
+        $data = $this->conn->all();
+
+        $detail = new SalesOrderDetail;
+
+        foreach ($data as $key => $value) {
+            $data[$key]['items'] = $detail->getOrderItem($value['orderNumber']);
+        }
+
+        return $data;
     }
 
     public function getOrdersCreated($customerId, $outlet) 

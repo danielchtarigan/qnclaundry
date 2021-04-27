@@ -31,11 +31,11 @@ class SalesOrderController extends Controller {
         
         $orderNumber = $codeOutlet.sprintf('%03s', $addNumber);    
         
-        $data = [
-            'order_number' => $orderNumber
-        ];
+        // $data = [
+        //     'order_number' => $orderNumber
+        // ];
 
-        echo json_encode($data);
+        return $orderNumber;
     }
 
     public function save_order($customerId)
@@ -82,7 +82,6 @@ class SalesOrderController extends Controller {
 
         $saveOrder = $this->model('SalesOrder')->saveOrder($dataOrder);
 
-
         if ($saveOrder > 0) {
             $saveOrderItem = $this->model('SalesOrder')->saveOrderItem($getData, $dateNow, $customerId);
         }
@@ -90,6 +89,67 @@ class SalesOrderController extends Controller {
         if ($saveOrderItem > 0) {
             $this->list_order_created($customerId);
         }
+    }
+
+    public function store($customerId)
+    {
+        $dataPost = json_decode($_POST['jsonData']);
+        date_default_timezone_set($dataPost->timezone);
+        $dateNow = date('Y-m-d H:i:s');
+
+        $express = 0;
+        
+        if (isset($dataPost->express)) {
+            foreach($dataPost->express as $data) {
+                if ($data->name == "express") {
+                    $express = 1;
+                    break;
+                }
+                if ($data->name == "double_express") {
+                    $express = 2;
+                    break;
+                }
+                if ($data->item == "triple_express") {
+                    $express = 3;
+                    break;
+                }
+            }
+        }
+
+        if ($dataPost->category == 1) {
+            $type = "k";
+        } else if ($dataPost->category == 2) {
+            $type = "p";
+        }
+
+        $number = $this->set_order_number($dataPost->outlet);
+
+        $dataStore = [
+            'order_number' => $number,
+            'customer_id' => $customerId,
+            'customer' => $dataPost->customer_name,
+            'outlet' => $dataPost->outlet,
+            'branch' => $dataPost->branch,
+            'datenow' => $dateNow,
+            'user' => $dataPost->user,
+            'total' => $dataPost->total,
+            'discount' => $dataPost->discount,
+            'is_weight' => $dataPost->weight,
+            'is_type' => $type,
+            'express' => $express
+        ];
+
+        $hasSave = $this->model('SalesOrder')->insert($dataPost, $dataStore);
+    
+        echo json_encode($number);
+    }
+
+    public function order_invoice($customerId)
+    {
+        $outlet = $_POST['outlet'];
+        $data['data'] = $this->model('SalesOrder')->getOrderInvoice($customerId, $outlet);
+
+        echo json_encode($data);
     }
 
     public function list_order_created($customerId) 
@@ -111,7 +171,7 @@ class SalesOrderController extends Controller {
         }
 
         if ($removeOrder > 0) {
-            $this->list_order_created($_POST['customerId']);
+            $this->order_invoice($_POST['customerId']);
         }
     }
 

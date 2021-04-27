@@ -188,7 +188,19 @@
         
         $("#addCustomer").on("click", function () {
             dialog.dialog( "open" );
-        })
+        });
+
+
+        dataItem();
+        function dataItem() {
+			apiData("Items", { branch_id: branchId, outlet_id : outletId }, function (data) {
+				if (data.readyState === 0) {
+					localStorage.removeItem("dataItem");
+				} else {
+					localStorage.setItem("dataItem", JSON.stringify(data));
+				}
+			})
+		}
 
     });
 </script>
