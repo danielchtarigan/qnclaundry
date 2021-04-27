@@ -508,7 +508,7 @@ jQuery(function ($) {
 
 			}).animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		})
 	
 	});
@@ -563,7 +563,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		});	
 	});
 
@@ -581,7 +581,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		});
 		
 	});
@@ -605,7 +605,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		});
 	
 	});
@@ -623,7 +623,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		});
 	
 	});
@@ -639,7 +639,7 @@ jQuery(function ($) {
 				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
 			}).animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		})
 	
 	});
@@ -656,7 +656,7 @@ jQuery(function ($) {
 				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
 			}).animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		});
 
 	});
@@ -675,6 +675,8 @@ jQuery(function ($) {
 					nowHour = (date.getHours()+":"+("0" + date.getMinutes()).slice(-2)).toString();
 
 				let customer = JSON.parse(window.localStorage.getItem("dataCustomer"));
+
+				console.log(customer);
 				dataSales.customer_name = customer.name;
 				dataSales.customer_id = customer.customer_id;
 
@@ -692,7 +694,7 @@ jQuery(function ($) {
 
 			}).animate({
 				"left": "0",
-			}, 800);
+			}, 1400);
 		});
 	});
 
