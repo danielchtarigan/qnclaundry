@@ -732,7 +732,7 @@ jQuery(function ($) {
 				let order_number = data;
 
 				let dataOutlet = JSON.parse(localStorage.getItem("dataOutlet")).data;
-				let dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
+				let dataCustomer = JSON.parse(localStorage.getItem("customer"));
 
 				let date = new Date(),
 					nowDate = (date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear()).toString(),
