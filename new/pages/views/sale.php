@@ -562,7 +562,8 @@ $id = $_GET['id'];
 			let pItems = JSON.parse(localStorage.getItem("dataItem"));
 			let customer = JSON.parse(localStorage.getItem("dataCustomer"));
 
-			console.log(customer);
+			localStorage.setItem("customer", JSON.stringify(customer));
+			localStorage.removeItem("dataCustomer");
 
 			if (dataCustomer.length > 0 && pItems) {
 				$("#dialog-form").load(url, function () {

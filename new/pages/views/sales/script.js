@@ -674,9 +674,8 @@ jQuery(function ($) {
 					nowDate = (date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear()).toString(),
 					nowHour = (date.getHours()+":"+("0" + date.getMinutes()).slice(-2)).toString();
 
-				let customer = JSON.parse(window.localStorage.getItem("dataCustomer"));
+				let customer = JSON.parse(window.localStorage.getItem("customer"));
 
-				console.log(customer);
 				dataSales.customer_name = customer.name;
 				dataSales.customer_id = customer.customer_id;
 
@@ -689,8 +688,7 @@ jQuery(function ($) {
 
 				$(html).find(".detail-heading").append(headingEl);
 
-
-				orderDetailHtml(dataSales);				
+				orderDetailHtml(dataSales);
 
 			}).animate({
 				"left": "0",
