@@ -370,7 +370,6 @@ $id = $_GET['id'];
 
 		// paymentHistory();
 
-
 		function getCustomer()
 		{
 			getData("Customer/show/" + customerId, {}, function (data) {
@@ -561,6 +560,9 @@ $id = $_GET['id'];
 		$('#createOrder').on("click", function () {
 			let url = urlView + "sales/salesOrder.php?id=" + customerId;
 			let pItems = JSON.parse(localStorage.getItem("dataItem"));
+			let customer = JSON.parse(localStorage.getItem("dataCustomer"));
+
+			console.log(customer);
 
 			if (dataCustomer.length > 0 && pItems) {
 				$("#dialog-form").load(url, function () {
