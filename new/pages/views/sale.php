@@ -358,8 +358,6 @@ $id = $_GET['id'];
 
 <div id="areaPrintOrder" style="display: none"></div>	
 
-<script src="views/sales/script.js"></script>
-
 <script type="text/javascript">
     jQuery(function ($) {
         let customerId = '<?= $_GET['id'] ?>', dataCustomer = [];
@@ -704,3 +702,4 @@ $id = $_GET['id'];
     });
 </script>
 
+<script src="views/sales/script.js"></script>
