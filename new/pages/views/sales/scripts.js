@@ -508,7 +508,7 @@ jQuery(function ($) {
 
 			}).animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		})
 	
 	});
@@ -563,7 +563,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		});	
 	});
 
@@ -581,7 +581,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		});
 		
 	});
@@ -605,7 +605,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		});
 	
 	});
@@ -623,7 +623,7 @@ jQuery(function ($) {
 			})
 			.animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		});
 	
 	});
@@ -639,7 +639,7 @@ jQuery(function ($) {
 				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
 			}).animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		})
 	
 	});
@@ -656,7 +656,7 @@ jQuery(function ($) {
 				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
 			}).animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		});
 
 	});
@@ -692,7 +692,7 @@ jQuery(function ($) {
 
 			}).animate({
 				"left": "0",
-			}, 2000);
+			}, 1000);
 		});
 	});
 

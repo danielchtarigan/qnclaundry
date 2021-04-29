@@ -705,4 +705,4 @@ $id = $_GET['id'];
     });
 </script>
 
-<script src="views/sales/script.js"></script>
+<script src="views/sales/scripts.js"></script>
