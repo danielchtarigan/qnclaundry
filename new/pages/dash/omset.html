@@ -1,0 +1,106 @@
+<div class="row">
+	 <div class="col-md-12 text-center" id="dashOmset">
+	    <h4></h4>	
+	    <p style="color: green;"></p>	    
+	 </div>
+	 <div class="col-md-4 col-md-offset-4">
+        <hr>
+    </div>
+
+  <div class="clearfix"></div>
+  <div class="col-md-6">
+    <div id="chart_div2" class="chart" style="width: 100%; min-height: 250px"></div>
+  </div>
+  <div class="col-md-6">
+    <div id="chart_div1" class="chart" style="width: 100%; min-height: 250px"></div>
+  </div>
+</div>
+
+
+<script src="assets/js/get-database.js"></script>
+<script src="assets/js/settime.js"></script>
+
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawOmsetPersegment);
+  function drawOmsetPersegment(datas) {
+    var data = new google.visualization.DataTable();
+    data.addColumn("string", "Days");
+    data.addColumn("number", "Laundry");
+    data.addColumn("number", "Membership");
+    data.addColumn("number", "Langganan");
+    data.addColumn("number", "Locker");
+
+    if (datas) {
+        $.each(datas, function (i, val) {
+            data.addRows([
+                [dayFromDateFunc(val.tgl).substr(0, 3), parseFloat(val.laundry), parseFloat(val.membership), parseFloat(val.langganan), parseFloat(val.locker)]
+            ]);
+        })
+    }
+
+    var options = {
+      title: 'Omset Persegment',
+      hAxis: {title: 'Days', titleTextStyle: {color: 'green'}
+    }
+   };
+
+  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div1'));
+    chart.draw(data, options);
+  }
+
+  google.load("visualization", "1", {packages:["line"]});
+  google.setOnLoadCallback(drawOmset);
+  function drawOmset(datas) {
+    var data = new google.visualization.DataTable();
+    data.addColumn("string", "Days");
+    data.addColumn("number", "Omset");
+
+    if (datas) {
+        $.each(datas, function (i, val) {
+            data.addRows([
+                [dayFromDateFunc(val.tgl).substr(0, 3), parseFloat(val.total)],
+            ]);
+        })
+    }
+    
+    var options = {
+        title: 'Omset Keseluruhan',
+        hAxis: {title: 'Days', titleTextStyle: {color: 'green'}}
+    };
+
+    var chart = new google.visualization.AreaChart(document.getElementById('chart_div2'));
+    chart.draw(data, options);
+  }
+
+  $(window).resize(function(){
+    drawOmset();
+    drawOmsetPersegment();
+  });
+
+data = {
+    "startDate": dateFunc(0),
+    "endDate": dateFunc(6),
+    "outlet": outlet,
+    "userId": userId
+}
+
+apiData("SalesInvoice/omset", data, function (data) {
+    if (data.readyState === 0) {
+        //
+    } else {
+        dataRes = data.data;
+
+        drawOmset(dataRes);
+        drawOmsetPersegment(dataRes);
+    }
+});
+
+
+$("#dashOmset h4").text("OMSET Harian "+ outlet);
+$("#dashOmset p").text(`${dayFuncId()}, ${dateLongFuncId(0).toString()}`);
+
+</script>
+  
+  
+ 
