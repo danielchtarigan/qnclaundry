@@ -202,7 +202,7 @@ class SalesOrder {
 
     public function getLaundryAlready($customerId)
     {
-        $query = "SELECT no_nota AS order_number, jumlah AS quantity, DATE(tgl_input) AS order_date, nama_outlet AS outlet, IF(jenis = 'k', 'Kiloan', 'Potongan') AS order_type FROM $this->table WHERE id_customer = :customerId AND lunas = true AND packing = true AND ambil = false";
+        $query = "SELECT id AS id, no_nota AS order_number, jumlah AS quantity, DATE(tgl_input) AS order_date, nama_outlet AS outlet, IF(jenis = 'k', 'Kiloan', 'Potongan') AS order_type FROM $this->table WHERE id_customer = :customerId AND lunas = true AND packing = true AND ambil = false";
         $this->conn->query($query);
         $this->conn->bind('customerId', $customerId);
         return $this->conn->all();
@@ -245,6 +245,26 @@ class SalesOrder {
             $this->conn->bind('date', $data->today);
             $this->conn->bind('op_workshop', $data->user_name);
             $this->conn->bind('id', $val->sales_id);
+
+            $this->conn->execute();
+            
+            $count += $this->conn->rowCount();
+        }
+        
+        return $count;
+    }
+
+    public function updateOpr($data, $objectField)
+    {
+        $query = "UPDATE $this->table SET $objectField->operation = :operation, $objectField->field_date = :date, $objectField->field_user = :user WHERE id = :id";
+        $this->conn->query($query);
+
+        $count = 0;
+        foreach ($data as $val) {
+            $this->conn->bind('operation', 1);
+            $this->conn->bind('date', $objectField->date);
+            $this->conn->bind('user', $objectField->user);
+            $this->conn->bind('id', $val->id);
 
             $this->conn->execute();
             

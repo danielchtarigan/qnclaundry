@@ -201,4 +201,26 @@ class SalesOrderController extends Controller {
 
         echo json_encode($data);
     }
+
+    public function handover_customer()
+    {
+        date_default_timezone_set($_POST['timezone']);
+        $date = date('Y-m-d H:i:s');
+
+        $dataPost = json_decode(json_encode($_POST['data']));
+
+        $dataFields = [
+            "operation" => "ambil",
+            "field_date" => "tgl_ambil",
+            "date" => $date,
+            "field_user" => "reception_ambil",
+            "user" => $_POST['user']
+        ];
+
+        $objectField = json_decode(json_encode($dataFields));
+
+        $up = $this->model("SalesOrder")->updateOpr($dataPost, $objectField);
+
+        echo json_encode($up);
+    }
 }
