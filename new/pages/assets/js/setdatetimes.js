@@ -1,35 +1,36 @@
 const monthNameId = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-function dateFunc(i) {
-    newDate = new Date();
-    let year = newDate.getFullYear();
-    let month = ("0" + (newDate.getMonth() + 1)).slice(-2);
-    let date = ("0" + (newDate.getDate() + i)).slice(-2);
+function formatDate(d) {
+    let year = d.getFullYear();
+    let month = ("0" + (d.getMonth() + 1)).slice(-2);
+    let date = ("0" + d.getDate()).slice(-2);
     let thisDate = `${year}/${month}/${date}`;
 
     return thisDate.toString();
 }
 
-function dateFuncId(i) {
-    newDate = new Date();
-    let year = newDate.getFullYear();
-    let month = ("0" + (newDate.getMonth() + 1)).slice(-2);
-    let date = ("0" + (newDate.getDate() + i)).slice(-2);
-
+function formatDateId(d) {
+    let year = d.getFullYear();
+    let month = ("0" + (d.getMonth() + 1)).slice(-2);
+    let date = ("0" + d.getDate()).slice(-2);
     let thisDate = `${date}/${month}/${year}`;
 
     return thisDate.toString();
 }
 
-function dateLongFuncId(i) {
-    newDate = new Date();
-    let year = newDate.getFullYear();
-    let month = monthNameId[newDate.getMonth()];
-    let date = ("0" + (newDate.getDate() + i)).slice(-2);
-
+function formatDateIdLong(d) {
+    let year = d.getFullYear();
+    let month = monthNameId[d.getMonth()];
+    let date = ("0" + d.getDate()).slice(-2);
     let thisDate = `${date} ${month} ${year}`;
 
     return thisDate.toString();
+}
+
+function setDays(days) {
+    var result = new Date();
+    result.setDate(result.getDate() + days);
+    return result;
 }
 
 function dayFromDateFunc(i) {

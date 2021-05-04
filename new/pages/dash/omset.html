@@ -18,7 +18,7 @@
 
 
 <script src="assets/js/get-database.js"></script>
-<script src="assets/js/settime.js"></script>
+<script src="assets/js/setdatetimes.js"></script>
 
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
@@ -79,8 +79,8 @@
   });
 
 data = {
-    "startDate": dateFunc(0),
-    "endDate": dateFunc(6),
+    "startDate": formatDate(setDays(-6)),
+    "endDate": formatDate(setDays(0)),
     "outlet": outlet,
     "userId": userId
 }
@@ -98,7 +98,7 @@ apiData("SalesInvoice/omset", data, function (data) {
 
 
 $("#dashOmset h4").text("OMSET Harian "+ outlet);
-$("#dashOmset p").text(`${dayFuncId()}, ${dateLongFuncId(0).toString()}`);
+$("#dashOmset p").text(`${dayFuncId()}, ${formatDateIdLong(setDays(0)).toString()}`);
 
 </script>
   
