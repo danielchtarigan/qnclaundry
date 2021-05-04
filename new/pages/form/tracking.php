@@ -29,28 +29,38 @@
 <script>
     $('#tracking').on('submit', function (e) {
         e.preventDefault();
-        let token = $('meta[name=branch_token]').attr('content');
         let userId = '<?= $_SESSION['id'] ?>';
         let nota = $('#nota').val();
 
         $('#result table tr').not(':first').remove();
 
-        $.ajax({
-            url: apiURL+'SalesOrder/tracking/',
-            method: 'POST',
-            data: {nota:nota, token:token},
-            beforeSend: function () {
+        apiData("SalesOrder/tracking", { nota: nota }, function (res) {
+            if (res.readyState === 0) {
                 $('#result table tr:first-child>td').text("Sedang memuat...");
-            },
-            success: function (response) {
-                let obj = response;
-                $('#result table tr:first-child>td').text(obj.no_nota);
+            } else {
+                let obj = res;
+                $('#result table tr:first-child>td').html('<a href="#" class="data-order" data-toggle="modal" data-target="#info_nota" id="'+obj.no_nota+'">'+obj.no_nota);
                 $('#result table').append('<tr><td>Tanggal Masuk: '+obj.tgl_input+'</td><td>Diterima Oleh: '+obj.nama_reception+'</td></tr><tr><td>Tanggal SPK: '+obj.tgl_input+'</td><td>Dispk Oleh: '+obj.rcp_spk+'</td></tr><tr><td>Tanggal Cuci: '+obj.tgl_cuci+'</td><td>Dicuci Oleh: '+obj.op_cuci+'</td></tr><tr><td>Tanggal Setrika: '+obj.tgl_setrika+'</td><td>Disetrika Oleh: '+obj.user_setrika+'</td></tr><tr><td>Tanggal Packing: '+obj.tgl_packing+'</td><td>Dipacking Oleh: '+obj.user_packing+'</td></tr><tr><td>Tanggal Kembali: '+obj.tgl_kembali+'</td><td>Diterima Oleh: '+obj.reception_kembali+'</td></tr>');
 
                 $('#nota').val('');
             }
-        })
-    })
+        });
+    });
+
+    $('html body').on("click", ".data-order",function(){
+		var cek_order = "order";
+		var nota = $(this).attr('id');
+		$.ajax({
+			url 	: 'form/form_operasional.php',
+			data 	: 'cek_order='+cek_order+'&nota='+nota,
+			beforeSend : function(){
+				$('#data_order').html("<p align='center'>sedang mencari...</p>");
+			},
+			success : function(data){
+				$('#data_order').html(data);
+			}
+		})
+	})
 </script>
 
 
