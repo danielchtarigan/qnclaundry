@@ -562,10 +562,7 @@ $id = $_GET['id'];
 			let pItems = JSON.parse(localStorage.getItem("dataItem"));
 			let customer = JSON.parse(localStorage.getItem("dataCustomer"));
 
-			localStorage.setItem("customer", JSON.stringify(customer));
-			localStorage.removeItem("dataCustomer");
-
-			if (dataCustomer.length > 0 && pItems) {
+			if (customer && pItems) {
 				$("#dialog-form").load(url, function () {
 					let el = $(this).children().length;
 					dialog.dialog("option", "title", "Buat Pesanan");
@@ -574,7 +571,6 @@ $id = $_GET['id'];
 			}
 
 		});
-
 
 		$(document).on("click", "#payOrder", function () {
 			let url = urlView + "pay-order.php?id=" + customerId;

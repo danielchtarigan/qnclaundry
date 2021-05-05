@@ -674,7 +674,7 @@ jQuery(function ($) {
 					nowDate = (date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear()).toString(),
 					nowHour = (date.getHours()+":"+("0" + date.getMinutes()).slice(-2)).toString();
 
-				let customer = JSON.parse(window.localStorage.getItem("customer"));
+				let customer = JSON.parse(window.localStorage.getItem("dataCustomer"));
 
 				dataSales.customer_name = customer.name;
 				dataSales.customer_id = customer.customer_id;
@@ -732,7 +732,7 @@ jQuery(function ($) {
 				let order_number = data;
 
 				let dataOutlet = JSON.parse(localStorage.getItem("dataOutlet")).data;
-				let dataCustomer = JSON.parse(localStorage.getItem("customer"));
+				let dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
 
 				let date = new Date(),
 					nowDate = (date.getDate()+"/"+(date.getMonth() + 1)+"/"+date.getFullYear()).toString(),
