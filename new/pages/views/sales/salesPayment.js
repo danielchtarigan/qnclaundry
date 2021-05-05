@@ -5,6 +5,7 @@ jQuery(function ($) {
         let invoiceNumber, payMethod, payValue, totalPay, finalPay = {}, dataPay = [], dataLangganan = [];
         let invoice = $(document).find("#orderCount").data('value');
         customerId = dataCustomer.customer_id;
+        customerPhone = dataCustomer.telp;
         langganan = dataCustomer.langganan;
         membership = dataCustomer.membership;
         $("html body").find("#paymentLangganan").hide();
@@ -199,6 +200,7 @@ jQuery(function ($) {
             finalPay.total_invoice = invoice;
             finalPay.total_pay = totalPay;
             finalPay.customer_id = customerId;
+            finalPay.phone = customerPhone;
             finalPay.user = userId;
             finalPay.outlet = outlet;
             finalPay.type = "ritel";
@@ -206,7 +208,7 @@ jQuery(function ($) {
             finalPay.data = dataPay;
             finalPay.data_order = dataOrder;
             finalPay.data_kuota = dataLangganan;
-            finalPay.poin = 0; 
+            finalPay.poin = 0;
     
             if (membership) {
                 finalPay.poin = parseInt(totalPay/25000);
