@@ -365,8 +365,7 @@ $id = $_GET['id'];
 
 		getCustomer();
 		dataOutlet();
-		orderInvoice();
-		
+		orderInvoice();		
 
 		// paymentHistory();
 
@@ -586,7 +585,6 @@ $id = $_GET['id'];
 			else {
 				alert("Tidak ada pesanan yang akan dibayar!");
 			}
-
 		});
 
 		$("#takeLaundry").on("click", function () {
