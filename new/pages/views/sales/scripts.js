@@ -191,18 +191,18 @@ jQuery(function ($) {
 				name = $(this).data("name");
 				weight = $(this).find("#weight").val();
 				val = $(this).find("#value").data("value");
-
+				
 				sName = toFirstWords(name.replace(/_/g, ' '));
 				newItems = $.grep(pItems.data, e => e.item === sName);
 
-				if (newItems[0].custom.length > 0) {
-					p = $.grep(newItems[0].custom, val => val.maxqty >= weight);
-					price = p[0].price;
-
-					val = price;
-				}
-
 				if (weight > 0) {
+					if (newItems[0].custom.length > 0) {
+						p = $.grep(newItems[0].custom, val => val.maxqty >= weight);
+						price = p[0].price;
+	
+						val = price;
+					}
+
 					items.push(
 						{ "name": name, "quantity": weight, "price": val, "category": "Kiloan" }
 					);
