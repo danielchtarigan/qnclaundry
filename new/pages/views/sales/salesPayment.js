@@ -28,19 +28,19 @@ jQuery(function ($) {
             });
     
             let orderKiloan = dataOrderItem.filter(item => item.category == "Kiloan");
-    
+            let totalKiloan = 0; totalDiscount = 0;
             if(orderKiloan.length > 0) {
-                let totalKiloan = orderKiloan.reduce( function (a, b) { 
+                totalKiloan = orderKiloan.reduce( function (a, b) { 
                     return parseInt(a) + parseInt(b.total);
                 }, 0);
     
                 let orderDiscount = dataOrderItem.filter(item => item.category == "Discount");
-                let totalDiscount = orderDiscount.reduce( function (a, b) { 
+                totalDiscount = orderDiscount.reduce( function (a, b) { 
                     return parseInt(a) + parseInt(b.total);
                 }, 0);
     
                 valueKiloan = totalDiscount + totalKiloan;
-    
+
                 let weightCounted = [];
                 $.each(orderKiloan, function (i, val) {
                     let weight = val.item == "Cuci Kering" ? parseFloat(val.isweight * 0.56).toFixed(2) : (val.item == "Setrika" ? parseFloat(val.isweight * 0.44).toFixed(2) : parseFloat(val.isweight * 0.22).toFixed(2));

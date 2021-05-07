@@ -27,9 +27,27 @@ function formatDateIdLong(d) {
     return thisDate.toString();
 }
 
+function formatDateTimeId(d) {
+    let year = d.getFullYear();
+    let month = ("0" + (d.getMonth() + 1)).slice(-2);
+    let date = ("0" + d.getDate()).slice(-2);
+    h = ("0" + (d.getHours())).slice(-2);
+    m = ("0" + d.getMinutes()).slice(-2);
+    let thisDate = `${date}/${month}/${year} ${h}:${m}`;
+
+    return thisDate.toString();
+}
+
 function setDays(days) {
     var result = new Date();
     result.setDate(result.getDate() + days);
+    return result;
+}
+
+function setTimes(t) {
+    var result = new Date();
+    var h = result.getHours();
+    result.setHours(h + t);
     return result;
 }
 
