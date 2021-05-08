@@ -123,9 +123,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 			const branchId = '<?= $_SESSION['branch_id']; ?>';
 			const outlet = '<?= $_SESSION['outlet']; ?>';
 			const outletId = '<?= $_SESSION['outlet_id']; ?>';
-			const userId = '<?= $_SESSION['user_id']; ?>';			
-			const user_id = '<?= $_SESSION['id']; ?>';		
-			const userLevel = '<?= $_SESSION['level'] ?>';	
+			const userId = '<?= $_SESSION['user_id']; ?>';
+			const user_id = '<?= $_SESSION['id']; ?>';
+			const userLevel = '<?= $_SESSION['level'] ?>';
 		</script>
 
 		<!-- inline styles related to this page -->

@@ -1,4 +1,6 @@
 <?php 
+include_once 'models/SalesPaymentMethod.php';
+include_once 'models/SalesOrder.php';
 
 class SalesInvoice {
     private $table = 'faktur_penjualan';
@@ -40,7 +42,7 @@ class SalesInvoice {
         $query = "INSERT INTO $this->table (no_faktur, no_faktur_urut, nama_outlet, rcp, tgl_transaksi, total, cara_bayar, id_customer, jenis_transaksi, item_package) 
                 VALUES (:invoice_number, :invoice_number, :outlet, :user, :nowdate, :total_pay, :pay_method, :customer_id, :istype, :item_package)";
         $this->conn->query($query);
-        $this->conn->bind('invoice_number', $data->invoice_number);
+        $this->conn->bind('invoice_number', $data->number);
         $this->conn->bind('outlet', $data->outlet);
         $this->conn->bind('user', $data->user);
         $this->conn->bind('nowdate', $data->nowdate);
@@ -50,7 +52,21 @@ class SalesInvoice {
         $this->conn->bind('istype', $data->type);
         $this->conn->bind('item_package', $data->item_package);
         $this->conn->execute();
-        return $this->conn->rowCount();
+
+        if ($data->type === "ritel") {
+            if ($this->conn->rowCount() > 0) {    
+                $paymentMethod = new SalesPaymentMethod; 
+                $insertMethod = $paymentMethod->insert($data);
+    
+                if ($insertMethod > 0) {
+                    $salesOrder = new SalesOrder;
+                    return $salesOrder->updateOrderPayOff($data);
+                }
+            }
+        } else {
+            return $this->conn->rowCount();
+        }
+
     }
 
     public function insertSalesPaymentMethod($data) {

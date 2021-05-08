@@ -22,7 +22,7 @@ class SalesOrderDetail {
                 $this->conn->bind('item', ucwords(str_replace("_", " ", $val->name)));
                 $this->conn->bind('price', $val->price);
                 $this->conn->bind('quantity', $val->quantity);
-                $this->conn->bind('total', $val->price * $val->quantity);
+                $this->conn->bind('total', ($val->custom > 0) ? $val->price : $val->price * $val->quantity);
                 $this->conn->bind('no_order', $number);
                 $this->conn->bind('customerId', $data->customer_id);
                 $this->conn->bind('isWeight', $val->quantity);

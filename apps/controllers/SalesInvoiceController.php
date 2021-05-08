@@ -1,5 +1,7 @@
 <?php 
 
+include_once 'controllers/SendNotificationController.php';
+
 class SalesInvoiceController extends Controller {
 
     public function omset()
@@ -8,9 +10,9 @@ class SalesInvoiceController extends Controller {
         echo json_encode($result);
     }
 
-    public function set_invoice_number($outlet)
+    public function set_invoice_number($outlet, $timezone)
     {
-        date_default_timezone_set('Asia/Makassar');
+        date_default_timezone_set($timezone);
         $ym = date('ymd');
         $dataCode = $this->model('Outlet')->getCodeOutlet($outlet);
         $codeOutlet = 'IP'.sprintf('%02s', $dataCode['branchId']).sprintf('%02s', $dataCode['outletId']).$ym;
@@ -37,19 +39,14 @@ class SalesInvoiceController extends Controller {
 
     public function save_payment($customerId)
     {
-        date_default_timezone_set('Asia/Makassar');
-        $dateNow = date('Y-m-d H:i:s');
-
+        
         $data = json_decode($_POST['jsonData']);
+        date_default_timezone_set($data->timezone);
+        $dateNow = date('Y-m-d H:i:s');
         $data->nowdate = $dateNow;
+        $data->number = $this->set_invoice_number($data->outlet, $data->timezone);
 
-        if ($this->model('SalesInvoice')->insertSalesPayment($data) > 0) {
-            $data->success_method = $this->model('SalesInvoice')->insertSalesPaymentMethod($data);
-        }
-
-        if ($data->success_method > 0) {
-            $data->success_pay_off = $this->model('SalesOrder')->updateOrderPayOff($data);
-        }
+        $pay = $this->model('SalesInvoice')->insertSalesPayment($data);
 
         if($data->poin > 0) {
             $datamember['poin'] = $data->poin;
@@ -57,18 +54,30 @@ class SalesInvoiceController extends Controller {
             $data->success_member = $this->model('Customer')->updateMembership($datamember);
         }
 
-        if (count($data->data_kuota) > 0 && $data->success_pay_off) {
+        if (count($data->data_kuota) > 0 && $pay > 0) {
             $data->success_kuota = $this->model('Langganan')->updateQuota($data);
         }
 
-        echo json_encode($data);
+        $notif = new SendNotificationController;
+
+        if ($pay > 0) {
+            $send = $notif->whatsapp_faktur([
+                'phone' => $data->phone,
+                'priority' => 'urgent',
+                'outlet' => $data->outlet,
+                'faktur' => $data->number,
+                'amount' => $data->total_pay 
+            ]);
+        }
+
+        echo json_encode($pay);
     }
 
     public function save_payment_2($data)
     {
         date_default_timezone_set($data['timezone']);
         $data['nowdate'] = date('Y-m-d H:i:s');
-        $data['invoice_number'] = $this->set_invoice_number($data['outlet']);
+        $data['number'] = $this->set_invoice_number($data['outlet'], $data['timezone']);
         $data['total_pay'] = $data['data']['total_pay'];
         $data['method'] =  $data['data']['method'];
         $data['type'] = $data['data']['type'];

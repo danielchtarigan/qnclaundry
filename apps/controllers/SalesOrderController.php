@@ -217,7 +217,7 @@ class SalesOrderController extends Controller {
             "user" => $_POST['user']
         ];
 
-        $objectField = json_decode(json_encode($dataFields));
+    $objectField = json_decode(json_encode($dataFields));
 
         $up = $this->model("SalesOrder")->updateOpr($dataPost, $objectField);
 

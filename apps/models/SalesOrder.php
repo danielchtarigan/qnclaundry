@@ -185,7 +185,7 @@ class SalesOrder {
             $this->conn->bind('pay_off', 1);
             $this->conn->bind('payment_method', $data->method);
             $this->conn->bind('order_number', $val->number);
-            $this->conn->bind('invoice_number', $data->invoice_number);
+            $this->conn->bind('invoice_number', $data->number);
             $this->conn->execute();
             $this->count += $this->conn->rowCount(); 
         }
