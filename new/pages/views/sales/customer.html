@@ -1,20 +1,17 @@
-<div class="row" style="margin-bottom: 6px">
-    <div class="col-md-6">
-        <button class="btn btn-primary btn-sm" id="addCustomer">Tambah</button>
-    </div>
-</div>
-<div class="table-responsive">
-    <table id="dcustomer" class="table table-hover table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nama Customer</th>
-                <th>Alamat</th>
-                <th>Telepon</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="custkey" value="" placeholder="Cari berdasarkan nama atau nomor telepon">
+                <div class="table-overlays" id="listData">
+                    <div class="list-group"></div>
+                </div>  
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary btn-lg" id="addcust">Tambah</button>
+            </div>
+        </div>
+    </div>  
 </div>
 
 <div id="dialog-form" title="Pelanggan Baru">
@@ -34,38 +31,46 @@
     </form>
 </div>
 
-<script type="text/javascript">
+<script>
     jQuery(function ($) {        
 
-        let data = { branch : branch };
-        let token = $('meta[name=branch_token]').attr('content');
-        customer(token, data);
+        customer();
+        function customer() {
+            apiData("Customer", { branch: branch }, function (res) {
+                if (res.readyState === 0) { 
+                    $("#custkey").prop("disabled", true);
+                    $("#custkey").val("");
+                    $("html body").find("#listData .list-group>a").remove();
+                } else {
+                    $("#custkey").prop("disabled", false);
+                    $("#custkey").on("keypress keyup blur", function () {
+                        value = $(this).val();
+                        if(value.length === 0) {
+                            $("html body").find("#listData .list-group>a").remove();
+                        } else {
+                            listData(res.data, value);
+                        }
+                    });
 
-        function customer(token, data) {
-			let table = $('#dcustomer').DataTable({
-				"processing": true,
-				"ajax": {
-					url: apiURL + "Customer",
-					type: "POST",
-					data: data,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader("Authorization", token)
-					}
-				},
-				"columns": [
-                    { "data": "name" },
-                    { "data": "address" },
-                    { "data": "telp" },
-                    { "data": "status" },
-                    {"data":null,"defaultContent":"<button class='btn btn-success btn-xs' align='center' id='selectCustomer'>Pilih</button>"}
-                ],
+                }
             });
             
-            $("#dcustomer tbody").on("click", "#selectCustomer", function () {
-                var data = table.row( $(this).parents('tr') ).data();
-                let id = data.id;
+            $("html body").on("click", "#custSelected", function (e) {
+                let id = $(this).data('id');
                 let url = "?menu=sale&id=" + id;
                 window.location = url;
+                e.preventDefault();
+            });
+        }
+
+        function listData(data, value) {    
+            $("html body").find("#listData .list-group>a").remove();      
+            let lists = data.filter(e  => e.telp.match(value) || (e.name.toLowerCase()).match(value));
+            let content;
+            $.each(lists, function (i, val) {
+                content = `<a href="#" class="list-group-item" id="custSelected" data-id="${val.id}"><h4 class="list-group-item-heading">${val.name}</h4><p class="list-group-item-text">${val.address}</p><b>${val.telp}</b><span class="badge">${val.status}</span></a>`;
+                $("html body").find("#listData .list-group").append(content);
+                return i<4;
             });
         }
 
@@ -76,7 +81,7 @@
             address = $("#address"),
             allFields = $( [] ).add( telp ).add( name ).add( address );
             tips = $( ".validateTips" );
-        
+
         function updateTips( t ) {
             tips
                 .text( t )
@@ -136,14 +141,14 @@
                 };
                 saveCustomer(data, function (response) {
                     form[ 0 ].reset();
-                    if (response.success == false) {
+                    if (response.success === false) {
                         telp.addClass( "ui-state-error" );
-                        updateTips( response.message );
+                        alert(response.message);
                         return false
                     } else {
                         dialog.dialog("close");
+                        customer();
                     }
-                    $('#dcustomer').DataTable().ajax.reload();
                 });  
                 
             }
@@ -151,17 +156,11 @@
         }
 
         function saveCustomer(data, result) {      
-            $.ajax({
-                url: apiURL + "Customer/add",
-                type: "POST",
-                data: data,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", token);
-                },
-                success: function (response) {
-                    result(response);
+            apiData("Customer/add", data, function (res) {
+                if (res.readyState !== 0) {
+                    result(res);
                 }
-            })
+            });
         }
 
         dialog = $( "#dialog-form" ).dialog({
@@ -180,27 +179,28 @@
                 allFields.removeClass( "ui-state-error" );
             }
         });
-        
+
         form = dialog.find( "form" ).on( "submit", function( event ) {
             event.preventDefault();
             addUser();
         });
-        
-        $("#addCustomer").on("click", function () {
+
+        $("html body").on("click", "#addcust", function () {
             dialog.dialog( "open" );
         });
 
 
         dataItem();
         function dataItem() {
-			apiData("Items", { branch_id: branchId, outlet_id : outletId }, function (data) {
-				if (data.readyState === 0) {
-					localStorage.removeItem("dataItem");
-				} else {
-					localStorage.setItem("dataItem", JSON.stringify(data));
-				}
-			})
-		}
+            apiData("Items", { branch_id: branchId, outlet_id : outletId }, function (data) {
+                if (data.readyState === 0) {
+                    localStorage.removeItem("dataItem");
+                } else {
+                    localStorage.setItem("dataItem", JSON.stringify(data));
+                }
+            })
+        }
 
     });
+
 </script>

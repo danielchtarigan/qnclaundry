@@ -762,7 +762,7 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 			                            include 'form/customer.php';
 									}
 									else if($menu=="customer") {
-										include 'views/customer.php';
+										include 'views/sales/customer.html';
 									}
 			                        else if($menu=="antrian_kiloan"){
 			                        	include 'include/antrian_kiloan.php';
