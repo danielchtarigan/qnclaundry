@@ -31,12 +31,6 @@ class SalesInvoiceController extends Controller {
         
     }
 
-    public function get_invoice_number($outlet)
-    {
-        $data['invoice_number'] = $this->set_invoice_number($outlet);
-        echo json_encode($data);
-    }
-
     public function save_payment($customerId)
     {
         
@@ -55,7 +49,7 @@ class SalesInvoiceController extends Controller {
         }
 
         if (count($data->data_kuota) > 0 && $pay > 0) {
-            $data->success_kuota = $this->model('Langganan')->updateQuota($data);
+            $data->success_kuota = $this->model('NewLangganan')->updateQuota($data);
         }
 
         $notif = new SendNotificationController;
@@ -86,10 +80,6 @@ class SalesInvoiceController extends Controller {
 
         // Insert to faktur_penjualan
         $data['success'] = $this->model('SalesInvoice')->insertSalesPayment($obj);
-
-        if ($data['success']  > 0) {
-            $this->get_payments_history($obj->customer_id);
-        }
     }
 
     public function get_payments_history($customerId)

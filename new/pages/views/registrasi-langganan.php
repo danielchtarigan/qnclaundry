@@ -98,7 +98,9 @@
 <script>
 jQuery(function ($) {
     let package, days, price, order = {}, data = [];
-    let customerId = '<?= $_GET['id'] ?>';   
+
+    let dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
+    let customerId = dataCustomer.id;
 
     $(".list-group-item").on("click", function () {
         $(this).addClass("active");
@@ -136,18 +138,26 @@ jQuery(function ($) {
         getData.timezone = getTimeZone();
         getData.customer_id = customerId;
         getData.outlet = outlet;
+        getData.outlet_id = outletId;
+        getData.branch = branch;
         getData.user = userId;
 
         getData.data = order;
 
         if (payMethod !== undefined) {
-            apiData("Langganan/save_langganan/" + customerId, { getData }, function (data) {  
+            apiData("NewLangganan/store/" + customerId, { getData }, function (data) {  
                 dialog.dialog("close");                   
                 if (data.readyState == 0) {
                     $(".data-pembayaran .data-body").html('<div id="load" align="center"><span></span></div>');
 					$(".data-pembayaran .data-body>.table-overlays").hide();
 				}
 				else {
+                    $(".data-pembayaran .data-body #load").remove();
+					$(".data-pembayaran .data-body>.table-overlays").show();
+
+                    dataCustomer.lgn = data;
+                    localStorage.setItem("dataCustomer", JSON.stringify(dataCustomer));
+
                     window.location.href = "";
 				}
             });
