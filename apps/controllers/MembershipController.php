@@ -14,6 +14,13 @@ class MembershipController extends Controller {
         echo json_encode($data);
     }
 
+    public function show($customerId)
+    {
+        $data['data'] = $this->model('Membership')->cekMemberCustomer($customerId);
+        
+        echo json_encode($data);
+    }
+
     public function save_order($customerId)
     {
         $data = $_POST['getData'];

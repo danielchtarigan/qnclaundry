@@ -4,15 +4,15 @@ jQuery(function ($) {
     if (dataCustomer) {
         let invoiceNumber, payMethod, payValue, totalPay, finalPay = {}, dataPay = [], dataLangganan = [];
         let invoice = $(document).find("#orderCount").data('value');
-        customerId = dataCustomer.customer_id;
+        customerId = dataCustomer.id;
         customerPhone = dataCustomer.telp;
-        langganan = dataCustomer.langganan;
-        membership = dataCustomer.membership;
+        langganan = dataCustomer.lgn;
+        membership = dataCustomer.mbr;
         $("html body").find("#paymentLangganan").hide();
 
         let valueKiloan = 0;
         let kuotas = {};
-        if (langganan) {
+        if (langganan.length > 0) {
             $("html body").find("#paymentLangganan").show();
     
             // Get Kuota Langganan
@@ -77,7 +77,7 @@ jQuery(function ($) {
             $("#paymentLangganan").show();
         }
     
-        function savePayment(finalPay) {
+        function savePayment(finalPay) {            
             getData("SalesInvoice/save_payment/" + customerId, { jsonData: JSON.stringify(finalPay) }, function (data) {
                 dialog.dialog("close");                   
                 if (data.readyState == 0) {
@@ -89,6 +89,12 @@ jQuery(function ($) {
                 }
                 else {
                     localStorage.setItem("dataOrder", JSON.stringify({data: []}));
+
+                    if (finalPay.data_kuota.length > 0) {
+                        dataCustomer.lgn[0].kiloan = finalPay.data_kuota[0].kilo;
+                        localStorage.dataCustomer = JSON.stringify(dataCustomer);
+                    }
+
                     $(".data-pesanan .data-body").find("#load").remove();
                 }
             });
@@ -210,7 +216,7 @@ jQuery(function ($) {
             finalPay.data_kuota = dataLangganan;
             finalPay.poin = 0;
     
-            if (membership) {
+            if (membership.length > 0) {
                 finalPay.poin = parseInt(totalPay/25000);
             }
     

@@ -679,7 +679,7 @@ jQuery(function ($) {
 				let customer = JSON.parse(window.localStorage.getItem("dataCustomer"));
 
 				dataSales.customer_name = customer.name;
-				dataSales.customer_id = customer.customer_id;
+				dataSales.customer_id = customer.id;
 
 				if (customer.membership === "Membership") {
 					dataSales.membership = "Membership";

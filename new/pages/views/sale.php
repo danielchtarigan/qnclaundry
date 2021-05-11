@@ -361,14 +361,51 @@ $id = $_GET['id'];
 <script src="assets/js/setdatetimes.js"></script>
 <script type="text/javascript">
     jQuery(function ($) {
-        let customerId = '<?= $_GET['id'] ?>', dataCustomer = [];
-		customerId = customerId.toString();
+		let dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
+		let customerId = dataCustomer.id;
 
-		getCustomer();
 		dataOutlet();
 		orderInvoice();		
 
-		// paymentHistory();
+
+		function customerHTML(data) {
+			$(".data-customer .data-body .panel-list #panel_data>.panel-body").append("<table><tr><td id='customer'>"+ data.name +"</td><td> &nbsp; | &nbsp; </td><td>"+ data.telp +"</td></tr><tr><td colspan='3'>" + data.address + "</td></tr><tr><td colspan='3'><a href='#' id='edit_data'>Ubah Data</a></td></tr></table>");
+
+			let elLangganan = "";
+			if (data.lgn.length > 0) {
+				elLangganan = "<table style='margin-bottom: 8px'><tr><td style='font-weight: bold;' width='100%' id='langganan'>Berlangganan</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border' id='offlgn'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td id='kuotaKiloan' data-value='"+ data.lgn[0].kiloan +"'>"+ data.lgn[0].kiloan +" Kg (Cuci Kering Setrika)</td><td></td></tr><tr><td id='kuotaPotongan' data-value='"+ data.lgn[0].potongan +"'>"+ rupiah(data.lgn[0].potongan) +" (Potongan)</td><td></td></tr><tr><td>Valid "+ data.lgn[0].valid_date +" (Masa aktif ini belum berlaku!)</td></tr></table>";
+			} 
+			else {
+				elLangganan += '<div style="margin-bottom: 20px"><em>Belum Berlangganan</em></div>'; 
+			}
+			elLangganan += "<button type='button' class='btn btn-sm btn-success' id='regPackage'>Beli Paket</button>";				
+
+			elMembership = "";
+			if (data.member == 1) {
+				elMembership += "<table style='margin-bottom: 15px'><tr><td style='font-weight: bold;' width='100%' id='membership'>Membership</td><td class='pull-right'><button type='button' class='btn btn-white btn-danger btn-sm no-border'> <i class='fa fa-times' aria-hidden='true'></i></button></td></tr><tr><td style='font-style: oblique;color: #6878CC; font-weight: bolder'>"+ data.mbr[0].level +"</td><td></td></tr><tr><td style='font-size: 12pt; font-style: oblique; font-weight: bolder; color: #6878CC'><a href=''>"+ data.poin +" Poin Rewards</a></td><td></td></tr><tr><td>Valid "+ data.mbr[0].valid_date +"</td></tr></table>"
+			}
+			else {
+				elMembership += '<div style="margin-bottom: 20px"><em>Belum menjadi membership</em></div>'; 
+				elMembership += "<button type='button' class='btn btn-sm btn-success' id='regMembership'>Membership</button>";
+			}
+
+			$(elLangganan).appendTo("#panel_langganan>.panel-body");
+			$(elMembership).appendTo("#panel_membership>.panel-body");
+		}
+
+		apiData("Membership/show/"+customerId, {}, function (res) {
+			if (res.readyState === 0) {
+				$(".data-customer .data-body").append('<div id="load" align="center"><span></span></div>');
+				$(".data-customer .data-body>.table-overlays").hide();
+			} else {
+				$(".data-customer .data-body").find("#load").remove();
+				$(".data-customer .data-body>.table-overlays").show();
+				dataCustomer.mbr = res.data;
+				localStorage.dataCustomer = JSON.stringify(dataCustomer);
+
+				customerHTML(dataCustomer);
+			}
+		});
 
 		function getCustomer()
 		{
@@ -511,11 +548,6 @@ $id = $_GET['id'];
 				removeOrder(id);
 			}
 		});
-
-		// $(document).on("click", "#printOrder", function () {
-		// 	let id = $(this).closest("li").data('id');
-		// 	window.open('document/print_order.php?id='+id,'page','toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,width=750,height=600,left=50,top=50,titlebar=yes');
-		// });
 
 		// Button action page
 		function form() {

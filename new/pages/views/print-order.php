@@ -164,17 +164,17 @@ date_default_timezone_set('Asia/Makassar');
     $(".struk-body #info-total").append(divTotal);    
 
     let divEstimated;
-    if (express == "Express 24 Jam") {
-        divEstimated = `<span>Estimasi: ${estimated(1,0)}</span>`;
+    if (express == "express") {
+        divEstimated = `<span>Estimasi: ${formatDateTimeId(setTimes(24))}</span>`;
         exp = "Express 24 Jam";
-    } else if (express == "Express 12 Jam") {
-        divEstimated = `<span>Estimasi: ${estimated(0,12)}</span>`;
+    } else if (express == "double_express") {
+        divEstimated = `<span>Estimasi: ${formatDateTimeId(setTimes(12))}</span>`;
         exp = "Express 12 Jam";
-    } else if (express == "Express 6 Jam") {
-        divEstimated = `<span>Estimasi: ${estimated(0,6)}</span>`;
+    } else if (express == "triple_express") {
+        divEstimated = `<span>Estimasi: ${formatDateTimeId(setTimes(6))}</span>`;
         exp = "Express 6 Jam";
     } else {
-        divEstimated = `<span>Estimasi: ${estimated(3,0)}</span>`;
+        divEstimated = `<span>Estimasi: ${formatDateTimeId(setTimes(3*24))}</span>`;
         exp = "";
     }
 
@@ -187,16 +187,5 @@ date_default_timezone_set('Asia/Makassar');
     $(".struk-body #outlet").text(dataOutlet.outlet);
     $(".struk-body #info-important").html(divImportant);
     $("#customerSign").text((dataCustomer.name).toUpperCase());
-
-    function estimated(nDay, nHour) {
-        let date = new Date();
-            d = ("0" + (date.getDate() + nDay)).slice(-2);
-            m = ("0" + date.getMonth()).slice(-2);
-            y = date.getFullYear();
-            h = ("0" + (date.getHours() + nHour)).slice(-2);
-            m = ("0" + date.getMinutes()).slice(-2);
-            fulldate = (d+"/"+m+"/"+y+" "+h+":"+m).toString();
-        return fulldate;
-    }
 
 </script>

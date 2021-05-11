@@ -1,5 +1,8 @@
 <?php 
 
+include_once 'models/NewLangganan.php';
+include_once 'models/Membership.php';
+
 class Customer {
     private $table = 'customer';
     private $conn;
@@ -9,18 +12,29 @@ class Customer {
         $this->conn = new Database;
     }
 
+    //Berlaku di new.qnclaundry.com
     public function getCustomer($data) {
-        $query = "SELECT id AS id, nama_customer AS name, alamat AS address, no_telp AS telp, 
-                    CASE 
-                        WHEN lgn = 1 THEN 'Langganan'
-                        WHEN member = 1 THEN 'Membership'
-                        ELSE 'Reguler'
-                    END AS status
-                    FROM $this->table WHERE kota = :branch OR (kota <> :branch AND lgn = :lgn AND no_telp LIKE '08%' AND LENGTH(no_telp) > 10) ORDER BY nama_customer ASC";
+        $query = "SELECT id AS id, nama_customer AS name, alamat AS address, no_telp AS telp, member, poin
+                    FROM $this->table WHERE no_telp LIKE '08%' AND LENGTH(no_telp) > 10 ORDER BY nama_customer ASC";
         $this->conn->query($query);
-        $this->conn->bind('branch', $data['branch']);
-        $this->conn->bind('lgn', 0);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $lgn = new NewLangganan;
+        $mbr = new Membership;
+        foreach ($result as $key => $value) {
+            $result[$key]['lgn'] = $lgn->cekLanggananCustomer($value['id'], $data['branch']);
+            if (count($result[$key]['lgn']) > 0) {
+                $result[$key]['status'] = "Langganan";
+            } else {
+                if ($value['member'] == 1) {
+                    $result[$key]['status'] = "Membership";
+                } else {
+                    $result[$key]['status'] = "Reguler";
+                }
+            }
+        }
+
+        return $result;
     }
 
     public function getCustomerById($id)

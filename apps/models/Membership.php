@@ -9,6 +9,14 @@ class Membership {
         $this->conn = new Database;
     }
 
+    public function cekMemberCustomer($id)
+    {
+        $query = "SELECT level, expire_date AS valid_date, status FROM $this->table WHERE customer_id = :customer_id";
+        $this->conn->query($query);
+        $this->conn->bind('customer_id', $id);
+        return $this->conn->all();
+    }
+
     public function membershipByOutlet($outlet, $request) {
         $customer = 'customer';
         $query = "SELECT b.nama_customer AS name, b.no_telp AS telp, a.level AS level, b.poin AS poin, a.join_date AS join_at, a.expire_date AS end_at, a.status AS status 
