@@ -18,6 +18,12 @@
                             <b id="value" data-value="2">Cucian dihitung per lembar</b>
                             </p>
                         </a>
+                        <!-- <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading" id="name">Laundry Linen</h4>
+                            <p class="list-group-item-text">
+                            <b id="value" data-value="3">Cucian dihitung per lembar setelah ditimbang</b>
+                            </p>
+                        </a> -->
                     </div>
                 </div>
             </div>

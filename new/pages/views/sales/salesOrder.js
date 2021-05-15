@@ -526,6 +526,9 @@ jQuery(function ($) {
 		} else if (salesCategory === 2) {
 			html = "salesOrderCategoryPotongan";
 			items = $.grep(pItems.data, e => e.type === "Potongan");
+		} else if (salesCategory === 2) {
+			html = "salesOrderCategoryLinen";
+			items = $.grep(pItems.data, e => e.type === "Corporate");
 		} else {
 			html = "salesOrderRetail";
 			items = $.grep(pItems.data, e => e.type === "Retail");
