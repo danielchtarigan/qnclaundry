@@ -13,7 +13,7 @@ class NewLangganan {
     public function cekLanggananCustomer($id, $branch)
     {
         $outlet = 'outlet';
-        $query = "SELECT a.kiloan, a.potongan, a.valid_date, b.Kota AS branch FROM $this->table AS A LEFT JOIN $outlet AS B ON a.outlet_id = b.id_outlet WHERE a.customer_id = :customer_id AND b.Kota = :branch";
+        $query = "SELECT a.kiloan, a.potongan, a.valid_date, b.Kota AS branch FROM $this->table AS a LEFT JOIN $outlet AS b ON a.outlet_id = b.id_outlet WHERE a.customer_id = :customer_id AND b.Kota = :branch";
         $this->conn->query($query);
         $this->conn->bind('customer_id', $id);
         $this->conn->bind('branch', $branch);
