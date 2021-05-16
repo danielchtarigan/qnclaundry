@@ -2,7 +2,12 @@
     <div class="panel-body">
         <div class="row" id="searchCust">
             <div class="col-md-8">
-                <input type="text" class="form-control" id="custkey" value="" placeholder="Cari berdasarkan nama atau nomor telepon">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="custkey" value="" placeholder="Cari berdasarkan nama atau nomor telepon">
+                    <span class="input-group-btn">
+                        <button class="btn btn-success btn-sm" type="submit"><i class="ace-icon fa fa-search"></i></button>
+                      </span>
+                </div>
                 <div class="table-overlays" id="listData">
                     <div class="list-group"></div>
                 </div>  
@@ -32,32 +37,15 @@
 </div>
 
 <script>
-    jQuery(function ($) {        
-        customer();
-        function customer() {
-            apiData("Customer", { branch: branch }, function (res) {
+    jQuery(function ($) {   
+        function customer(val) {
+            apiData("Customer", { branch: branch, val: val }, function (res) {
                 if (res.readyState === 0) { 
-                    $("#searchCust").hide();
-                    $(".panel .panel-body").append('<div id="load" align="center"><span></span></div>');
-                    
-                    $("#custkey").prop("disabled", true);
-                    $("#custkey").val("");
-                    $("html body").find("#listData .list-group>a").remove();
+                    $("html body").find("#listData .list-group").append('<div id="load" align="center"><span></span></div>');
                 } else {
-                    $(".panel .panel-body #load").remove();
+                    $("html body").find("#listData .list-group #load").remove();
 
-                    $("#searchCust").show();
-                    $("#custkey").prop("disabled", false);
-
-                    $("#custkey").on("keypress keyup blur", function () {
-
-                        value = $(this).val();
-                        if(value.length === 0) {
-                            $("html body").find("#listData .list-group>a").remove();
-                        } else {
-                            listData(res.data, value);
-                        }
-                    });
+                    listData(res.data, val);
 
                     $("html body").on("click", "#custSelected", function (e) {
                         let id = $(this).data('id');
@@ -77,15 +65,18 @@
         }
 
         function listData(data, value) {    
-            $("html body").find("#listData .list-group>a").remove();      
-            let lists = data.filter(e  => e.telp.match(value) || (e.name.toLowerCase()).match(value.toLowerCase()));
+            // let lists = data.filter(e  => e.telp.match(value) || (e.name.toLowerCase()).match(value.toLowerCase()));
             let content;
-            $.each(lists, function (i, val) {
+            $.each(data, function (i, val) {
                 content = `<a href="#" class="list-group-item" id="custSelected" data-id="${val.id}"><h4 class="list-group-item-heading">${val.name}</h4><p class="list-group-item-text">${val.address}</p><b>${val.telp}</b><span class="badge">${val.status}</span></a>`;
                 $("html body").find("#listData .list-group").append(content);
-                return i<4;
             });
-        }
+        };
+
+        $("html body").on("click", "#searchCust button[type=submit]", function () {
+            let val = $("#custkey").val();
+            customer(val);
+        });
 
         let dialog,
             form, 

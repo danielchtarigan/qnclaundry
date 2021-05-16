@@ -15,12 +15,13 @@ class Customer {
     //Berlaku di new.qnclaundry.com
     public function getCustomer($data) {
         $query = "SELECT id AS id, nama_customer AS name, alamat AS address, no_telp AS telp, member, poin
-                    FROM $this->table WHERE no_telp LIKE '08%' AND LENGTH(no_telp) > 10 ORDER BY nama_customer ASC";
+                    FROM $this->table WHERE no_telp LIKE '08%' AND (no_telp LIKE :telp OR nama_customer LIKE :customer) ORDER BY nama_customer ASC LIMIT 0, 5";
         $this->conn->query($query);
+        $this->conn->bind('telp', '%'.$data['val'].'%');
+        $this->conn->bind('customer', '%'.$data['val'].'%');
         $result = $this->conn->all();
 
         $lgn = new NewLangganan;
-        $mbr = new Membership;
         foreach ($result as $key => $value) {
             $result[$key]['lgn'] = $lgn->cekLanggananCustomer($value['id'], $data['branch']);
             if (count($result[$key]['lgn']) > 0) {
