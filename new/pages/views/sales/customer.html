@@ -41,6 +41,7 @@
         function customer(val) {
             apiData("Customer", { branch: branch, val: val }, function (res) {
                 if (res.readyState === 0) { 
+                    $("html body").find("#listData .list-group>a").remove();
                     $("html body").find("#listData .list-group").append('<div id="load" align="center"><span></span></div>');
                 } else {
                     $("html body").find("#listData .list-group #load").remove();
