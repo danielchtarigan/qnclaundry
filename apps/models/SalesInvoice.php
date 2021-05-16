@@ -91,26 +91,49 @@ class SalesInvoice {
     public function getOmsetByOutlet($data)
     {
         $paymentMethod = 'cara_bayar';
-        $query1 = "SELECT SUM(IF(jenis_transaksi = 'membership', total, 0)) AS membership,
+        $query = "SELECT SUM(IF(jenis_transaksi = 'membership', total, 0)) AS membership,
                         SUM(IF(jenis_transaksi = 'deposit', total, 0)) AS langganan,
                         SUM(IF((jenis_transaksi = 'mlocker' OR jenis_transaksi = 'slocker'), total, 0)) AS locker,
                         SUM(IF(jenis_transaksi <> 'ritel', total, 0)) AS total,
                         DATE(tgl_transaksi) AS tgl, rcp, nama_outlet AS outlet FROM $this->table 
                         WHERE nama_outlet = :outlet
                         AND (DATE(tgl_transaksi) BETWEEN :startDate 
-                        AND :endDate) GROUP BY tgl ASC";                        
-
-        $query2 = "SELECT SUM(IF(a.cara_bayar <> 'Kuota', jumlah, 0)) AS laundry, DATE(tgl_transaksi) AS tgl FROM $paymentMethod a LEFT JOIN $this->table b ON a.no_faktur = b.no_faktur
-                    WHERE nama_outlet = :outlet
-                    AND (DATE(tgl_transaksi) BETWEEN :startDate 
-                    AND :endDate) GROUP BY tgl ASC";
-
-        $this->conn->query("SELECT b.laundry, a.membership, a.langganan, a.locker, (a.total + b.laundry) AS total , a.tgl, a.outlet AS nama_outlet FROM ($query1) AS a JOIN ($query2) AS b ON a.tgl = b.tgl");
+                        AND :endDate) GROUP BY tgl ASC";    
+                        
+        $this->conn->query($query);
         $this->conn->bind('outlet', $data['outlet']);
         $this->conn->bind('startDate', $data['startDate']);
         $this->conn->bind('endDate', $data['endDate']);
+        $payments = $this->conn->all();
 
-        return $this->conn->all();
+        foreach ($payments as $key => $value) {
+            $laundry = $this->getOmsetLaundryNotKuota($data['outlet'], $value['tgl']);
+            $result[$key] = [
+                'tgl' => $value['tgl'],
+                'nama_outlet' => $value['outlet'],
+                'laundry' => $laundry['laundry'] == null ? 0 : $laundry['laundry'],
+                'membership' => $value['membership'],
+                'langganan' => $value['langganan'],
+                'locker' => $value['locker'],
+                'total' => $value['total'] + ($laundry['laundry'] == null ? 0 : $laundry['laundry'])
+            ];
+        }
+        
+        return $result;
+    }
+
+    public function getOmsetLaundryNotKuota($outlet, $tgl)
+    {
+        $paymentMethod = 'cara_bayar';
+        $query = "SELECT SUM(IF(a.cara_bayar <> 'Kuota', jumlah, 0)) AS laundry
+                    FROM $paymentMethod a LEFT JOIN $this->table b ON a.no_faktur = b.no_faktur 
+                    WHERE nama_outlet = :outlet
+                    AND DATE(tgl_transaksi) = :tgl";
+
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $outlet);
+        $this->conn->bind('tgl', $tgl);
+        return $this->conn->single();
     }
 
     public function getOmsetByOrder($data)
