@@ -10,33 +10,33 @@ class NewLangganan {
         $this->conn = new Database;
     }
 
-    public function cekLanggananCustomer($id, $branch)
+    public function cekLanggananCustomer($id, $branchId)
     {
         $outlet = 'outlet';
-        $query = "SELECT SUM(a.kiloan) AS kiloan, SUM(a.potongan) AS potongan, a.valid_date, b.Kota AS branch FROM $this->table AS a LEFT JOIN $outlet AS b ON a.outlet_id = b.id_outlet WHERE a.customer_id = :customer_id AND b.Kota = :branch ORDER BY a.valid_date DESC";
+        $query = "SELECT kiloan, potongan, valid_date FROM $this->table WHERE customer_id = :customer_id AND branch_id = :branch_id ORDER BY valid_date DESC";
         $this->conn->query($query);
         $this->conn->bind('customer_id', $id);
-        $this->conn->bind('branch', $branch);
+        $this->conn->bind('branch_id', $branchId);
         return $this->conn->all();
     }
 
-    public function getKuota($customerId, $outletId)
+    public function getKuota($customerId, $branchId)
     {
-        $query = "SELECT kiloan, potongan, valid_date AS expire FROM $this->table WHERE customer_id = :customer_id AND outlet_id = :outlet_id ORDER BY id LIMIT 0,1";
+        $query = "SELECT kiloan, potongan, valid_date AS expire FROM $this->table WHERE customer_id = :customer_id AND branch_id = :branch_id ORDER BY id LIMIT 0,1";
         $this->conn->query($query);
         $this->conn->bind('customer_id', $customerId);
-        $this->conn->bind('outlet_id', $outletId);
+        $this->conn->bind('branch_id', $branchId);
         return $this->conn->single();
     }
 
     public function updateQuota($data)
     {
-        $query = "UPDATE $this->table SET kiloan = :kilos WHERE customer_id = :customer_id AND outlet_id = :outlet_id";
+        $query = "UPDATE $this->table SET kiloan = :kilos WHERE customer_id = :customer_id AND branch_id = :branch_id";
         $this->conn->query($query);
         foreach ($data->data_kuota as $val) {
             $this->conn->bind('kilos', $val->kilo);
             $this->conn->bind('customer_id', $data->customer_id);
-            $this->conn->bind('outlet_id', $data['outlet_id']);
+            $this->conn->bind('branch_id', $data->branch_id);
             $this->conn->execute();
             $this->count += $this->conn->rowCount();
         }
@@ -45,12 +45,12 @@ class NewLangganan {
 
     public function updateQuotaNow($data)
     {
-        $query = "UPDATE $this->table SET kiloan = :kiloan, valid_date = DATE_ADD(CURDATE(), INTERVAL :valid DAY) WHERE customer_id = :customer_id AND outlet_id = :outlet_id";
+        $query = "UPDATE $this->table SET kiloan = :kiloan, valid_date = DATE_ADD(CURDATE(), INTERVAL :valid DAY) WHERE customer_id = :customer_id AND branch_id = :branch_id";
         $this->conn->query($query);
         $this->conn->bind('kiloan', $data['data']['kiloan']);
         $this->conn->bind('customer_id', $data['customer_id']);
         $this->conn->bind('valid', $data['data']['days']);
-        $this->conn->bind('outlet_id', $data['outlet_id']);
+        $this->conn->bind('branch_id', $data['branch_id']);
         $this->conn->execute();
 
         return $this->conn->rowCount();
@@ -58,14 +58,14 @@ class NewLangganan {
 
     public function insertQuotaNow($data)
     {
-        $query = "INSERT INTO $this->table (since_date, customer_id, kiloan, valid_date, outlet_id) VALUES (:nowdate,  :customer_id, :kiloan, DATE_ADD(CURDATE(), INTERVAL :valid DAY), :outlet_id)";
+        $query = "INSERT INTO $this->table (since_date, customer_id, kiloan, valid_date, branch_id) VALUES (:nowdate,  :customer_id, :kiloan, DATE_ADD(CURDATE(), INTERVAL :valid DAY), :branch_id)";
         $this->conn->query($query);
 
         $this->conn->bind('nowdate', $data['data']['nowdate']);
         $this->conn->bind('customer_id', $data['customer_id']);
         $this->conn->bind('kiloan', $data['data']['kiloan']);
         $this->conn->bind('valid', $data['data']['days']);
-        $this->conn->bind('outlet_id', $data['outlet_id']);
+        $this->conn->bind('branch_id', $data['branch_id']);
 
         $this->conn->execute();
         return $this->conn->rowCount();

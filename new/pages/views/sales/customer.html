@@ -39,7 +39,7 @@
 <script>
     jQuery(function ($) {   
         function customer(val) {
-            apiData("Customer", { branch: branch, val: val }, function (res) {
+            apiData("Customer", { branch_id: branchId, val: val }, function (res) {
                 if (res.readyState === 0) { 
                     $("html body").find("#listData .list-group>a").remove();
                     $("html body").find("#listData .list-group").append('<div id="load" align="center"><span></span></div>');
@@ -148,11 +148,11 @@
                     form[ 0 ].reset();
                     if (response.success === false) {
                         telp.addClass( "ui-state-error" );
-                        alert(response.message);
+                        updateTips(response.message);
                         return false
                     } else {
                         dialog.dialog("close");
-                        customer();
+                        customer(data.telp);
                     }
                 });  
                 

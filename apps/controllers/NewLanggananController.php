@@ -7,7 +7,7 @@ class NewLanggananController extends Controller {
     {
         $data = $_POST['getData'];
 
-        $qCurrent = $this->model('NewLangganan')->getKuota($customerId, $data['outlet_id']);
+        $qCurrent = $this->model('NewLangganan')->getKuota($customerId, $data['branch_id']);
 
         date_default_timezone_set($data['timezone']);
         $data['data']['nowdate'] = date('Y-m-d');
@@ -26,7 +26,7 @@ class NewLanggananController extends Controller {
             $salesInvoice = new SalesInvoiceController();
             $salesInvoice->save_payment_2($data);
 
-            $res = $this->model('NewLangganan')->cekLanggananCustomer($customerId, $data['branch']);
+            $res = $this->model('NewLangganan')->cekLanggananCustomer($customerId, $data['branch_id']);
             echo json_encode($res);
         }
 

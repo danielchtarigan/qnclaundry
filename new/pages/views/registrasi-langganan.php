@@ -139,7 +139,7 @@ jQuery(function ($) {
         getData.customer_id = customerId;
         getData.outlet = outlet;
         getData.outlet_id = outletId;
-        getData.branch = branch;
+        getData.branch_id = branchId;
         getData.user = userId;
 
         getData.data = order;

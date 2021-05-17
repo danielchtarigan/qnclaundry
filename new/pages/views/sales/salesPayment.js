@@ -96,6 +96,8 @@ jQuery(function ($) {
                     }
 
                     $(".data-pesanan .data-body").find("#load").remove();
+
+                    window.location.href = "";
                 }
             });
         }
@@ -209,6 +211,7 @@ jQuery(function ($) {
             finalPay.phone = customerPhone;
             finalPay.user = userId;
             finalPay.outlet = outlet;
+            finalPay.branch_id = branchId;
             finalPay.type = "ritel";
             finalPay.item_package = "Retail";
             finalPay.data = dataPay;

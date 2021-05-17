@@ -23,7 +23,8 @@ class Customer {
 
         $lgn = new NewLangganan;
         foreach ($result as $key => $value) {
-            $result[$key]['lgn'] = $lgn->cekLanggananCustomer($value['id'], $data['branch']);
+            $result[$key]['lgn'] = $lgn->cekLanggananCustomer($value['id'], $data['branch_id']);
+
             if (count($result[$key]['lgn']) > 0) {
                 $result[$key]['status'] = "Langganan";
             } else {
