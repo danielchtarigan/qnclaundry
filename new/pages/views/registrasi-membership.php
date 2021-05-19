@@ -140,8 +140,8 @@
 jQuery(function ($) {
     let level, months, price, order = {}, data = [];
     dataCustomer = JSON.parse(localStorage.getItem("dataCustomer"));
-    let customerId = dataCustomer['customer_id'];   
-    let telpCustomer =  dataCustomer['telp'];
+    let customerId = dataCustomer.id;   
+    let telpCustomer =  dataCustomer.telp;
 
     $(".list-group-item").on("click", function () {
         $(this).addClass("active");
@@ -192,6 +192,10 @@ jQuery(function ($) {
 					$(".data-pembayaran .data-body>.table-overlays").hide();
 				}
 				else {
+                    dataCustomer.member = 1;
+                    dataCustomer.mbr = data;
+                    localStorage.setItem("dataCustomer", JSON.stringify(dataCustomer));
+
                     window.location.href = "";
 				}
             });

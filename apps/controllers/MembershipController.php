@@ -36,6 +36,9 @@ class MembershipController extends Controller {
             $this->model('Customer')->updateMembership($data['data']);
             $salesInvoice = new SalesInvoiceController();
             $salesInvoice->save_payment_2($data);
+
+            $res = $this->model('Membership')->cekMemberCustomer($customerId);
+            echo json_encode($res);
         }
     }
 }
