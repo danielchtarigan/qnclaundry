@@ -732,4 +732,4 @@ $id = $_GET['id'];
     });
 </script>
 
-<script src="views/sales/salesOrder.js"></script>
+<script src="views/sales/salesOrderTrx.js"></script>

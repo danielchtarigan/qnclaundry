@@ -747,7 +747,7 @@ jQuery(function ($) {
 				dataSales.customer_name = customer.name;
 				dataSales.customer_id = customer.id;
 
-				if (customer.membership === "Membership") {
+				if (customer.member) {
 					dataSales.membership = "Membership";
 				}
 				
