@@ -11,9 +11,10 @@ class Membership {
 
     public function cekMemberCustomer($id)
     {
-        $query = "SELECT level, expire_date AS valid_date, status FROM $this->table WHERE customer_id = :customer_id";
+        $query = "SELECT level, expire_date AS valid_date, status FROM $this->table WHERE customer_id = :customer_id AND status = :status";
         $this->conn->query($query);
         $this->conn->bind('customer_id', $id);
+        $this->conn->bind('status', true);
         return $this->conn->all();
     }
 

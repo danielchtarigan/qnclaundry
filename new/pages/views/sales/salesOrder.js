@@ -235,6 +235,24 @@ jQuery(function ($) {
 			$("#"+id).find("#labelPrice").text(`${items.length} item`);
 			$("#"+id).find("#totalPrice").text(rupiah(sumTotal(dataSales.items)));
 		}
+		if (id === "salesOrderLinen") {          
+			let items = [];
+			$(this).closest("#selectItem").find("a.list-group-item").each(function (i) {
+				name = $(this).data("name");
+				quantity = $(this).find("#weight").val();
+				val = $(this).find("#value").data("value");
+
+				if (quantity > 0) {
+					items.push(
+						{ "name": name, "quantity": quantity, "price": val, "category": "Linen", "custom": 0 }
+					);
+				}
+			});
+
+			dataSales.items = items;
+			$("#"+id).find("#labelPrice").text(`${items.length} item`);
+			$("#"+id).find("#totalPrice").text(rupiah(sumTotal(dataSales.items)));
+		}
 		if (id === "salesExtraService") {
 			let extras = [];
 			$(this).closest("#selectItem").find("a.list-group-item").each(function (i) {
@@ -378,6 +396,9 @@ jQuery(function ($) {
 		if (id === "salesOrderPotongan") {
 			backTo = "salesOrderCategoryPotongan";			
 		}
+		if (id === "salesOrderLinen") {
+			backTo = "salesCategory";
+		}
 		if (id === "salesExtraService") {
 			if (dataSales.category === 1) {
 				backTo = "salesOrderKiloan";
@@ -385,6 +406,9 @@ jQuery(function ($) {
 			} else if (dataSales.category === 2) {
 				backTo = "salesOrderPotongan";
 				items = $.grep(pItems.data, e => e.type === "Potongan");
+			} else if (dataSales.category === 3) {
+				backTo = "salesOrderLinen";
+				items = $.grep(pItems.data, e => e.type === "Linen");
 			} else {
 				backTo = "salesOrderRetail";
 				items = $.grep(pItems.data, e => e.type === "Retail");	
@@ -472,6 +496,26 @@ jQuery(function ($) {
 					}
 				}
 
+				if (backTo === "salesOrderLinen") {
+					$.each(items, function (i, val) {
+						let name = val.item.replace(/\s+/g, '_').toLowerCase();
+						listElement = `<a href="#" class="list-group-item" data-name="${name}"><div class="flex-row" style="align-items: center;"><div><h4 class="list-group-item-heading">${val.item}</h4><p class="list-group-item-text"><b id="value" data-value="${val.price}" class="text-red">${rupiah(val.price)}</b></p></div><div class="col-xs-3" align="right" id="addItem"><i class="ace-icon fa fa-plus-circle" style="font-size: 20px;" aria-hidden="true"></i></div></div></a>`;
+						
+						$("html body").find(".show #selectItem").append(listElement);
+					});
+
+					if (dataSales.items.length > 0) {
+						$.each(dataSales.items, function (i, val) {
+							input = '<input type="text" name="weight" id="weight" class="form-control" value="1" autocomplete="off"></input>';
+							$("a.list-group-item[data-name='"+val.name+"']").find("#addItem i").hide();
+							$("a.list-group-item[data-name='"+val.name+"']").find("#addItem").append($(input).attr("value", val.quantity));
+						});
+
+						$("#"+backTo).find("#labelPrice").text(`${dataSales.items.length} item`);
+						$("#"+backTo).find("#totalPrice").text(rupiah(sumTotal(dataSales.items)));
+					}
+				}
+
 				if (backTo === "salesExtraService") {
 					if (dataSales.extras) {
 						$.each(dataSales.extras, function (i, val) {
@@ -526,9 +570,9 @@ jQuery(function ($) {
 		} else if (salesCategory === 2) {
 			html = "salesOrderCategoryPotongan";
 			items = $.grep(pItems.data, e => e.type === "Potongan");
-		} else if (salesCategory === 2) {
-			html = "salesOrderCategoryLinen";
-			items = $.grep(pItems.data, e => e.type === "Corporate");
+		} else if (salesCategory === 3) {
+			html = "salesOrderLinen";
+			items = $.grep(pItems.data, e => e.type === "Linen");
 		} else {
 			html = "salesOrderRetail";
 			items = $.grep(pItems.data, e => e.type === "Retail");
@@ -545,7 +589,7 @@ jQuery(function ($) {
 						return result;
 					}, {});
 					
-					let categories = Object.keys(map);   
+					let categories = Object.keys(map);
 
 					$.each(categories, function (i, val) {
 						let name = val.replace(/\s+/g, '_').toLowerCase();
@@ -570,6 +614,25 @@ jQuery(function ($) {
 				"left": "0",
 			}, 1000);
 		});	
+	});
+
+	$("html body").on("click", ".sales-order-linen #nextstep", function () {
+		let val = $("#salesOrderLinen .active #value").data("value");
+
+		$(".create-order").animate({
+			"left": "-150%"
+		}, function () {
+			$(this).load("views/sales/salesExtraService.php", function () {
+				$("html body").find( ".ui-dialog-title" ).remove();
+				$("html body").find( "a.backstep" ).remove();
+				$("html body").find(".ui-widget-header").append('<a href="#" class="backstep"><i class="ace-icon fa fa-arrow-circle-left"></i></a>');
+				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
+			})
+			.animate({
+				"left": "0",
+			}, 1000);
+		});
+		
 	});
 
 	$("html body").on("click", ".sales-order-kiloan #nextstep", function () {

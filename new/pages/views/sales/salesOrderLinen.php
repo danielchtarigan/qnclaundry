@@ -1,6 +1,6 @@
-<div class="choose-item sales-order-category-potongan show" id="salesOrderCategoryPotongan">
+<div class="choose-item sales-order-linen show" id="salesOrderLinen">
     <div class="overlay">
-        <h2 class="title">Pilih Kategori Potongan</h2>
+        <h2 class="title">Pilih Kategori Linen</h2>
         <div class="table-overlays">
             <div class="list-package">
                 <div class="list-group" id="selectItem">

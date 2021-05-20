@@ -120,6 +120,8 @@ class SalesOrderController extends Controller {
             $type = "k";
         } else if ($dataPost->category == 2) {
             $type = "p";
+        } else if ($dataPost->category == 3) {
+            $type = "L";
         }
 
         $number = $this->set_order_number($dataPost->outlet);
