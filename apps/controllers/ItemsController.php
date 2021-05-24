@@ -8,12 +8,6 @@ class ItemsController extends Controller {
     {        
         $data['data'] = $this->model('Items')->getItemPriceByOutlet($_POST['branch_id'], $_POST['outlet_id']);
 
-        $custom = new CustomPrices;
-        foreach($data['data'] as $key => $val) {
-            $priceId = $val['price_id'];
-            $data['data'][$key]['custom'] = $custom->getDataByPriceId($priceId);
-        }
-
         echo json_encode($data);
     }
 

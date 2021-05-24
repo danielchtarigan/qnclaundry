@@ -25,7 +25,7 @@ class SalesOrderDetail {
                 $this->conn->bind('total', ($val->custom > 0) ? $val->price : $val->price * $val->quantity);
                 $this->conn->bind('no_order', $number);
                 $this->conn->bind('customerId', $data->customer_id);
-                $this->conn->bind('isWeight', $val->quantity);
+                $this->conn->bind('isWeight', $val->category === "Linen" ? ($val->weight/1000) : $val->quantity);
                 $this->conn->bind('category', $val->category);
                 $this->conn->execute();
                 $this->count += $this->conn->rowCount();    

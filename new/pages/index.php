@@ -117,8 +117,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		<link rel="stylesheet" href="assets/css/order-style.css">
 			
 		<script type="text/javascript">
-			// let apiURL = 'https://qnclaundry.com/apps/';
-			const apiURL = 'https://localhost/qnclaundry/apps/';
+			let apiURL = 'https://qnclaundry.com/apps/';
+			// const apiURL = 'https://localhost/qnclaundry/apps/';
 			const branch = '<?= $_SESSION['cabang']; ?>';
 			const branchId = '<?= $_SESSION['branch_id']; ?>';
 			const outlet = '<?= $_SESSION['outlet']; ?>';
@@ -415,6 +415,15 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 									</a>
 
 									<b class="arrow"></b>
+								</li>
+
+								<li class="">
+									<a href="?menu=antrian_linen">
+										<i class="menu-icon fa fa-caret-right"></i>
+										Linen
+									</a>
+
+									<b class="arrow"></b>
 								</li>							
 							</ul>
 						</li>
@@ -585,6 +594,9 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				                        } else if($menu=="antrian_potongan"){
 				                        	echo "Laundry Process ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> antrian potongan</small>';
+				                        } else if($menu=="antrian_linen"){
+				                        	echo "Laundry Process ";
+				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> antrian linen</small>';
 				                        } else if($menu=="omset_laundry"){
 				                        	echo "Omset Laundry ";
 				                        	echo '<small><i class="ace-icon fa fa-angle-double-right"></i> potongan dan kiloan</small>';
@@ -769,6 +781,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 			                        }
 			                        else if($menu=="antrian_potongan"){
 			                        	include 'include/antrian_potongan.php';
+			                        } else if($menu=="antrian_linen"){
+			                        	include 'include/antrian_linen.php';
 			                        } else if($menu=="test"){
 		                        		include 'test.php';
 		                        	} else if($menu=="checkout-control"){

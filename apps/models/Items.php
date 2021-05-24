@@ -1,5 +1,7 @@
 <?php 
+include_once 'models/ItemAdjustmentPrices.php';
 include_once 'models/CustomPrices.php';
+include_once 'models/LinenGramasi.php';
 
 class Items {
     private $table = "bs_items";
@@ -94,7 +96,17 @@ class Items {
 
         $this->conn->bind('branch', $branch);
         $this->conn->bind('outlet', $outlet);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $custom = new CustomPrices;
+        $gramasi = new LinenGramasi;
+        foreach($result as $key => $val) {
+            $priceId = $val['price_id'];
+            $result[$key]['custom'] = $custom->getDataByPriceId($priceId);
+            $result[$key]['gramasi'] = $gramasi->getItems($priceId);
+        }
+
+        return $result;
     }
 
 }

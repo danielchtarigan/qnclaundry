@@ -32,6 +32,15 @@ jQuery(function ($) {
 		return total;
 	}
 
+	function totalWeight(data) {
+		let total = 0;
+		$.map(data, function (e) {
+			total += parseFloat(e.weight);
+		})
+
+		return total;
+	}
+
 	function changeQuantity(data, name, weight) {
 		$.each(data, function (i, val) {
 			if (val.name === name) {
@@ -55,7 +64,9 @@ jQuery(function ($) {
 		if (data.items) {
 			$.each(data.items, function (i, val) {
 				if (dataSales.category === 1) {
-					weight = val.quantity;
+					weight += val.quantity;
+				} else if (dataSales.category === 3) {
+					weight += parseFloat(val.weight / 1000);
 				}
 
 				let name = toFirstWords(val.name.replace(/_/g, ' '));
@@ -160,6 +171,27 @@ jQuery(function ($) {
 			changeQuantity(dataSales.items, name, weight);
 			$("#"+id).find("#totalPrice").text(rupiah(sumTotal(dataSales.items)));
 		} 
+		if (id === "salesOrderLinen") {
+			sName = toFirstWords(name.replace(/_/g, ' '));
+			newItems = $.grep(pItems.data, e => e.item === sName);
+
+			if (weight > 0) {
+				gr = $.grep(newItems[0].gramasi, val => val.gramasi);
+
+				weightGr = gr[0].gramasi * weight;
+
+				$.each(dataSales.items, function (i, val) {
+					if (val.name === name) {
+						val.weight = weightGr;
+					}
+				});
+
+			}
+
+			changeQuantity(dataSales.items, name, weight);
+			$("#"+id).find("#labelPrice").text(`${dataSales.items.length} item, berat ${parseFloat(totalWeight(dataSales.items)/1000)} Kg`);
+			$("#"+id).find("#totalPrice").text(rupiah(sumTotal(dataSales.items)));
+		}
 		if (id === "salesExtraService") {
 			changeQuantity(dataSales.extras, name, weight);
 			$("#"+id).find("#totalPrice").text(rupiah(sumTotal(dataSales.extras)));
@@ -242,15 +274,26 @@ jQuery(function ($) {
 				quantity = $(this).find("#weight").val();
 				val = $(this).find("#value").data("value");
 
+				sName = toFirstWords(name.replace(/_/g, ' '));
+				newItems = $.grep(pItems.data, e => e.item === sName);
+
+				let weightGr = 0;
+				if (quantity > 0) {
+					gr = $.grep(newItems[0].gramasi, val => val.gramasi);
+
+					weightGr = gr[0].gramasi * quantity;
+				}
+
 				if (quantity > 0) {
 					items.push(
-						{ "name": name, "quantity": quantity, "price": val, "category": "Linen", "custom": 0 }
+						{ "name": name, "quantity": quantity, "price": val, "category": "Linen", "custom": 0, "weight": weightGr }
 					);
 				}
 			});
 
 			dataSales.items = items;
-			$("#"+id).find("#labelPrice").text(`${items.length} item`);
+
+			$("#"+id).find("#labelPrice").text(`${items.length} item, berat ${parseFloat(totalWeight(dataSales.items)/1000)} Kg`);
 			$("#"+id).find("#totalPrice").text(rupiah(sumTotal(dataSales.items)));
 		}
 		if (id === "salesExtraService") {
@@ -619,19 +662,26 @@ jQuery(function ($) {
 	$("html body").on("click", ".sales-order-linen #nextstep", function () {
 		let val = $("#salesOrderLinen .active #value").data("value");
 
-		$(".create-order").animate({
-			"left": "-150%"
-		}, function () {
-			$(this).load("views/sales/salesExtraService.php", function () {
-				$("html body").find( ".ui-dialog-title" ).remove();
-				$("html body").find( "a.backstep" ).remove();
-				$("html body").find(".ui-widget-header").append('<a href="#" class="backstep"><i class="ace-icon fa fa-arrow-circle-left"></i></a>');
-				$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
-			})
-			.animate({
-				"left": "0",
-			}, 1000);
-		});
+		weightGr = totalWeight(dataSales.items);
+
+		if (weightGr > 15000) {
+			alert("Satu nota maksimal 15 Kg, Silahkan kurangi jumlah item");
+		}
+		else {
+			$(".create-order").animate({
+				"left": "-150%"
+			}, function () {
+				$(this).load("views/sales/salesExtraService.php", function () {
+					$("html body").find( ".ui-dialog-title" ).remove();
+					$("html body").find( "a.backstep" ).remove();
+					$("html body").find(".ui-widget-header").append('<a href="#" class="backstep"><i class="ace-icon fa fa-arrow-circle-left"></i></a>');
+					$("html body").find(".choose-item.show").find("#nextstep").prop("disabled", false);
+				})
+				.animate({
+					"left": "0",
+				}, 1000);
+			});
+		}
 		
 	});
 
@@ -747,7 +797,7 @@ jQuery(function ($) {
 				dataSales.customer_name = customer.name;
 				dataSales.customer_id = customer.id;
 
-				if (customer.member) {
+				if (customer.member == "1") {
 					dataSales.membership = "Membership";
 				}
 				
