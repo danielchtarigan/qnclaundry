@@ -298,50 +298,15 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 					<?php 
 					if($_SESSION['level']!="mitra"){
-					   
-						if ($_SESSION['cabang'] != "Makassar") {
-							?>
-							<li class="">
-								<a href="?menu=customer">
-									<i class="menu-icon fa fa-desktop"></i>
-									<span class="menu-text">
-										Sale Point
-									</span>
-								</a>
-							</li>
-							<?php
-						}
-						else {
-						?>
+						?>					   
 						<li class="">
-							<a href="#" class="dropdown-toggle">
+							<a href="?menu=customer">
 								<i class="menu-icon fa fa-desktop"></i>
 								<span class="menu-text">
-									Transaction
+									Sale Point
 								</span>
-
-								<b class="arrow fa fa-angle-down"></b>
 							</a>
-
-							<b class="arrow"></b>
-
-							<ul class="submenu">
-
-								<li class="">
-									<a href="?menu=data-customer">
-										<i class="menu-icon fa fa-caret-right"></i>
-										Customer Data
-									</a>
-
-									<b class="arrow"></b>
-								</li>
-
-							</ul>
 						</li>
-
-						<?php 
-						}
-						?>
 
 						<li class="">
 							<a href="#" class="dropdown-toggle">
