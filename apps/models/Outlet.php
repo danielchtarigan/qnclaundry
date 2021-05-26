@@ -1,5 +1,6 @@
 <?php 
 include_once 'models/Workshop.php';
+include_once 'models/MachineCapacities.php';
 
 class Outlet {
     private $table = "outlet";
@@ -42,8 +43,20 @@ class Outlet {
         $result = $this->conn->single();
 
         $wk = new Workshop;
-        $result['workshop'] = $wk->workshopOutlet($outlet)['name'];
+        $result['workshop'] = $wk->outletWorkshop($outlet);
+
+        $caps = new MachineCapacities;
+        $result['workshop']['capacity'] = $caps->getCapacity($result['workshop']['id'])['capacity'];
         return $result;
+    }
+
+    function workshopOutlet($outlet)
+    {
+        $table = 'outlet_workshop';
+        $query = "SELECT * FROM $table WHERE outlet_id = $outlet";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $outlet);
+        return $this->conn->single();
     }
 
     public function getOutlets()

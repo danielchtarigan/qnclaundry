@@ -18,10 +18,10 @@ class Workshop {
         return $this->conn->all();
     }
 
-    public function workshopOutlet($outlet)
+    public function outletWorkshop($outlet)
     {
         $table = 'outlet_workshop';
-        $query = "SELECT workshop AS name FROM $this->table a JOIN $table b ON a.id_workshop = b.workshop_id WHERE b.outlet_id = :outlet";
+        $query = "SELECT workshop_id AS id, workshop AS name FROM $this->table a JOIN $table b ON a.id_workshop = b.workshop_id WHERE b.outlet_id = :outlet";
         $this->conn->query($query);
         $this->conn->bind('outlet', $outlet);
         return $this->conn->single();
