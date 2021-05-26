@@ -661,11 +661,13 @@ jQuery(function ($) {
 
 	$("html body").on("click", ".sales-order-linen #nextstep", function () {
 		let val = $("#salesOrderLinen .active #value").data("value");
+		let dataOutlet = JSON.parse(localStorage.getItem("dataOutlet")).data;
 
 		weightGr = totalWeight(dataSales.items);
+		capacity = dataOutlet.workshop.capacity;
 
-		if (weightGr > 15000) {
-			alert("Satu nota maksimal 15 Kg, Silahkan kurangi jumlah item");
+		if (weightGr > parseFloat(capacity * 1000)) {
+			alert(`Satu nota maksimal ${capacity} Kg, Silahkan kurangi jumlah item`);
 		}
 		else {
 			$(".create-order").animate({
