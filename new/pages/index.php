@@ -110,6 +110,48 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 				transition: all .5s;
 			}
 
+			.struk {
+				padding: 3mm;
+				max-width:80mm; font-size: 9pt; font-family: Tahoma; background-color: #ffffff;
+			}
+			.struk h4 {
+				font-size: 1.4rem;
+			}
+			.struk-header>h3, .struk-header>h5 {
+				font-weight: bold;
+			}
+			.struk-header>h3 {
+				margin: 0;
+				font-size: 1.5rem;
+				line-height: 1.6;
+				border-bottom: 2px solid #4b4b4b;
+			}
+			.struk-content {
+				margin-top: 2mm;
+			}
+			.struk-message {
+				display: flex;
+			}
+			.struk-message>span {
+				width: 25%;
+			}
+			.struk-sign {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				text-align: center;
+			}
+			.struk-sign>.sign {
+				display: flex;
+				flex-direction: column;
+			}
+			.struk table.table tr>td {
+				border: none;
+				line-height: 1.6;
+				margin: 0;
+				padding: 0;
+			}
+
 
 		</style>
 		
@@ -117,8 +159,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		<link rel="stylesheet" href="assets/css/order-style.css">
 			
 		<script type="text/javascript">
-			let apiURL = 'https://qnclaundry.com/apps/';
-			// const apiURL = 'https://localhost/qnclaundry/apps/';
+			// let apiURL = 'https://qnclaundry.com/apps/';
+			const apiURL = 'https://localhost/qnclaundry/apps/';
 			const branch = '<?= $_SESSION['cabang']; ?>';
 			const branchId = '<?= $_SESSION['branch_id']; ?>';
 			const outlet = '<?= $_SESSION['outlet']; ?>';

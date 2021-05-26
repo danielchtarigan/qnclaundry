@@ -205,7 +205,14 @@ class SalesOrder {
         $query = "SELECT id AS id, no_nota AS order_number, jumlah AS quantity, DATE(tgl_input) AS order_date, nama_outlet AS outlet, IF(jenis = 'k', 'Kiloan', 'Potongan') AS order_type FROM $this->table WHERE id_customer = :customerId AND lunas = true AND packing = true AND ambil = false";
         $this->conn->query($query);
         $this->conn->bind('customerId', $customerId);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $detail = new SalesOrderDetail;
+        foreach ($result as $key => $value) {
+            $result[$key]['detail'] = $detail->getOrderItem($value['order_number']);
+        }
+
+        return $result;
     }
 
     /**
