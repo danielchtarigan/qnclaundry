@@ -1,4 +1,5 @@
 <?php 
+include_once 'models/Workshop.php';
 
 class Outlet {
     private $table = "outlet";
@@ -30,7 +31,19 @@ class Outlet {
         $query = "SELECT nama_outlet AS outlet, alamat AS address, no_telp AS telpon, Kota AS branch FROM $this->table WHERE nama_outlet = :outlet";
         $this->conn->query($query);
         $this->conn->bind('outlet', $outlet);
-        return $this->conn->single();
+        $result = $this->conn->single();
+    }
+
+    public function getOutletById($outlet)
+    {
+        $query = "SELECT nama_outlet AS outlet, alamat AS address, no_telp AS telpon, Kota AS branch FROM $this->table WHERE id_outlet = :outlet";
+        $this->conn->query($query);
+        $this->conn->bind('outlet', $outlet);
+        $result = $this->conn->single();
+
+        $wk = new Workshop;
+        $result['workshop'] = $wk->workshopOutlet($outlet)['name'];
+        return $result;
     }
 
     public function getOutlets()

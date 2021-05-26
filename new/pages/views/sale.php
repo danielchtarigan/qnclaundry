@@ -450,7 +450,7 @@ $id = $_GET['id'];
 		}
 
 		function dataOutlet() {
-			apiData("Outlet/"+ outlet, { }, function (data) {
+			apiData("Outlet/"+ outletId, { }, function (data) {
 				if (data.readyState == 0) {
 					localStorage.removeItem("dataOutlet");
 				}

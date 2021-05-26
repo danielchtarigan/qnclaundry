@@ -4,7 +4,7 @@ class OutletController extends Controller {
 
     public function index($outlet)
     {
-        $data['data'] = $this->model('Outlet')->getOutletByName($outlet);
+        $data['data'] = $this->model('Outlet')->getOutletById($outlet);
 
         echo json_encode($data);
     }
