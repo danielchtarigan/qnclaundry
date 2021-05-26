@@ -253,7 +253,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
                       <option value="0">--Pilih Outlet--</option>
                       <?php 
                       
-                      $outlets = mysqli_query($con, "SELECT id_outlet, nama_outlet FROM outlet WHERE Kota='$cabang'");
+                      $outlets = mysqli_query($con, "SELECT id_outlet, nama_outlet FROM outlet WHERE Kota='$cabang' AND active = true");
                       while($outlet = mysqli_fetch_row($outlets)) {
                         echo '<option value="'.$outlet[0].'-'.$outlet[1].'">'.$outlet[1].'</option>';
                       }
@@ -280,7 +280,7 @@ if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
               <select class="itsl" type="text" name="cabang" id="cabang">
                 <option value="0">--Pilih Kota Cabang--</option>
                 <?php 
-                $cabangs = mysqli_query($con, "SELECT * FROM cabang WHERE id<>'1' ORDER BY cabang ASC ");
+                $cabangs = mysqli_query($con, "SELECT * FROM cabang WHERE active = true ORDER BY cabang ASC ");
                 while($rcab = mysqli_fetch_row($cabangs)) {
                 	echo '<option value="'.$rcab[0].'-'.$rcab[1].'">'.$rcab[1].'</option>';
                 }
