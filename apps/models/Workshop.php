@@ -18,6 +18,14 @@ class Workshop {
         return $this->conn->all();
     }
 
+    public function getWorkshopByBranch($branch)
+    {
+        $query = "SELECT id_workshop AS id, workshop AS name FROM $this->table WHERE id_cabang = :branch AND active = true";
+        $this->conn->query($query);
+        $this->conn->bind('branch', $branch);
+        return $this->conn->all();
+    }
+
     public function outletWorkshop($outlet)
     {
         $table = 'outlet_workshop';

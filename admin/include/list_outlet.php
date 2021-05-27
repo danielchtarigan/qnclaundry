@@ -12,6 +12,7 @@
                     <tr>
                         <th width="10%">Id Outlet</th>
                         <th>Nama Outlet</th>
+                        <th>Workshop</th>
                         <th>Cabang Outlet</th>
                         <th>Status</th>
                         <th></th>
@@ -48,6 +49,7 @@
 
 <script>
     jQuery(function ($) {
+        getBranch();
 
         function dataTable(data) {
             let token = $('meta[name=branch_token]').attr('content');
@@ -64,6 +66,7 @@
 				"columns": [
                     { "data": "id_outlet" },
                     { "data": "nama_outlet" },
+                    { "data": "workshop.name" },
                     { "data": "cabang" },
                     { "data": "status", render: function (data, type, row) {
                         if (data == true) {
@@ -87,45 +90,101 @@
 
         $(document).on("click", "#addOutlet", function () {  
             $(".modal .modal-title").attr("data-outlet", "").attr("data-branch", "");
-            $(".modal .modal-body").load("include/add_outlet.php", function () {  
+            $(".modal .modal-body").load("include/add_outlet.html", function () {  
                 $(".modal .modal-dialog").addClass("modal-sm");
                 $(".modal .modal-title").text("Tambah Outlet");
                 $(".modal .modal-footer #saveOutlet").text("Simpan");
+
+                let branches = JSON.parse(localStorage.getItem("branches"));
+                let body = $("html body");
+
+                body.find("#add_outlet #branch option").remove();
+
+                $.each(branches, function (key, obj) {  
+                    let content = $('<option></option>').attr('value', obj.branch).text(obj.branch);
+                    $("#add_outlet #branch").append(content);
+                });
+                
+                let branchPlaceholder = $("select#branch").attr("placeholder"), workshopPlaceholder = $("select#workshop").attr("placeholder");
+                let branchDefault = '<option value="0" disabled selected="true">'+branchPlaceholder+'</option>', workshopDefault = '<option value="0" disabled selected="true">'+workshopPlaceholder+'</option>';                
+                body.find("#add_outlet #branch").append(branchDefault);
+                body.find("#add_outlet #workshop").append(workshopDefault);
+
+                body.on("change", "#add_outlet #branch", function () {
+                    branch = $(this).val();
+                    workshopOptions(branches, branch);
+                }); 
+
                 $(".modal").modal("show");
             });
         });
+
+        function workshopOptions(data, branch) {
+            let body = $("html body");
+            body.find("#add_outlet #workshop option").remove();
+            branchSelected = $.grep(data, item => item.branch === branch);
+
+            $.each(branchSelected[0].workshop, function (key, obj) {
+                let content = $('<option></option>').attr('value', obj.id).text(obj.name);
+                $("html body").find("#add_outlet #workshop").append(content);
+            });
+        }
 
         $(document).on("click", "#editOutlet", function () {  
             let table = $(document).find("#table_outlet").DataTable();
             let row = $(this).closest('tr');
             let tr = table.row(row).data();
+            let body = $("html body");
+            let branches = JSON.parse(localStorage.getItem("branches"));
 
             let id = $(this).data('id');
             $(".modal .modal-title").attr("data-outlet", id).attr("data-branch", tr.cabang);
-            $(".modal .modal-body").load("include/add_outlet.php", function () {  
+            $(".modal .modal-body").load("include/add_outlet.html", function () {  
                 $(".modal .modal-dialog").addClass("modal-sm");
                 $(".modal .modal-title").text("Update Outlet");
                 $(".modal .modal-footer #saveOutlet").text("Update");
-                $(".modal").modal("show");
+                body.find("#add_outlet #branch option").remove();
+
+                $.each(branches, function (key, obj) {  
+                    let content = $('<option></option>').attr('value', obj.branch).text(obj.branch);
+                    $("#add_outlet #branch").append(content);
+                });
 
                 let form = $(document).find("form#add_outlet"),
-                    branch = form.find("#branch").append('<option value="'+tr.cabang+'" selected>'+ tr.cabang +'</option>');
+                    branch = form.find("#branch").append('<option value="'+tr.cabang+'" selected>'+ tr.cabang +'</option>'),
+                    workshop = form.find("#workshop").append('<option value="'+tr.workshop.id+'" selected>'+ tr.workshop.name +'</option>'),
                     name = form.find("#name").val(tr.nama_outlet),
                     telp = form.find("#telp").val(tr.telpon),
                     address = form.find("#address").val(tr.alamat),
                     active = tr.status == 1 ? form.find("#active").prop('checked', true) : form.find("#active").prop('checked', false);
+
+
+                body.find("#add_outlet #branch option[value="+ tr.cabang +"]").attr('selected', true);
+                
+                body.on("change", "#add_outlet #branch", function () {
+                    branch = $(this).val();
+                    
+                    workshopOptions(branches, branch);
+                }); 
+
+                $(".modal").modal("show");
+            
             });
         });
 
         $(".modal .modal-footer #saveOutlet").on("click", function () {            
             let form = $(document).find("form#add_outlet"),
                 branch = form.find("#branch").val(),
+                workshopId = form.find("#workshop").val(),
+                workshop = form.find("#workshop option[value="+workshopId+"]").text(),
                 name = form.find("#name").val(),
                 telp = form.find("#telp").val(),
                 address = form.find("#address").val(),
                 active = form.find("#active").is(":checked") == true ? 1 : 0;
             let data = {
                 branch: branch,
+                workshopId: workshopId,
+                workshop: workshop,
                 name: name,
                 telp: telp,
                 address: address,
@@ -137,11 +196,11 @@
                 valid = false;
             }
 
-            let outletId = $(".modal .modal-title").attr("data-outlet");
+            let outletIdtitle = $(".modal .modal-title").attr("data-outlet");
 
             if (valid) {
                 $(document).find("#table_outlet").DataTable().ajax.reload();
-                let url = outletId != "" ? "Outlet/update/"+outletId : "Outlet/store";
+                let url = outletIdtitle != "" ? "Outlet/update/"+outletIdtitle : "Outlet/store";
                 saveForm(data, url);
                 $(".modal").modal("hide");
             }
@@ -160,6 +219,29 @@
                     $(document).find("#table_outlet").DataTable().ajax.reload();
                 }
             })
+        }
+
+        $("html body").on("blur keyup keypress, #add_outlet #telp", function () {
+            $(this).val($(this).val().replace(/[^0-9\.]/g,''));
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+
+        function getBranch() {
+            let token = $('meta[name=branch_token]').attr('content');
+            $.ajax({
+                url: apiURL + "Branch/lists",
+                method: 'POST',
+                beforeSend: function (xhr) {  
+                    xhr.setRequestHeader("Authorization", token);
+                    localStorage.removeItem("branches");
+                },
+                success: function (response) {
+                    data = response.data;
+                    localStorage.setItem("branches", JSON.stringify(data));
+                }
+            });
         }
 
     });

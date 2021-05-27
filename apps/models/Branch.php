@@ -1,4 +1,5 @@
 <?php 
+include_once 'models/Workshop.php';
 
 class Branch {
     private $table = "cabang";
@@ -20,7 +21,15 @@ class Branch {
     {
         $query = "SELECT id, cabang AS branch, city, active AS status FROM $this->table";
         $this->conn->query($query);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $wk = new Workshop;
+        
+        foreach ($result as $key => $value) {
+            $result[$key]['workshop'] = $wk->getWorkshopByBranch($value['id']);
+        }
+
+        return $result;
     }
 
     public function getBranchOutlet()

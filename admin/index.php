@@ -57,8 +57,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
-			const apiURL = 'https://qnclaundry.com/apps/';
-			// const apiURL = 'https://localhost/qnclaundry/apps/';
+			// const apiURL = 'https://qnclaundry.com/apps/';
+			const apiURL = 'https://localhost/qnclaundry/apps/';
 			const userId = '<?= $_SESSION['user_id']; ?>';
 		</script>
 

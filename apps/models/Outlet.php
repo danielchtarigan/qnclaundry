@@ -63,7 +63,15 @@ class Outlet {
     {
         $query = "SELECT id_outlet, nama_outlet, alamat, Kota As cabang, no_telp AS telpon, active AS status FROM outlet";
         $this->conn->query($query);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $wk = new Workshop;
+
+        foreach ($result as $key => $value) {
+            $result[$key]['workshop'] = $wk->outletWorkshop($value['id_outlet']);
+        }
+
+        return $result;
     }
 
     public function getOutletsByBranch($branch)
@@ -86,6 +94,34 @@ class Outlet {
         $this->conn->bind('active', $data->active);
 
         $this->conn->execute();
+        $result = $this->conn->rowCount();
+        
+        if ($result) {
+            $lastId = $this->conn->lastId();
+            return $this->insertToOutletWorkshop($lastId, $data->workshopId);
+        }
+    }
+
+    public function insertToOutletWorkshop($outlet, $workshop)
+    {
+        $table = 'outlet_workshop';
+        $query = "INSERT INTO $table (workshop_id, outlet_id) 
+                VALUES (:workshop, :outlet)";
+        $this->conn->query($query);
+        $this->conn->bind('workshop', $workshop);
+        $this->conn->bind('outlet', $outlet);
+        $this->conn->execute();
+        return $this->conn->rowCount();
+    }
+
+    public function updateToOutletWorkshop($outlet, $workshop)
+    {
+        $table = 'outlet_workshop';
+        $query = "UPDATE $table SET workshop_id = :workshop WHERE outlet_id = :outlet";
+        $this->conn->query($query);
+        $this->conn->bind('workshop', $workshop);
+        $this->conn->bind('outlet', $outlet);
+        $this->conn->execute();
         return $this->conn->rowCount();
     }
 
@@ -101,7 +137,11 @@ class Outlet {
         $this->conn->bind('outletId', $outletId);
 
         $this->conn->execute();
-        return $this->conn->rowCount();
+        $result = $this->conn->rowCount();
+
+        if ($result) {
+            return $this->updateToOutletWorkshop($outletId, $data->workshopId);
+        }
     }
 
     public function updateOutletCode($data)

@@ -12,6 +12,11 @@
         </select>
     </div>
     <div class="form-group">
+        <label for="branch">Workshop</label>
+        <select class="form-control" name="workshop" id="workshop" placeholder="Pilih Workshop">
+        </select>
+    </div>
+    <div class="form-group">
         <label for="name">Nama Outlet</label>
         <input type="text" class="form-control" name="name" id="name" placeholder="Ketik nama outlet baru" autocomplete="off">
     </div>
@@ -32,7 +37,7 @@
 </style>
 
 
-<script>
+<!-- <script>
     jQuery(function($) {    
         
         function getBranch() {
@@ -68,12 +73,5 @@
         let content = '<option value="0" disabled selected="true">'+pl+'</option>';
         $("#add_outlet #branch").append(content);
 
-        $("#add_outlet #telp").on("blur keyup keypress", function () {
-            $(this).val($(this).val().replace(/[^0-9\.]/g,''));
-            if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-                event.preventDefault();
-            }
-        });
-        
     });
-</script>
+</script> -->
