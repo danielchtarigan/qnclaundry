@@ -113,6 +113,7 @@
                 let form = $(document).find("form#add_workshop"),
                     branch_id = form.find("#branch").append('<option value="'+tr.branch_id+'" selected>'+ tr.branch +'</option>');
                     name = form.find("#name").val(tr.workshop),
+                    linen = form.find("#caplinen").val(tr.capacity.linen),
                     address = form.find("#address").val(tr.address),
                     active = tr.status == 1 ? form.find("#active").prop('checked', true) : form.find("#active").prop('checked', false);
             });
@@ -123,12 +124,15 @@
                 branch = form.find("#branch").val(),
                 name = form.find("#name").val(),
                 address = form.find("#address").val(),
+                linen = form.find("#caplinen").val(),
                 active = form.find("#active").is(":checked") == true ? 1 : 0;
             let data = {
                 branch_id: branch,
                 name: name,
                 address: address,
-                active: active
+                linen: linen,
+                active: active,
+                user: user_id
             };
 
             let valid = true;

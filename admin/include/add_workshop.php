@@ -19,6 +19,10 @@
         <label for="address">Alamat</label>
         <textarea class="form-control" name="address" id="address" cols="" rows="4" style="resize: none"></textarea>
     </div>
+    <div class="form-group">
+        <label for="caplinen">Kapasitas Linen</label>
+        <input type="text" class="form-control" name="caplinen" id="caplinen" autocomplete="off" value="15">
+    </div>
 </form>
 
 <style>

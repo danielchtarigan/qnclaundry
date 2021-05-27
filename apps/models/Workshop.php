@@ -55,7 +55,13 @@ class Workshop {
         $this->conn->bind('active', $data->active);
 
         $this->conn->execute();
-        return $this->conn->rowCount();
+        $result = $this->conn->rowCount();
+
+        if ($result) {
+            $workshop = $this->conn->lastId();
+            $cap = new MachineCapacities;
+            return $cap->insert($workshop, $data->user, $data->linen);
+        }
     }
 
     public function updateWorkshop($data, $workshopId)
@@ -69,7 +75,12 @@ class Workshop {
         $this->conn->bind('workshopId', $workshopId);     
 
         $this->conn->execute();
-        return $this->conn->rowCount();
+        $result = $this->conn->rowCount();
+
+        if ($result) {
+            $cap = new MachineCapacities;
+            return $cap->update($workshopId, $data->user, $data->linen);
+        }
     }
 
     public function updateWorkshopCode($data)
