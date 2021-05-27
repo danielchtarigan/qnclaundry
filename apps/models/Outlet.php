@@ -46,7 +46,7 @@ class Outlet {
         $result['workshop'] = $wk->outletWorkshop($outlet);
 
         $caps = new MachineCapacities;
-        $result['workshop']['capacity'] = $caps->getCapacity($result['workshop']['id'])['capacity'];
+        $result['workshop']['capacity'] = $caps->getCapacity($result['workshop']['id'])['linen'];
         return $result;
     }
 

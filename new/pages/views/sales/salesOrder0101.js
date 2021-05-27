@@ -664,7 +664,7 @@ jQuery(function ($) {
 		let dataOutlet = JSON.parse(localStorage.getItem("dataOutlet")).data;
 
 		weightGr = totalWeight(dataSales.items);
-		capacity = dataOutlet.workshop.capacity;
+		linenCaps = dataOutlet.workshop.capacity;
 
 		if (weightGr > parseFloat(capacity * 1000)) {
 			alert(`Satu nota maksimal ${capacity} Kg, Silahkan kurangi jumlah item`);
