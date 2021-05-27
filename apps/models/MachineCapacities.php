@@ -11,7 +11,7 @@ class MachineCapacities {
 
     public function getCapacity($workshop)
     {
-        $query = "SELECT capacity FROM $this->table WHERE workshop_id = :workshop";
+        $query = "SELECT linen FROM $this->table WHERE workshop_id = :workshop";
         $this->conn->query($query);
         $this->conn->bind('workshop', $workshop);
         return $this->conn->single();

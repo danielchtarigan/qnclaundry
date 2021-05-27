@@ -12,6 +12,7 @@
                     <tr>
                         <th width="10%">Id</th>
                         <th>Nama Workshop</th>
+                        <th>Kapasitas Linen</th>
                         <th>Cabang Workshop</th>
                         <th>Status</th>
                         <th></th>
@@ -64,6 +65,7 @@
 				"columns": [
                     { "data": "id" },
                     { "data": "workshop" },
+                    { "data": "capacity.linen" },
                     { "data": "branch" },
                     { "data": "status", render: function (data, type, row) {
                         if (data == true) {

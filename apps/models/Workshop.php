@@ -1,4 +1,5 @@
 <?php 
+include_once 'models/MachineCapacities.php';
 
 class Workshop {
     private $table = "workshop";
@@ -15,7 +16,15 @@ class Workshop {
         $query = "SELECT a.id_workshop AS id, a.workshop AS workshop, b.id AS branch_id, b.cabang AS branch, a.alamat AS address, a.active AS status, a.kode AS code 
                     FROM $this->table a LEFT JOIN $branch b ON a.id_cabang = b.id";
         $this->conn->query($query);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $caps = new MachineCapacities;
+
+        foreach ($result as $key => $value) {
+            $result[$key]['capacity'] = $caps->getCapacity($value['id']);
+        }
+
+        return $result;
     }
 
     public function getWorkshopByBranch($branch)
