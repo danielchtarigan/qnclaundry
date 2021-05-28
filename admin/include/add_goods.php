@@ -23,16 +23,20 @@
         <input type="text" class="form-control" name="name" id="name" placeholder="Ketik nama barang" autocomplete="off">
     </div>
     <div class="form-group">
-        <label for="price">Harga</label>
-        <input type="text" class="form-control" name="price" id="price" placeholder="0" value="0" autocomplete="off">
-    </div>
-    <div class="form-group">
         <label for="unit" class="col-md-2 control-label">Satuan</label>
         <select class="form-control" id="unit" name="unit">
             <option value="kg">kg</option>
             <option value="pcs">pcs</option>
             <option value="m">m</option>
         </select>
+    </div>
+    <div class="form-group">
+        <label for="price">Harga Satuan</label>
+        <input type="text" class="form-control" name="price" id="price" placeholder="0" value="0" autocomplete="off">
+    </div>
+    <div class="form-group">
+        <label for="gramasi">Gramasi (gr)</label>
+        <input type="text" class="form-control" name="gramasi" id="gramasi" placeholder="0" value="0" autocomplete="off">
     </div>
 </form>
 

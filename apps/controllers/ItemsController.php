@@ -30,10 +30,8 @@ class ItemsController extends Controller {
     public function update($id)
     {
         $data = json_decode(json_encode($_POST));
-
-        $adjustPrice = new ItemAdjustmentPrices();
-        $adjustPrice->update($data, $id);
-        $success = $this->model('Items')->update($data);        
+        
+        $success = $this->model('Items')->update($data, $id);    
 
         echo json_encode($success);
     }

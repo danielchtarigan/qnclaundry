@@ -1,4 +1,5 @@
 <?php 
+include_once 'models/LinenGramasi.php';
 
 class ItemAdjustmentPrices {
     private $table = 'bs_adjustment_prices';
@@ -17,7 +18,14 @@ class ItemAdjustmentPrices {
         $this->conn->query($query);
         $this->conn->bind('branch_id', $data->branch);
         $this->conn->bind('outlet_id', $data->outlet);
-        return $this->conn->all();
+        $result = $this->conn->all();
+
+        $gramasi = new LinenGramasi;
+        foreach ($result as $key => $value) {
+            $result[$key]['gramasi'] = $gramasi->getItemByPriceId($value['price_id']);
+        }
+
+        return $result;
     }
 
     public function insertCopy($data)
@@ -46,7 +54,14 @@ class ItemAdjustmentPrices {
         $this->conn->bind('updated_by', $data->user_id);
         $this->conn->execute();
 
-        return $this->conn->rowCount();
+        $result = $this->conn->rowCount();
+
+        if ($data->gramasi) {
+            $gramasi = new LinenGramasi;
+            return $gramasi->update($id, $data->gramasi);
+        }
+
+        return $result;
     }
 
     public function delete($data)

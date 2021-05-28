@@ -666,8 +666,8 @@ jQuery(function ($) {
 		weightGr = totalWeight(dataSales.items);
 		linenCaps = dataOutlet.workshop.capacity;
 
-		if (weightGr > parseFloat(capacity * 1000)) {
-			alert(`Satu nota maksimal ${capacity} Kg, Silahkan kurangi jumlah item`);
+		if (weightGr > parseFloat(linenCaps * 1000)) {
+			alert(`Satu nota maksimal ${linenCaps} Kg, Silahkan kurangi jumlah item`);
 		}
 		else {
 			$(".create-order").animate({

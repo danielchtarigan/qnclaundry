@@ -202,7 +202,7 @@
 
             e.stopPropagation();
         });
-
+        
        // get detail branch outlet
         getData({ }, "Branch/details", function (response) {
             if (response.readyState !== 0) {
@@ -217,7 +217,9 @@
                 });
 
                 $(document).on("change", "#select_outlet", function () {
-                    $('#table_goods').DataTable().destroy();   
+                    $('#table_goods').DataTable().destroy();  
+                    outlet = $('.filter-select #select_outlet');
+                    console.log(outlet.val());
                     table = dataTable({ branch: branch.val(), outlet: outlet.val() });
                 });
 
@@ -237,7 +239,7 @@
 
                         getDetailItems();
 
-                        $(document).on("keyup keypress blur", "#price", function (event) {                
+                        $(document).on("keyup keypress blur", "#price, #gramasi", function (event) {                
                             $(this).val($(this).val().replace(/[^0-9\.]/g,''));
                             if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
                                 event.preventDefault();
@@ -439,8 +441,21 @@
                     goods_id = form.find("#goods_id").val(tr.id),
                     name = form.find("#name").val(tr.item),
                     price = form.find("#price").val(tr.price),
+                    gramasi = form.find("#gramasi").val(tr.gramasi.gramasi),
                     unit = form.find("#unit option[value="+tr.unit+"]").attr("selected", true);
+
+                if (category.val() !== "Linen") {
+                    form.find("#gramasi").prop("disabled", true);
+                }
             });
+        });
+
+        $("html body").on("change", "#category", function () {
+            let val = $(this).val();
+            $(document).find("form#form_goods #gramasi").prop("disabled", true);
+            if (val === "8") {
+                $(document).find("form#form_goods #gramasi").prop("disabled", false);
+            }
         });
 
         let customPrice = true, customId = [];
@@ -496,7 +511,8 @@
             });
         });
 
-        $(document).on("click", ".modal .modal-footer #savegoods", function () {     
+        $(document).on("click", ".modal .modal-footer #savegoods", function (e) {   
+            e.preventDefault();  
             let modal = $(".modal .modal-title").text();
 
             if (modal == "Custom Harga") {
@@ -535,10 +551,11 @@
                     branch = form.find("#branch").val(),
                     outlet = form.find("#outlet").val(),
                     category = form.find("#category").val(),
-                    name = form.find("#name").val();
-                    price = form.find("#price").val();
-                    unit = form.find("#unit").val();
-                    goods_id = form.find("#goods_id").val();
+                    name = form.find("#name").val(),
+                    price = form.find("#price").val(),
+                    unit = form.find("#unit").val(),
+                    goods_id = form.find("#goods_id").val(),
+                    gramasi = form.find("#gramasi").val();
     
                 let data = {
                     branch_id: branch,
@@ -548,7 +565,8 @@
                     name: name,
                     price: price,
                     unit: unit,
-                    user_id: user,
+                    gramasi: gramasi,
+                    user_id: user
                 };
     
                 let valid = true;
@@ -563,12 +581,13 @@
                     saveForm(data, url);
                     $(".modal").modal("hide");
                 }
+
             }
             
         });
 
         function saveForm(data, url) {
-            $(document).find("#table_goods").DataTable().ajax.reload();
+            // $(document).find("#table_goods").DataTable().ajax.reload();
             let token = $('meta[name=branch_token]').attr('content');
             $.ajax({
                 url: apiURL + url,

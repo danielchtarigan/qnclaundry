@@ -53,11 +53,20 @@ class Items {
             $this->conn->bind('updated_by', $data->user_id);
             $this->conn->execute();
     
-            return $this->conn->rowCount();
+            $result = $this->conn->rowCount();
+
+            if ($data->gramasi) {
+                if($result) {
+                    $adjustmenId = $this->conn->lastId();
+                    $gramasi = new LinenGramasi;
+                    return $gramasi->insert($adjustmenId, $data->gramasi);
+                }
+                return $result;
+            }
         }
     }
 
-    public function update($data)
+    public function update($data, $id)
     {
         $query = "UPDATE $this->table SET name = :name, unit = :unit, updated_by = :updated_by WHERE id = :id";
         $this->conn->query($query);
@@ -67,7 +76,11 @@ class Items {
         $this->conn->bind('id', $data->goods_id);
         $this->conn->execute();
 
-        return $this->conn->rowCount();
+        $result = $this->conn->rowCount();
+
+        $adjustPrice = new ItemAdjustmentPrices;
+        return $adjustPrice->update($data, $id);
+
     }
 
     public function checkOutletInItem($outletId)
