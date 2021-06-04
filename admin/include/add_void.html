@@ -1,0 +1,44 @@
+<form class="form-horizontal form-style-x" action="" id="add_void">
+    <div class="form-group">
+        <label for="faktur">Nomor Faktur</label>
+        <div class="input-group">
+            <input type="text" class="form-control" name="faktur" id="faktur" placeholder="Cari faktur">
+            <span class="input-group-btn">
+              <button class="btn btn-success" type="button" id="searchFaktur"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="order">No Order</label>
+        <select class="form-control" name="order" id="order" placeholder="Pilih Order" disabled>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="totalOrder">Total Order</label>
+        <input type="text" class="form-control" name="totalOrder" id="totalOrder" readonly>
+    </div>
+    <div class="form-group">
+        <label for="userOrder">Dibuat Oleh</label>
+        <input type="text" class="form-control" name="userOrder" id="userOrder" readonly>
+    </div>
+    <div class="form-group" hidden>
+        <label for="outletOrder">Outlet</label>
+        <input type="text" class="form-control" name="outletOrder" id="outletOrder" readonly>
+    </div>
+    <div class="form-group">
+        <label for="status">Status</label>
+        <select name="status" id="status" class="form-control">
+            <option value="void">Void</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="memo">Alasan</label>
+        <textarea class="form-control" name="memo" id="memo" cols="" rows="4" style="resize: none"></textarea>
+    </div>
+</form>
+
+<style>
+    .form-style-x {
+        padding: 0 15px;
+    }
+</style>

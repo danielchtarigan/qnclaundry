@@ -159,8 +159,8 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 		<link rel="stylesheet" href="assets/css/order-style.css">
 			
 		<script type="text/javascript">
-			// let apiURL = 'https://qnclaundry.com/apps/';
-			const apiURL = 'https://localhost/qnclaundry/apps/';
+			let apiURL = 'https://qnclaundry.com/apps/';
+			// const apiURL = 'https://localhost/qnclaundry/apps/';
 			const branch = '<?= $_SESSION['cabang']; ?>';
 			const branchId = '<?= $_SESSION['branch_id']; ?>';
 			const outlet = '<?= $_SESSION['outlet']; ?>';
@@ -450,21 +450,13 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 
 						<ul class="submenu">
 							<li class="">
-								<a href="?menu=checkin_workshop">
+								<a href="?menu=checkout-control">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Data Checkin
+									Checkout Control
 								</a>
 
 								<b class="arrow"></b>
 							</li>	
-							<li class="">
-								<a href="?menu=checkout_workshop">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Data Checkout
-								</a>
-
-								<b class="arrow"></b>
-							</li>													
 						</ul>
 					</li>
 
@@ -566,6 +558,39 @@ $token = password_hash("qnclaundrycabang", PASSWORD_DEFAULT, ['cost' => 16]);
 					</li>	
 
 					<?php 
+					} else {
+						?>
+					<li class="">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> Tables </span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+
+							<li class="">
+								<a href="?menu=checkout_workshop">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Data Checkout
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+							<li class="">
+								<a href="?menu=checkin_workshop">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Data Checkin
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+						</ul>
+					</li>	
+						<?php
 					}
 					?>				
 

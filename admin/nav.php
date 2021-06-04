@@ -105,6 +105,9 @@
                                     <a href="?menu=barang">Daftar Barang</a>
                                 </li>
                                 <li>
+                                    <a href="?menu=void">Void Order</a>
+                                </li>
+                                <li>
                                     <a href="cari_rincian.php">Pencarian Data</a>
                                 </li>
                                 <li>
@@ -138,7 +141,6 @@
                         <li>
                             <a href="#"><i class="fa fa-table fa-fw"></i> Control<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li><a href="index.php?menu=csetrika">Workshop Setrika</a></li>
                                 <li><a href="index.php?menu=parkir">Status Free Parkir</a></li>
                                 <li><a href="index.php?menu=prioritycontrol">Label Priority</a></li>
 

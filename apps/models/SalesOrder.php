@@ -280,5 +280,24 @@ class SalesOrder {
         
         return $count;
     }
+
+    public function getOrderByFaktur($faktur)
+    {
+        $query = "SELECT no_nota AS orderNumber, total_bayar AS totalOrder, nama_reception AS userOrder, nama_outlet AS outletOrder FROM $this->table WHERE no_faktur = :faktur";
+        $this->conn->query($query);
+        $this->conn->bind('faktur', $faktur);
+        return $this->conn->all();
+    }
+
+    public function updatePayment($order, $status)
+    {
+        $query = "UPDATE $this->table SET cara_bayar = :status WHERE no_nota = :order_number";
+        $this->conn->query($query);
+        $this->conn->bind('status', $status);
+        $this->conn->bind('order_number', $order);
+        $this->conn->execute();
+
+        return $this->conn->rowCount();
+    }
     
 }

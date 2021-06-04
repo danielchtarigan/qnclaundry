@@ -29,4 +29,23 @@ class SalesPaymentMethod {
 
         return $count;
     }
+
+    public function insertNewMethod($data)
+    {
+        $query = "INSERT INTO $this->table (no_faktur, cara_bayar, jumlah, resepsionis, outlet, tanggal_input)
+                VALUES (:invoice_number, :payment_method, :value_payment, :user, :outlet, :nowdate)";
+        $this->conn->query($query);
+
+        $count = 0;
+        $this->conn->bind('invoice_number', $data->faktur);
+        $this->conn->bind('payment_method', $data->status);
+        $this->conn->bind('value_payment', $data->total_order);
+        $this->conn->bind('user', $data->user_order);
+        $this->conn->bind('outlet', $data->outlet_order);
+        $this->conn->bind('nowdate', $data->to_date);
+        $this->conn->execute();
+        $count += $this->conn->rowCount();  
+
+        return $count;
+    }
 }

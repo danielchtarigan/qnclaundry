@@ -155,4 +155,22 @@ class SalesInvoice {
         return $this->conn->all();
     }
 
+    public function updatePayment($data)
+    {
+        $query = "UPDATE $this->table AS a SET total = (select total FROM $this->table AS b 
+        WHERE b.no_faktur = a.no_faktur) - :total WHERE a.no_faktur = :faktur";
+        $this->conn->query($query);
+        $this->conn->bind('total', $data->total_order);
+        $this->conn->bind('faktur', $data->faktur);
+        $this->conn->execute();
+
+        $result = $this->conn->rowCount();
+
+        if($result) {
+            $paymentMethod = new SalesPaymentMethod;
+
+            return $paymentMethod->insertNewMethod($data);
+        }
+    }
+
 }
