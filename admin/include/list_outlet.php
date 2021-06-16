@@ -151,16 +151,13 @@
                 });
 
                 let form = $(document).find("form#add_outlet"),
-                    branch = form.find("#branch").append('<option value="'+tr.cabang+'" selected>'+ tr.cabang +'</option>'),
+                    branch = form.find("#branch option[value='"+ tr.cabang +"']").attr('selected', true),
                     workshop = form.find("#workshop").append('<option value="'+tr.workshop.id+'" selected>'+ tr.workshop.name +'</option>'),
                     name = form.find("#name").val(tr.nama_outlet),
                     telp = form.find("#telp").val(tr.telpon),
                     address = form.find("#address").val(tr.alamat),
                     active = tr.status == 1 ? form.find("#active").prop('checked', true) : form.find("#active").prop('checked', false);
 
-
-                body.find("#add_outlet #branch option[value="+ tr.cabang +"]").attr('selected', true);
-                
                 body.on("change", "#add_outlet #branch", function () {
                     branch = $(this).val();
                     
